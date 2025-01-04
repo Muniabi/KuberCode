@@ -26,6 +26,11 @@ interface LoginResponse {
     status: number;
 }
 
+interface ResetPasswordResponse {
+    success: boolean;
+    message: string;
+}
+
 // Регистрация пользователя
 export const register = async (
     email: string,
@@ -160,6 +165,34 @@ export const refreshAccessToken = async (refreshToken: string) => {
         };
     } catch (error) {
         console.error("Error refreshing token:", error);
+        throw error;
+    }
+};
+
+export const requestPasswordReset = async (
+    email: string
+): Promise<ResetPasswordResponse> => {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/reset-password`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Ошибка при запросе сброса пароля");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error requesting password reset:", error);
         throw error;
     }
 };

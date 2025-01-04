@@ -3,9 +3,14 @@
 import { useRouter } from "next/navigation";
 import { login } from "@/utils/services/Authentication";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,7 +24,12 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Avatar, AvatarImage } from "@/components/ui/index";
+import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 
 // Создание схемы валидации с помощью Zod
 const formSchema = z.object({
@@ -34,6 +44,18 @@ const formSchema = z.object({
 // Создание типа для данных формы
 type FormData = z.infer<typeof formSchema>;
 
+// Динамический импорт компонентов, которые не нужны сразу
+const ForgotPasswordLink = dynamic(
+    () => import("@/components/ForgotPasswordLink"),
+    {
+        loading: () => <div className="ml-auto text-sm">Загрузка...</div>,
+        ssr: false,
+    }
+);
+
+// Добавляем анимации для обратной связи
+const formAnimation = "transition-all duration-300 ease-in-out";
+
 // Главный компонент страницы авторизации
 export default function LoginPage() {
     const router = useRouter();
@@ -45,134 +67,233 @@ export default function LoginPage() {
         },
     });
 
-    const onSubmit = async (data: FormData) => {
-        try {
-            console.log("Form submission:", data);
-            const result = await login(data.email, data.password);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isOnline, setIsOnline] = useState(true);
 
+    useEffect(() => {
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+
+        window.addEventListener("online", handleOnline);
+        window.addEventListener("offline", handleOffline);
+
+        return () => {
+            window.removeEventListener("online", handleOnline);
+            window.removeEventListener("offline", handleOffline);
+        };
+    }, []);
+
+    const onSubmit = async (data: FormData) => {
+        setIsLoading(true);
+        try {
+            const result = await login(data.email, data.password);
             if (result?.ok) {
                 toast.success("Успешный вход");
                 router.push("/account");
             } else {
-                console.error("Login failed:", result);
                 toast.error("Неверный email или пароль");
             }
         } catch (error) {
-            console.error("Login error:", error);
             toast.error(
                 error instanceof Error
                     ? error.message
                     : "Произошла ошибка при входе"
             );
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <Tabs defaultValue="login" className="w-[400px] mx-auto mt-16">
-            <TabsContent value="login">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-center">Вход</CardTitle>
-                        <div className="mx-auto">
-                            <p className="py-2">Войти с помощью</p>
-                            <div className="flex items-center justify-around">
-                                <button
-                                    onClick={() =>
-                                        signIn("github", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="/github.svg"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        signIn("vk", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar className="rounded-none">
-                                        <AvatarImage
-                                            src="/vk.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        signIn("google", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="/google.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
+        <div
+            className={`flex flex-col gap-6 w-[400px] mx-auto mt-16 ${formAnimation}`}
+        >
+            <Card className="hover:shadow-lg transition-shadow duration-300">
+                <CardHeader className="text-center">
+                    <CardTitle className="text-xl">Добро пожаловать</CardTitle>
+                    <CardDescription>
+                        Войдите с помощью социальных сетей
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <div className="grid gap-6">
+                                <div className="flex flex-col gap-4">
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        type="button"
+                                        onClick={() => signIn("github")}
+                                        disabled={isLoading}
+                                    >
+                                        <div className="h-5 w-5 mr-2">
+                                            <Image
+                                                src="/github.png"
+                                                alt="Github"
+                                                width={20}
+                                                height={20}
+                                                priority
+                                            />
+                                        </div>
+                                        Войти через GitHub
+                                    </Button>
+
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        type="button"
+                                        onClick={() => signIn("google")}
+                                        disabled={isLoading}
+                                    >
+                                        <div className="h-5 w-5 mr-2">
+                                            <Image
+                                                src="/google.png"
+                                                alt="Google"
+                                                width={20}
+                                                height={20}
+                                                priority
+                                            />
+                                        </div>
+                                        Войти через Google
+                                    </Button>
+
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        type="button"
+                                        onClick={() => signIn("vk")}
+                                        disabled={isLoading}
+                                    >
+                                        <div className="h-5 w-5 mr-2">
+                                            <Image
+                                                src="/vk.png"
+                                                alt="VK"
+                                                width={20}
+                                                height={20}
+                                                priority
+                                            />
+                                        </div>
+                                        Войти через VK
+                                    </Button>
+                                </div>
+
+                                <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                                    <span className="relative z-10 bg-background px-2 text-muted-foreground">
+                                        Или войдите с помощью email
+                                    </span>
+                                </div>
+
+                                <div className="grid gap-6">
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem className="grid gap-2">
+                                                <FormLabel>Email</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type="email"
+                                                        placeholder="m@example.com"
+                                                        autoFocus
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="password"
+                                        render={({ field }) => (
+                                            <FormItem className="grid gap-2">
+                                                <div className="flex items-center">
+                                                    <FormLabel>
+                                                        Пароль
+                                                    </FormLabel>
+                                                    <div className="ml-auto">
+                                                        <ForgotPasswordLink />
+                                                    </div>
+                                                </div>
+                                                <FormControl>
+                                                    <Input
+                                                        type="password"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <Button
+                                        type="submit"
+                                        className="w-full relative"
+                                        disabled={isLoading || !isOnline}
+                                    >
+                                        {isLoading ? (
+                                            <div className="flex items-center justify-center gap-2">
+                                                <svg
+                                                    className="animate-spin h-5 w-5"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <circle
+                                                        className="opacity-25"
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="10"
+                                                        stroke="currentColor"
+                                                        strokeWidth="4"
+                                                    />
+                                                    <path
+                                                        className="opacity-75"
+                                                        fill="currentColor"
+                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                    />
+                                                </svg>
+                                                Выполняется вход...
+                                            </div>
+                                        ) : (
+                                            "Войти"
+                                        )}
+                                    </Button>
+                                </div>
+
+                                <div className="text-center text-sm">
+                                    Нет аккаунта?{" "}
+                                    <Link
+                                        href="/register"
+                                        className="underline underline-offset-4"
+                                    >
+                                        Зарегистрироваться
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <Form {...form}>
-                            <form
-                                onSubmit={form.handleSubmit(onSubmit)}
-                                className="space-y-4"
-                            >
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Логин (Email)</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="email"
-                                                    placeholder="Email"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Пароль</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="password"
-                                                    placeholder="Пароль"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type="submit">Войти</Button>
-                            </form>
-                        </Form>
-                    </CardContent>
-                </Card>
-            </TabsContent>
-            <TabsContent value="register">
-                {/* Компонент регистрации можно добавить здесь */}
-            </TabsContent>
-        </Tabs>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-white">
+                Нажимая кнопку входа, вы соглашаетесь с нашими{" "}
+                <Link
+                    href="/terms"
+                    className="underline underline-offset-4 hover:text-primary"
+                >
+                    Условиями использования
+                </Link>{" "}
+                и{" "}
+                <Link
+                    href="/privacy"
+                    className="underline underline-offset-4 hover:text-primary"
+                >
+                    Политикой конфиденциальности
+                </Link>
+                .
+            </div>
+        </div>
     );
 }
