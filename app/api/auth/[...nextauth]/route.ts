@@ -79,7 +79,7 @@ const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, account }) {
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;
