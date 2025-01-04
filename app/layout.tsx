@@ -22,8 +22,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body className={montserrat.className}>
+        <html lang="ru" className="!scroll-smooth">
+            <body className={`${montserrat.className} overflow-x-hidden`}>
                 <main className="min-h-screen">
                     <Providers>
                         <ClientLayout>{children}</ClientLayout>

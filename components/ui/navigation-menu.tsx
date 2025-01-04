@@ -41,7 +41,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = cva(
-    "group inline-flex h-10 w-max items-center justify-center rounded-full bg-inherit text-white px-4 py-2 text-md font-medium transition-colors hover:bg-stone-100 hover:text-stone-900 focus:bg-stone-100 focus:text-black focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-stone-100/50 data-[state=open]:bg-stone-100/50 dark:bg-inherit dark:hover:bg-white dark:hover:text-black dark:focus:bg-white dark:focus:text-black dark:data-[active]:bg-stone-800/50 dark:data-[state=open]:bg-stone-800/50"
+    "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent text-stone-700 px-4 py-2 text-md font-medium transition-colors hover:bg-stone-100/10 hover:text-white focus:bg-stone-100/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-stone-100/10 data-[state=open]:bg-stone-100/10 dark:text-stone-200 dark:hover:bg-stone-100/10 dark:hover:text-white dark:focus:bg-stone-100/10"
 );
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -87,7 +87,7 @@ const NavigationMenuViewport = React.forwardRef<
     <div className={cn("absolute left-0 top-full flex justify-center")}>
         <NavigationMenuPrimitive.Viewport
             className={cn(
-                "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-stone-200 bg-white text-stone-950 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)] dark:border-stone-800 dark:bg-stone-950 dark:text-stone-50",
+                "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-lg border border-stone-200/10 bg-white/5 backdrop-blur-lg text-stone-200 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)] dark:border-stone-800/10 dark:bg-stone-950/80 dark:text-stone-200",
                 className
             )}
             ref={ref}

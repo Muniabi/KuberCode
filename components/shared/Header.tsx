@@ -1,9 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import { Container, AccountButton } from "./index";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 
 import {
     NavigationMenu,
@@ -56,115 +59,260 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ className }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-        <header className={cn("sticky top-0 z-50", className)}>
-            <Container className="max-w-full flex items-center justify-between py-6 px-10">
-                {/* Левая часть */}
-                <div className="bg-[#1E1E1E] py-3 px-4 text-white rounded-full">
-                    {/* <Image
-                        src={"/newlogo.svg"}
-                        alt="Logo"
-                        width={250}
-                        height={150}
-                    /> */}
-                    <p className="text-2xl">Logo</p>
-                </div>
-                {/* Навигация */}
-                <div className="bg-[#1E1E1E] py-3 px-4 rounded-full">
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <Link
-                                    className={navigationMenuTriggerStyle()}
-                                    href="/"
+        <header
+            className={cn(
+                "w-full bg-white dark:bg-black border-b border-stone-200 dark:border-stone-200/10",
+                className
+            )}
+        >
+            <Container className="max-w-[1400px] mx-auto">
+                <div className="flex items-center justify-between py-6 px-10">
+                    {/* Логотип */}
+                    <Link
+                        href="/"
+                        className="relative z-20 flex items-center space-x-3"
+                    >
+                        <div className="w-8 h-8">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-full h-full text-[#A559DD]"
+                            >
+                                <path
+                                    d="M12 2L2 7L12 12L22 7L12 2Z"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M2 17L12 22L22 17"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M2 12L12 17L22 12"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </div>
+                        <span className="text-xl font-semibold text-stone-900 dark:text-white">
+                            Kuber Code
+                        </span>
+                    </Link>
+
+                    {/* Десктопное меню */}
+                    <div className="hidden lg:block">
+                        <NavigationMenu>
+                            <NavigationMenuList className="gap-1">
+                                <NavigationMenuItem>
+                                    <Link
+                                        className={cn(
+                                            navigationMenuTriggerStyle(),
+                                            "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
+                                            "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
+                                        )}
+                                        href="/"
+                                    >
+                                        Главная
+                                    </Link>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <Link
+                                        className={cn(
+                                            navigationMenuTriggerStyle(),
+                                            "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
+                                            "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
+                                        )}
+                                        href="/courses"
+                                    >
+                                        Курсы
+                                    </Link>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white">
+                                        Мероприятия
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] bg-white dark:bg-black border border-stone-200 dark:border-stone-200/10 rounded-lg">
+                                            <li className="row-span-4">
+                                                <Link
+                                                    href="/"
+                                                    legacyBehavior
+                                                    passHref
+                                                >
+                                                    <NavigationMenuLink asChild>
+                                                        <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-[url('/hackaton.webp')] bg-cover from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
+                                                            <div className="mb-2 mt-4 text-white text-lg font-medium">
+                                                                Хакатоны
+                                                            </div>
+                                                            <p className="text-sm leading-tight text-stone-200 text-muted-foreground">
+                                                                Участвуйте в
+                                                                хакатонах, где
+                                                                сможете решать
+                                                                реальные задачи
+                                                                и развивать свои
+                                                                навыки в
+                                                                команде.
+                                                            </p>
+                                                        </a>
+                                                    </NavigationMenuLink>
+                                                </Link>
+                                            </li>
+                                            {events.map((event) => (
+                                                <ListItem
+                                                    key={event.title}
+                                                    title={event.title}
+                                                    href={event.href}
+                                                >
+                                                    {event.description}
+                                                </ListItem>
+                                            ))}
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white">
+                                        Авторы
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                            {communitys.map((community) => (
+                                                <ListItem
+                                                    key={community.title}
+                                                    title={community.title}
+                                                    href={community.href}
+                                                >
+                                                    {community.description}
+                                                </ListItem>
+                                            ))}
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <Link
+                                        className={cn(
+                                            navigationMenuTriggerStyle(),
+                                            "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
+                                            "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
+                                        )}
+                                        href="/support"
+                                    >
+                                        Медиа
+                                    </Link>
+                                </NavigationMenuItem>
+                            </NavigationMenuList>
+                        </NavigationMenu>
+                    </div>
+
+                    {/* Правая часть (аккаунт и мобильное меню) */}
+                    <div className="flex items-center space-x-4">
+                        <AccountButton />
+
+                        {/* Мобильное меню */}
+                        <div className="lg:hidden">
+                            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                                <SheetTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-100/10"
+                                    >
+                                        <Menu className="h-5 w-5" />
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent
+                                    side="right"
+                                    className="w-[300px] bg-white dark:bg-black border-stone-200 dark:border-stone-200/10"
                                 >
-                                    Главная
-                                </Link>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <Link
-                                    className={navigationMenuTriggerStyle()}
-                                    href="/courses"
-                                >
-                                    Курсы
-                                </Link>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger>
-                                    Мероприятия
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent>
-                                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                                        <li className="row-span-4">
-                                            <Link
-                                                href="/"
-                                                legacyBehavior
-                                                passHref
-                                            >
-                                                <NavigationMenuLink asChild>
-                                                    <a
-                                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-[url('/hackaton.webp')] bg-cover from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                                                        href="/"
+                                    <div className="flex flex-col space-y-6 pt-6">
+                                        <Link
+                                            href="/"
+                                            className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            Главная
+                                        </Link>
+                                        <Link
+                                            href="/courses"
+                                            className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            Курсы
+                                        </Link>
+
+                                        {/* Мероприятия */}
+                                        <div className="space-y-4">
+                                            <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
+                                                Мероприятия
+                                            </p>
+                                            <div className="pl-2 space-y-3">
+                                                <Link
+                                                    href="/"
+                                                    className="block text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                                    onClick={() =>
+                                                        setIsOpen(false)
+                                                    }
+                                                >
+                                                    Хакатоны
+                                                </Link>
+                                                {events.map((event) => (
+                                                    <Link
+                                                        key={event.title}
+                                                        href={event.href}
+                                                        className="block text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                                        onClick={() =>
+                                                            setIsOpen(false)
+                                                        }
                                                     >
-                                                        <div className="mb-2 mt-4 text-white text-lg font-medium">
-                                                            Хакатоны
-                                                        </div>
-                                                        <p className="text-sm leading-tight text-stone-200 text-muted-foreground">
-                                                            Участвуйте в
-                                                            хакатонах, где
-                                                            сможете решать
-                                                            реальные задачи и
-                                                            развивать свои
-                                                            навыки в команде.
-                                                        </p>
-                                                    </a>
-                                                </NavigationMenuLink>
-                                            </Link>
-                                        </li>
-                                        {events.map((event) => (
-                                            <ListItem
-                                                key={event.title}
-                                                title={event.title}
-                                                href={event.href}
-                                            >
-                                                {event.description}
-                                            </ListItem>
-                                        ))}
-                                    </ul>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger>
-                                    Авторы
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent>
-                                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                        {communitys.map((community) => (
-                                            <ListItem
-                                                key={community.title}
-                                                title={community.title}
-                                                href={community.href}
-                                            >
-                                                {community.description}
-                                            </ListItem>
-                                        ))}
-                                    </ul>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <Link
-                                    className={navigationMenuTriggerStyle()}
-                                    href="/support"
-                                >
-                                    Медиа
-                                </Link>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                </div>
-                {/* Правая часть */}
-                <div className="flex items-center gap-2">
-                    <AccountButton />
+                                                        {event.title}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Авторы */}
+                                        <div className="space-y-4">
+                                            <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
+                                                Авторы
+                                            </p>
+                                            <div className="pl-2 space-y-3">
+                                                {communitys.map((community) => (
+                                                    <Link
+                                                        key={community.title}
+                                                        href={community.href}
+                                                        className="block text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                                        onClick={() =>
+                                                            setIsOpen(false)
+                                                        }
+                                                    >
+                                                        {community.title}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <Link
+                                            href="/support"
+                                            className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            Медиа
+                                        </Link>
+                                    </div>
+                                </SheetContent>
+                            </Sheet>
+                        </div>
+                    </div>
                 </div>
             </Container>
         </header>
