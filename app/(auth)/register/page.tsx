@@ -190,6 +190,16 @@ export default function RegisterPage() {
                                 Зарегистрироваться
                             </Button>
                         </form>
+                        <div className="text-center text-sm">
+                            Уже есть аккаунт?{" "}
+                            <Button
+                                variant="link"
+                                className="px-0 font-normal hover:underline hover:bg-transparent"
+                                onClick={() => router.push("/login")}
+                            >
+                                Войти
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -290,6 +300,16 @@ export default function RegisterPage() {
                             </div>
                             <Button type="submit">Зарегистрироваться</Button>
                         </form>
+                        <div className="text-center text-sm">
+                            Уже есть аккаунт?{" "}
+                            <Button
+                                variant="link"
+                                className="px-0 font-normal hover:no-underline"
+                                onClick={() => router.push("/login")}
+                            >
+                                Войти
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
             </TabsContent>

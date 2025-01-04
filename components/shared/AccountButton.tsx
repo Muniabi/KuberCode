@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -13,7 +15,6 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { LockKeyhole } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
@@ -32,7 +33,6 @@ export const AccountButton: React.FC<Props> = ({ className }) => {
     const [localEmail, setLocalEmail] = useState<string | null>(null);
 
     useEffect(() => {
-        // Проверяем наличие токена в localStorage
         const token = localStorage.getItem("accessToken");
         const email = localStorage.getItem("email");
 
@@ -53,32 +53,28 @@ export const AccountButton: React.FC<Props> = ({ className }) => {
         }
     }, [session]);
 
+    // Показываем скелетон только при начальной загрузке
     if (status === "loading") {
-        return (
-            <div className="flex items-center gap-2">
-                <Skeleton className="h-10 w-24" />
-                <Skeleton className="h-10 w-24" />
-            </div>
-        );
+        return <Skeleton className="h-10 w-10 rounded-full" />;
     }
 
-    // Показываем аватар если есть сессия или локальная авторизация
+    // Если пользователь авторизован (через NextAuth или локально)
     if (status === "authenticated" || isLocalAuth) {
         return (
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Link href="/account" aria-label="Профиль">
-                            <Avatar>
+                            <Avatar className="transition-transform hover:scale-105">
                                 <AvatarImage
-                                    src={avatarSrc || "/avatar1.png"} // Добавьте дефолтную аватарку
+                                    src={avatarSrc || "/avatar1.png"}
                                     alt={
                                         session?.user?.name ||
                                         localEmail ||
                                         "User"
                                     }
                                 />
-                                <AvatarFallback>
+                                <AvatarFallback className="bg-gradient-to-r from-[#A559DD] to-[#591F9C] text-white">
                                     {session?.user?.name
                                         ? session.user.name.charAt(0)
                                         : localEmail
@@ -96,25 +92,15 @@ export const AccountButton: React.FC<Props> = ({ className }) => {
         );
     }
 
-    if (status === "unauthenticated" && !isLocalAuth) {
-        return (
-            <div className="flex items-center gap-2">
-                <Link href="/login">
-                    <Button
-                        variant="ghost"
-                        className="dark:text-white"
-                        aria-label="Войти"
-                    >
-                        <LockKeyhole size={24} />
-                        Войти
-                    </Button>
-                </Link>
-                <Link href="/register">
-                    <Button>Регистрация</Button>
-                </Link>
-            </div>
-        );
-    }
-
-    return null;
+    // Если пользователь не авторизован
+    return (
+        <Link href="/login">
+            <Button
+                className="bg-gradient-to-r from-[#A559DD] to-[#591F9C] text-white hover:opacity-90 transition-opacity"
+                aria-label="Войти"
+            >
+                Войти
+            </Button>
+        </Link>
+    );
 };
