@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
@@ -14,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import { Badge } from "@/components/ui/badge";
 
+export const dynamic = "force-dynamic";
+
 export default function Verified() {
     const router = useRouter();
     const [value, setValue] = useState("");
@@ -23,12 +26,27 @@ export default function Verified() {
     const [error, setError] = useState<string | null>(null);
     const [resendDisabled, setResendDisabled] = useState(false);
     const [countdown, setCountdown] = useState(0);
+    const [email, setEmail] = useState<string | null>(null);
+    const [maskedEmail, setMaskedEmail] = useState<string>("");
+
+    useEffect(() => {
+        const storedEmail = localStorage.getItem("pendingEmail");
+        setEmail(storedEmail);
+
+        if (storedEmail) {
+            const [name, domain] = storedEmail.split("@");
+            if (name && domain) {
+                const maskedName =
+                    name.slice(0, 3) + "*".repeat(name.length - 3);
+                setMaskedEmail(`${maskedName}@${domain}`);
+            } else {
+                setMaskedEmail(storedEmail);
+            }
+        }
+    }, []);
 
     const handleResendCode = async () => {
         try {
-            const email = localStorage.getItem("pendingEmail");
-            const isTeacher = localStorage.getItem("pendingIsTeacher");
-
             if (!email) {
                 toast.error("Email не найден");
                 return;
@@ -37,10 +55,25 @@ export default function Verified() {
             setResendDisabled(true);
             setCountdown(60);
 
-            await sendVerificationEmail(email, isTeacher || "false");
-            toast.success("Код подтверждения отправлен повторно");
+            const isTeacher = localStorage.getItem("pendingIsTeacher");
+            const response = await sendVerificationEmail(
+                email,
+                isTeacher || "false"
+            );
+
+            if (response?.verificationCode) {
+                localStorage.setItem(
+                    "verificationCode",
+                    response.verificationCode
+                );
+                toast.success("Код подтверждения отправлен повторно");
+            } else {
+                throw new Error("Не удалось получить код подтверждения");
+            }
         } catch (error) {
             toast.error("Ошибка при отправке кода");
+            setResendDisabled(false);
+            setCountdown(0);
         }
     };
 
@@ -130,17 +163,7 @@ export default function Verified() {
                             variant="secondary"
                             className="ml-2 text-xs sm:text-sm break-all whitespace-normal max-w-[200px] sm:max-w-none"
                         >
-                            {(() => {
-                                const email =
-                                    localStorage.getItem("pendingEmail") || "";
-                                if (!email) return "";
-                                const [name, domain] = email.split("@");
-                                if (!name || !domain) return email;
-                                const maskedName =
-                                    name.slice(0, 3) +
-                                    "*".repeat(name.length - 3);
-                                return `${maskedName}@${domain}`;
-                            })()}
+                            {maskedEmail}
                         </Badge>
                     </p>
                 </div>
