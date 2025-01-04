@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { sendVerificationEmail } from "@/utils/services/emailService";
+import { Badge } from "@/components/ui/badge";
 
 export default function Verified() {
     const router = useRouter();
@@ -113,33 +114,51 @@ export default function Verified() {
     }, [value]);
 
     return (
-        <div className="flex flex-col items-center my-40">
+        <div className="flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-md space-y-8"
+                className="w-full max-w-md space-y-6 sm:space-y-8"
             >
-                <div className="text-center space-y-2">
-                    <h1 className="text-2xl font-bold">Подтверждение email</h1>
-                    <p className="text-gray-500">
+                <div className="text-center space-y-2 sm:space-y-3">
+                    <h1 className="text-xl sm:text-2xl font-bold">
+                        Подтверждение email
+                    </h1>
+                    <p className="text-gray-500 text-sm sm:text-base px-2 sm:px-0">
                         Введите код подтверждения, отправленный на вашу почту
+                        <Badge
+                            variant="secondary"
+                            className="ml-2 text-xs sm:text-sm break-all whitespace-normal max-w-[200px] sm:max-w-none"
+                        >
+                            {(() => {
+                                const email =
+                                    localStorage.getItem("pendingEmail") || "";
+                                if (!email) return "";
+                                const [name, domain] = email.split("@");
+                                if (!name || !domain) return email;
+                                const maskedName =
+                                    name.slice(0, 3) +
+                                    "*".repeat(name.length - 3);
+                                return `${maskedName}@${domain}`;
+                            })()}
+                        </Badge>
                     </p>
                 </div>
 
-                <div className="relative flex justify-center">
+                <div className="relative flex justify-center px-2 sm:px-0">
                     <InputOTP
                         value={value}
                         onChange={(value) => setValue(value)}
                         maxLength={6}
                         disabled={isVerifying || isSuccess}
                     >
-                        <InputOTPGroup>
+                        <InputOTPGroup className="gap-1 sm:gap-2">
                             {Array.from({ length: 6 }).map((_, i) => (
                                 <InputOTPSlot
                                     key={i}
                                     index={i}
                                     className={cn(
-                                        "transition-all duration-200",
+                                        "transition-all duration-200 w-8 sm:w-10 h-10 sm:h-12",
                                         isError &&
                                             "animate-shake border-red-500",
                                         isSuccess && "border-green-500",
@@ -158,21 +177,22 @@ export default function Verified() {
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="text-red-500"
+                                className="text-red-500 text-sm sm:text-base px-2"
                             >
                                 {error}
                             </motion.div>
                         )}
                     </AnimatePresence>
 
-                    <div className="flex flex-col items-center gap-2">
-                        <p className="text-sm text-gray-500">
+                    <div className="flex flex-col items-center gap-2 px-4 sm:px-0">
+                        <p className="text-xs sm:text-sm text-gray-500">
                             Не получили код?
                         </p>
                         <Button
                             variant="outline"
                             onClick={handleResendCode}
                             disabled={resendDisabled}
+                            className="text-sm h-9 sm:h-10 px-3 sm:px-4"
                         >
                             {resendDisabled
                                 ? `Отправить повторно (${countdown}с)`

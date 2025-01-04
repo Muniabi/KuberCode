@@ -1,11 +1,24 @@
-export const sendVerificationEmail = async (email: string, code: string) => {
+export const sendVerificationEmail = async (
+    email: string,
+    isTeacher: string
+) => {
     try {
+        // Генерируем новый код
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Сохраняем новый код
+        localStorage.setItem("verificationCode", code);
+
         const response = await fetch("/api/email/send", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, code }),
+            body: JSON.stringify({
+                email,
+                code,
+                isTeacher: isTeacher === "true",
+            }),
         });
 
         const data = await response.json();
@@ -15,7 +28,7 @@ export const sendVerificationEmail = async (email: string, code: string) => {
         }
 
         console.log("Preview URL:", data.previewUrl);
-        return true;
+        return { verificationCode: code };
     } catch (error) {
         console.error("Ошибка при отправке email:", error);
         throw error;

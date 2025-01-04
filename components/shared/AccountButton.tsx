@@ -71,7 +71,7 @@ export const AccountButton: React.FC<Props> = ({ className }) => {
                         <Link href="/account" aria-label="Профиль">
                             <Avatar>
                                 <AvatarImage
-                                    src={avatarSrc || "/default-avatar.png"} // Добавьте дефолтную аватарку
+                                    src={avatarSrc || "/avatar1.png"} // Добавьте дефолтную аватарку
                                     alt={
                                         session?.user?.name ||
                                         localEmail ||
