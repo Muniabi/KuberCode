@@ -6,6 +6,7 @@ import {
     Calendar,
     Command,
     Frame,
+    Home,
     LayoutDashboard,
     LifeBuoy,
     Map,
@@ -31,6 +32,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
 import { ThemeSelect } from "./shared/theme-select";
+import Link from "next/link";
 
 const data = {
     navMain: [
@@ -176,6 +178,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                 <span className="truncate text-xs">
                                     Личный кабинет
                                 </span>
+                            </div>
+                            <div className="">
+                                <Link href="/">
+                                    <Home className="size-5" />
+                                </Link>
                             </div>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
