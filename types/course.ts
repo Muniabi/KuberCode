@@ -9,13 +9,18 @@ export interface Course {
     id: string;
     title: string;
     description: string;
+    image: string;
     duration: string;
     hasEmployment: boolean;
-    image: string;
-    author: Author;
-    price: number;
+    isPopular?: boolean;
     rating: number;
     studentsCount: number;
+    completionRate: number;
+    author: {
+        name: string;
+        role: string;
+        avatar: string;
+    };
 }
 
 export interface CourseResponse {

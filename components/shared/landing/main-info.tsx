@@ -3,8 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "../container";
 import { Input } from "@/components/ui";
-import { Search, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Search, Star, Sparkles, Users, BookOpen, Trophy } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Hero3D } from "./hero-3d";
 
 interface Props {
     className?: string;
@@ -12,25 +16,35 @@ interface Props {
 
 export const MainInfoBlock: React.FC<Props> = ({ className }) => {
     const [rating, setRating] = useState<string | null>(null);
-    const [search, setSearch] = useState<string>(""); // Добавляем состояние для поиска
+    const [search, setSearch] = useState<string>("");
+
+    const features = [
+        {
+            icon: <Users className="w-6 h-6" />,
+            title: "300+ Экспертов",
+            description: "Опытные преподаватели из ведущих компаний",
+        },
+        {
+            icon: <BookOpen className="w-6 h-6" />,
+            title: "5000+ Курсов",
+            description: "Актуальные программы обучения",
+        },
+        {
+            icon: <Trophy className="w-6 h-6" />,
+            title: "92% Выпускников",
+            description: "Успешно трудоустраиваются",
+        },
+    ];
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value); // Обновляем значение состояния при вводе
+        setSearch(event.target.value);
     };
 
     const handleClick = () => {
         if (!search) {
             toast.error("Поле поиска пустое");
         } else {
-            // TODO : Добавить логику поиска
-            toast.success(`Выполнен поиск с запросом ${search}`, {
-                style: {
-                    background: "#4CAF50",
-                    color: "#FFFFFF",
-                    borderRadius: "8px",
-                },
-                duration: 5000,
-            });
+            toast.success(`Выполнен поиск с запросом ${search}`);
         }
     };
 
@@ -41,59 +55,121 @@ export const MainInfoBlock: React.FC<Props> = ({ className }) => {
     }, []);
 
     return (
-        <Container className="flex items-center gap-24 py-32 px-16">
-            {/* Левая часть */}
-            <div className="flex flex-col items-start gap-6">
-                <p className="uppercase text-[--purple] text-xl">
-                    НАЧНИ ПУТЬ К УСПЕХУ
-                </p>
-                <h1 className="text-4xl leading-[72px]">
-                    Доступ к более{" "}
-                    <span className="text-[--purple]">5000+</span> <br />
-                    курсам от <span className="text-[--purple]">300</span>{" "}
-                    преподавателей
-                    <br />и платформы
-                </h1>
-                <p className="text-lg text-[#98A0AA]">
-                    Various versions have evolved over the years, sometimes by
-                    accident.
-                </p>
-                <div className="flex w-full items-center gap-4">
-                    <Input
-                        className="bg-white dark:placeholder:text-[#CCCCCC] drop-shadow-xl dark:bg-[#434343] p-6"
-                        placeholder="Что вы хотите изучать?"
-                        value={search}
-                        onChange={handleSearchChange}
-                        onKeyDown={(event) => {
-                            if (event.key === "Enter") {
-                                handleClick();
-                            }
-                        }}
-                    />
-                    <Search onClick={handleClick} />
-                </div>
+        <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20">
+            {/* Фоновые элементы */}
+            <div className="absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute top-0 -left-4 w-60 h-60 bg-purple-500/30 rounded-full blur-[100px]" />
+                <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/30 rounded-full blur-[100px]" />
             </div>
 
-            {/* Правая часть с изображениями и рейтингом */}
-            <div className="relative flex items-center">
-                <img src="/Card1.png" alt="main-info-img" className="-mr-16" />
-                <img src="/Card2.png" alt="main-info-img" />
+            <Container className={cn("relative", className)}>
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                    {/* Левая часть */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6"
+                    >
+                        <Badge
+                            variant="outline"
+                            className="px-4 py-2 text-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                        >
+                            <Sparkles className="w-4 h-4 mr-2 text-[--purple]" />
+                            Открыт набор на новые курсы
+                        </Badge>
 
-                {/* Блок рейтинга */}
-                <div className="absolute bottom-4 -right-12 shadow-2xl flex items-center gap-3 px-[14px] py-[12px] bg-white dark:bg-[--bg-gray] rounded-[8px]">
-                    <div className="p-2 bg-[#FFF7EE] dark:bg-[#FFF7EE] rounded-[6px]">
-                        <Star
-                            width={20}
-                            height={20}
-                            className="fill-[--yellow] stroke-[--yellow]"
-                        />
-                    </div>
-                    <div className="flex items-center gap-2 text-[#52565C] dark:text-white">
-                        {rating}
-                        <div className="">Рейтинг</div>
-                    </div>
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+                            Начни карьеру в
+                            <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+                                {" "}
+                                IT{" "}
+                            </span>
+                            вместе с нами
+                        </h1>
+
+                        <p className="text-lg sm:text-xl text-gray-400 max-w-2xl">
+                            Мы поможем вам освоить востребованные навыки и найти
+                            работу мечты в технологической сфере
+                        </p>
+
+                        <div className="flex w-full max-w-md items-center gap-4 relative">
+                            <Input
+                                className="bg-white/10 backdrop-blur-sm border-white/20 p-6 pr-12 text-base"
+                                placeholder="Какую профессию хотите освоить?"
+                                value={search}
+                                onChange={handleSearchChange}
+                                onKeyDown={(e) =>
+                                    e.key === "Enter" && handleClick()
+                                }
+                            />
+                            <Search
+                                className="absolute right-4 cursor-pointer hover:opacity-70 transition-opacity"
+                                onClick={handleClick}
+                            />
+                        </div>
+
+                        {/* Features grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-2xl mt-8">
+                            {features.map((feature, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.6,
+                                        delay: index * 0.2,
+                                    }}
+                                    className="flex flex-col items-center lg:items-start gap-2 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
+                                >
+                                    <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="font-semibold">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-sm text-gray-400">
+                                        {feature.description}
+                                    </p>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+
+                    {/* Правая часть */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative aspect-square w-full max-w-xl mx-auto"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-3xl transform rotate-6" />
+                        <div className="relative z-10 w-full h-full">
+                            <Hero3D />
+                        </div>
+
+                        {/* Floating rating card */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5, duration: 0.6 }}
+                            className="absolute -bottom-6 -right-6 flex items-center gap-3 px-5 py-3 bg-white dark:bg-zinc-800 rounded-xl shadow-xl z-50"
+                        >
+                            <div className="p-2 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg">
+                                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400" />
+                            </div>
+                            <div>
+                                <div className="text-xl font-bold text-gray-900 dark:text-white">
+                                    {rating}
+                                </div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                    Рейтинг школы
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
                 </div>
-            </div>
-        </Container>
+            </Container>
+        </section>
     );
 };

@@ -12,6 +12,7 @@ import { LampContainer } from "@/components/shared/landing/lamp";
 export default function Home() {
     return (
         <main className="dark:bg-black">
+            <MainInfoBlock />
             <div className="flex flex-col overflow-hidden">
                 <ContainerScroll
                     titleComponent={
@@ -35,7 +36,6 @@ export default function Home() {
                     />
                 </ContainerScroll>
             </div>
-            <MainInfoBlock />
             <PopularCourses />
             <LampContainer>
                 <motion.h1

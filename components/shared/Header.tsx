@@ -68,7 +68,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                 className
             )}
         >
-            <Container className="max-w-[1400px] mx-auto">
+            <Container className="max-w-[1500px] mx-auto">
                 <div className="flex items-center justify-between py-6 px-10">
                     {/* Логотип */}
                     <Link
