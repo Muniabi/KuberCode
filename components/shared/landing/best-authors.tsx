@@ -18,24 +18,32 @@ const authorsData = [
         name: "Дмитрий Васильев",
         type: "UI-UX Эксперт",
         image: "/best-authors/author1.png",
+        followers: "12.5K",
+        courses: "8",
     },
     {
         id: 2,
         name: "Ольга Кузнецова",
         type: "Эксперт по соц. сетям",
         image: "/best-authors/author2.png",
+        followers: "10K",
+        courses: "6",
     },
     {
         id: 3,
         name: "Александр Морозов",
         type: "Эксперт по бизнес-идеям",
         image: "/best-authors/author3.png",
+        followers: "8K",
+        courses: "4",
     },
     {
         id: 4,
         name: "Марина Белова",
         type: "Эксперт по фотографиям",
         image: "/best-authors/author4.png",
+        followers: "6K",
+        courses: "2",
     },
 ];
 
@@ -60,60 +68,77 @@ const BestAuthors = ({ className }: PopularCoursesProps) => {
     }, [api]);
 
     return (
-        <div className="bg-[#FFF7EE] dark:bg-[#242424] overflow-hidden">
-            <Container className="p-24">
-                {/* Левая часть */}
-                <div className="text-4xl font-[600] leading-[72px]">
-                    <p className="">
+        <section className="relative bg-gradient-to-b from-[#FFF7EE] to-white dark:from-[#242424] dark:to-[#1a1a1a] overflow-hidden">
+            <Container className="px-4 py-16 md:py-24">
+                {/* Заголовок секции */}
+                <div className="text-center mb-12 md:mb-16">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         Наши{" "}
-                        <span className="text-violet-500">лучшие Авторы</span>
-                    </p>
-                    <p className="self-start mt-1.5 mb-12 text-xl leading-snug text-zinc-500">
-                        Various versions have evolved over the years, sometimes
-                        by accident,
+                        <span className="text-violet-500 dark:text-violet-400">
+                            лучшие Авторы
+                        </span>
+                    </h2>
+                    <p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+                        Опытные эксперты, которые помогут вам освоить новые
+                        навыки и достичь профессиональных высот
                     </p>
                 </div>
 
-                {/* Слайдер */}
-                <Carousel setApi={setApi} className="w-full max-w-xs">
-                    <CarouselContent className="">
+                {/* Карусель */}
+                <Carousel
+                    setApi={setApi}
+                    className="w-full max-w-[90%] md:max-w-[85%] mx-auto"
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                >
+                    <CarouselContent className="-ml-2 md:-ml-4">
                         {authorsData.map((author) => (
-                            <CarouselItem key={author.id}>
-                                <div>
-                                    <Card className="bg-white dark:bg-white">
-                                        <CardContent className="p-4">
-                                            {/* Картинка Курса */}
-                                            <div className="relative p-0 m-0">
-                                                <img
-                                                    src={author.image}
-                                                    alt={author.name}
-                                                    className="w-full object-cover rounded-lg aspect-[10/9]"
-                                                />
+                            <CarouselItem
+                                key={author.id}
+                                className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                            >
+                                <Card className="group transition-all duration-300 hover:shadow-lg dark:hover:shadow-violet-500/20 border-0 bg-white/50 backdrop-blur-sm dark:bg-zinc-800/50">
+                                    <CardContent className="p-0">
+                                        <div className="relative overflow-hidden rounded-t-lg">
+                                            <img
+                                                src={author.image}
+                                                alt={author.name}
+                                                className="w-full aspect-[10/9] object-cover transition-transform duration-300 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        </div>
+                                        <div className="p-6">
+                                            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+                                                {author.name}
+                                            </h3>
+                                            <p className="text-violet-500 dark:text-violet-400 font-medium mb-4">
+                                                {author.type}
+                                            </p>
+                                            <div className="flex justify-between items-center text-sm text-zinc-600 dark:text-zinc-400">
+                                                <span className="flex items-center gap-1">
+                                                    <i className="fas fa-users" />{" "}
+                                                    {author.followers}
+                                                </span>
+                                                <span className="flex items-center gap-1">
+                                                    <i className="fas fa-book-open" />{" "}
+                                                    {author.courses} курсов
+                                                </span>
                                             </div>
-                                        </CardContent>
-                                        <CardFooter>
-                                            {/* Информация о курсе */}
-                                            <div className="mx-auto text-center">
-                                                <p className="pt-2 text-xl text-[#363A3D] dark:text-[#]">
-                                                    {author.name}
-                                                </p>
-                                                <p className="text-lg text-violet-500">
-                                                    {author.type}
-                                                </p>
-                                            </div>
-                                        </CardFooter>
-                                    </Card>
-                                </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <div className="py-4 flex items-center justify-center gap-4">
-                        <CarouselPrevious />
-                        <CarouselNext />
+                    <div className="flex items-center justify-center gap-4 mt-8">
+                        <CarouselPrevious className="relative static hover:bg-violet-500 hover:text-white dark:hover:bg-violet-600" />
+                        <CarouselNext className="relative static hover:bg-violet-500 hover:text-white dark:hover:bg-violet-600" />
                     </div>
                 </Carousel>
             </Container>
-        </div>
+        </section>
     );
 };
 

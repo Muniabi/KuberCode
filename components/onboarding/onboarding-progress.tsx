@@ -21,8 +21,8 @@ export const OnboardingProgress = ({
 }: OnboardingProgressProps) => {
     return (
         <div className="relative">
-            {/* Progress Line */}
-            <div className="absolute top-5 left-0 w-full h-0.5 bg-gray-200 dark:bg-gray-800">
+            {/* Progress Line - скрыт на мобильных */}
+            <div className="hidden md:block absolute top-5 left-0 w-full h-0.5 bg-gray-200 dark:bg-gray-800">
                 <motion.div
                     className="absolute top-0 left-0 h-full bg-emerald-500"
                     style={{
@@ -32,8 +32,41 @@ export const OnboardingProgress = ({
                 />
             </div>
 
-            {/* Steps */}
-            <div className="relative z-10 flex justify-between">
+            {/* Мобильная версия */}
+            <div className="md:hidden w-full flex justify-center">
+                <motion.div
+                    className="relative flex flex-col items-center"
+                    key={steps[currentStep].id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <motion.div
+                        animate={{ scale: 1.2 }}
+                        className={cn(
+                            "w-12 h-12 rounded-full flex items-center justify-center",
+                            "border-4 border-white dark:border-gray-950",
+                            "bg-emerald-500"
+                        )}
+                    >
+                        <span className="text-sm font-medium text-white">
+                            {currentStep + 1}/{steps.length}
+                        </span>
+                    </motion.div>
+                    <div className="mt-3 text-center">
+                        <div className="text-base font-medium text-gray-900 dark:text-white">
+                            {steps[currentStep].title}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 max-w-[200px]">
+                            {steps[currentStep].description}
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Десктопная версия */}
+            <div className="hidden md:flex relative z-10 justify-between">
                 {steps.map((step, index) => {
                     const isCompleted = index < currentStep;
                     const isCurrent = index === currentStep;
