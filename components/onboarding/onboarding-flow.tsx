@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BackgroundGradient } from "../ui/background-gradient";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { OnboardingProgress } from "./onboarding-progress";
 import { PersonalInfoStep } from "./steps/personal-info";
 import { SkillsStep } from "./steps/skills";
 import { PreferencesStep } from "./steps/preferences";
 import { CompletionStep } from "./steps/completion";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const steps = [
@@ -37,17 +37,21 @@ const steps = [
 export const OnboardingFlow = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [formData, setFormData] = useState({
-        personal: {},
-        skills: {},
-        preferences: {},
+        personal: null,
+        skills: null,
+        preferences: null,
     });
+
+    const [isCurrentFormValid, setIsCurrentFormValid] = useState(false);
 
     const handleNext = () => {
         setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+        setIsCurrentFormValid(false);
     };
 
     const handleBack = () => {
         setCurrentStep((prev) => Math.max(prev - 1, 0));
+        setIsCurrentFormValid(!!formData[steps[currentStep - 1].id]);
     };
 
     const handleStepComplete = (stepId: string, data: any) => {
@@ -55,7 +59,10 @@ export const OnboardingFlow = () => {
             ...prev,
             [stepId]: data,
         }));
-        handleNext();
+    };
+
+    const handleFormValidityChange = (isValid: boolean) => {
+        setIsCurrentFormValid(isValid);
     };
 
     const getCurrentStep = () => {
@@ -63,29 +70,43 @@ export const OnboardingFlow = () => {
             case 0:
                 return (
                     <PersonalInfoStep
+                        initialData={formData.personal}
                         onComplete={(data) =>
                             handleStepComplete("personal", data)
                         }
+                        onValidityChange={handleFormValidityChange}
                     />
                 );
             case 1:
                 return (
                     <SkillsStep
+                        initialData={formData.skills}
                         onComplete={(data) =>
                             handleStepComplete("skills", data)
                         }
+                        onValidityChange={handleFormValidityChange}
                     />
                 );
             case 2:
                 return (
                     <PreferencesStep
+                        initialData={formData.preferences}
                         onComplete={(data) =>
                             handleStepComplete("preferences", data)
                         }
+                        onValidityChange={handleFormValidityChange}
                     />
                 );
             case 3:
-                return <CompletionStep data={formData} />;
+                return (
+                    <CompletionStep
+                        data={formData}
+                        onComplete={(data) =>
+                            handleStepComplete("completion", data)
+                        }
+                        onValidityChange={handleFormValidityChange}
+                    />
+                );
             default:
                 return null;
         }
@@ -123,7 +144,10 @@ export const OnboardingFlow = () => {
                         </Button>
 
                         {currentStep < steps.length - 1 && (
-                            <Button onClick={handleNext}>
+                            <Button
+                                onClick={handleNext}
+                                disabled={!isCurrentFormValid}
+                            >
                                 Далее
                                 <ArrowRight className="w-4 h-4 ml-2" />
                             </Button>

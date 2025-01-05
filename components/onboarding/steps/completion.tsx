@@ -2,8 +2,23 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
+import { useEffect } from "react";
 
-export const CompletionStep = ({ data }: { data: any }) => {
+export const CompletionStep = ({
+    data,
+    onComplete,
+    onValidityChange,
+}: {
+    data: any;
+    onComplete: (stepId: string, data: any) => void;
+    onValidityChange: (isValid: boolean) => void;
+}) => {
+    useEffect(() => {
+        // Шаг завершения всегда валиден
+        onValidityChange(true);
+        onComplete("completion", data);
+    }, [onValidityChange, onComplete, data]);
+
     return (
         <motion.div
             initial={{ opacity: 0 }}

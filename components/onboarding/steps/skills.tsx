@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { motion } from "framer-motion";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useEffect } from "react";
 
 const skills = [
     { id: "html", label: "HTML" },
@@ -32,21 +33,31 @@ const formSchema = z.object({
 });
 
 export const SkillsStep = ({
+    initialData,
     onComplete,
+    onValidityChange,
 }: {
+    initialData: any;
     onComplete: (data: any) => void;
+    onValidityChange: (isValid: boolean) => void;
 }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
+        defaultValues: initialData || {
             skills: [],
             experienceLevel: "beginner",
         },
+        mode: "onChange",
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        onComplete(values);
-    };
+    useEffect(() => {
+        const subscription = form.watch(() => {
+            onValidityChange(form.formState.isValid);
+            onComplete(form.getValues());
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form, onComplete, onValidityChange]);
 
     return (
         <motion.div
@@ -55,10 +66,7 @@ export const SkillsStep = ({
             exit={{ opacity: 0 }}
         >
             <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
-                >
+                <div className="space-y-8">
                     <FormField
                         control={form.control}
                         name="skills"
@@ -72,10 +80,7 @@ export const SkillsStep = ({
                                             control={form.control}
                                             name="skills"
                                             render={({ field }) => (
-                                                <FormItem
-                                                    key={skill.id}
-                                                    className="flex items-center space-x-3 space-y-0"
-                                                >
+                                                <FormItem className="flex items-center space-x-3 space-y-0">
                                                     <FormControl>
                                                         <Checkbox
                                                             checked={field.value?.includes(
@@ -120,7 +125,6 @@ export const SkillsStep = ({
                             </FormItem>
                         )}
                     />
-
                     <FormField
                         control={form.control}
                         name="experienceLevel"
@@ -159,11 +163,7 @@ export const SkillsStep = ({
                             </FormItem>
                         )}
                     />
-
-                    <Button type="submit" className="w-full">
-                        Продолжить
-                    </Button>
-                </form>
+                </div>
             </Form>
         </motion.div>
     );

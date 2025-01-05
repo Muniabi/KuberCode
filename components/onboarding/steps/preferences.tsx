@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
+import { useEffect } from "react";
 
 const formSchema = z.object({
     studyTime: z.enum(["morning", "afternoon", "evening"]),
@@ -23,22 +24,34 @@ const formSchema = z.object({
 });
 
 export const PreferencesStep = ({
+    initialData,
     onComplete,
+    onValidityChange,
 }: {
+    initialData: any;
     onComplete: (data: any) => void;
+    onValidityChange: (isValid: boolean) => void;
 }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
+        defaultValues: initialData || {
             studyTime: "morning",
             notifications: true,
             emailUpdates: true,
         },
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        onComplete(values);
-    };
+    useEffect(() => {
+        const subscription = form.watch(() => {
+            const isValid = form.formState.isValid;
+            onValidityChange(isValid);
+
+            // Сохраняем данные при каждом изменении
+            onComplete(form.getValues());
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form, onComplete, onValidityChange]);
 
     return (
         <motion.div
@@ -47,10 +60,7 @@ export const PreferencesStep = ({
             exit={{ opacity: 0 }}
         >
             <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
-                >
+                <div className="space-y-8">
                     <FormField
                         control={form.control}
                         name="studyTime"
@@ -147,11 +157,7 @@ export const PreferencesStep = ({
                             </FormItem>
                         )}
                     />
-
-                    <Button type="submit" className="w-full">
-                        Продолжить
-                    </Button>
-                </form>
+                </div>
             </Form>
         </motion.div>
     );

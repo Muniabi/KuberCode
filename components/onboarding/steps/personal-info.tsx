@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const formSchema = z.object({
     fullName: z.string().min(2, "Имя должно содержать минимум 2 символа"),
@@ -23,17 +24,32 @@ const formSchema = z.object({
 });
 
 export const PersonalInfoStep = ({
+    initialData,
     onComplete,
+    onValidityChange,
 }: {
+    initialData: any;
     onComplete: (data: any) => void;
+    onValidityChange: (isValid: boolean) => void;
 }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: initialData || {
+            fullName: "",
+            email: "",
+            bio: "",
+        },
+        mode: "onChange",
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        onComplete(values);
-    };
+    useEffect(() => {
+        const subscription = form.watch(() => {
+            onValidityChange(form.formState.isValid);
+            onComplete(form.getValues());
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form, onComplete, onValidityChange]);
 
     return (
         <motion.div
@@ -42,10 +58,7 @@ export const PersonalInfoStep = ({
             exit={{ opacity: 0 }}
         >
             <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-6"
-                >
+                <div className="space-y-6">
                     <FormField
                         control={form.control}
                         name="fullName"
@@ -94,10 +107,7 @@ export const PersonalInfoStep = ({
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full">
-                        Продолжить
-                    </Button>
-                </form>
+                </div>
             </Form>
         </motion.div>
     );
