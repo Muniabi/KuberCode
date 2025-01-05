@@ -25,6 +25,7 @@ import React, { useState } from "react";
 import { CoursesList } from "@/components/sections/courses-list";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MOCK_COURSES, DIRECTIONS } from "@/store/courses";
+import { Slider } from "@/components/ui/slider";
 
 const stats = [
     {
@@ -56,13 +57,23 @@ const SortOptions = () => (
     </div>
 );
 
-const Filters = ({ filters, setFilters }) => {
+const Filters = ({ filters, setFilters }: any) => {
     const handleFilterChange = (category: string, value: string) => {
-        setFilters((prev) => ({
+        setFilters((prev: any) => ({
             ...prev,
             [category]: prev[category].includes(value)
-                ? prev[category].filter((item) => item !== value)
+                ? prev[category].filter((item: any) => item !== value)
                 : [...prev[category], value],
+        }));
+    };
+
+    const handlePriceChange = (values: number[]) => {
+        setFilters((prev: any) => ({
+            ...prev,
+            price: {
+                min: values[0],
+                max: values[1],
+            },
         }));
     };
 
@@ -125,27 +136,43 @@ const Filters = ({ filters, setFilters }) => {
                 <h4 className="font-medium text-gray-900 dark:text-white">
                     Стоимость
                 </h4>
-                <div className="space-y-2">
-                    {[
-                        "Бесплатные",
-                        "До 5000 ₽",
-                        "5000-10000 ₽",
-                        "Более 10000 ₽",
-                    ].map((price) => (
-                        <label key={price} className="flex items-center">
-                            <input
-                                type="checkbox"
-                                className="form-checkbox rounded text-purple-600"
-                                checked={filters.price.includes(price)}
-                                onChange={() =>
-                                    handleFilterChange("price", price)
+                <div className="space-y-5">
+                    <Slider
+                        defaultValue={[filters.price.min, filters.price.max]}
+                        max={15000}
+                        step={100}
+                        minStepsBetweenThumbs={1}
+                        onValueChange={handlePriceChange}
+                        className="mt-2"
+                    />
+                    <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+                        <span>
+                            {filters.price.min.toLocaleString("ru-RU")} ₽
+                        </span>
+                        <span>
+                            {filters.price.max.toLocaleString("ru-RU")} ₽
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            className="form-checkbox rounded text-purple-600"
+                            checked={
+                                filters.price.min === 0 &&
+                                filters.price.max === 0
+                            }
+                            onChange={(e) => {
+                                if (e.target.checked) {
+                                    handlePriceChange([0, 0]);
+                                } else {
+                                    handlePriceChange([0, 15000]);
                                 }
-                            />
-                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
-                                {price}
-                            </span>
-                        </label>
-                    ))}
+                            }}
+                        />
+                        <span className="text-sm text-gray-600 dark:text-gray-300">
+                            Только бесплатные
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,12 +186,15 @@ const CoursesContent = () => {
     const [filters, setFilters] = useState({
         level: [] as string[],
         duration: [] as string[],
-        price: [] as string[],
+        price: {
+            min: 0,
+            max: 15000,
+        },
     });
 
     const handleButtonClick = (direction: string) => {
         localStorage.setItem("direction", direction);
-        setActiveFilter(direction);
+        setActiveFilter(direction as any);
     };
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -361,7 +391,10 @@ const CoursesContent = () => {
                                         setFilters({
                                             level: [],
                                             duration: [],
-                                            price: [],
+                                            price: {
+                                                min: 0,
+                                                max: 15000,
+                                            },
                                         })
                                     }
                                 >
@@ -396,7 +429,10 @@ const CoursesContent = () => {
                                             setFilters({
                                                 level: [],
                                                 duration: [],
-                                                price: [],
+                                                price: {
+                                                    min: 0,
+                                                    max: 15000,
+                                                },
                                             })
                                         }
                                     >

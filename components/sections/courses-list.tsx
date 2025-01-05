@@ -12,7 +12,10 @@ interface CoursesListProps {
     filters: {
         level: string[];
         duration: string[];
-        price: string[];
+        price: {
+            min: number;
+            max: number;
+        };
     };
 }
 
@@ -107,18 +110,13 @@ export const CoursesList = ({
                 if (!matchesDuration) return false;
             }
 
-            // Фильтр по цене
-            if (filters.price.length > 0) {
-                const price = course.price.current;
-                const matchesPrice = filters.price.some((filter) => {
-                    if (filter === "Бесплатные") return course.isFree;
-                    if (filter === "До 5000 ₽") return price <= 5000;
-                    if (filter === "5000-10000 ₽")
-                        return price > 5000 && price <= 10000;
-                    if (filter === "Более 10000 ₽") return price > 10000;
+            // Обновленный фильтр по цене
+            const price = course.price.current;
+            if (filters.price.min === 0 && filters.price.max === 0) {
+                if (!course.isFree) return false;
+            } else {
+                if (price < filters.price.min || price > filters.price.max)
                     return false;
-                });
-                if (!matchesPrice) return false;
             }
 
             return true;

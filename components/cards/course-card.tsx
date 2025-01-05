@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { LEVEL_DISPLAY } from "@/store/courses";
@@ -17,6 +18,10 @@ interface CourseCardProps {
     tags: string[];
     logo?: string;
     isFree?: boolean;
+    rating: {
+        value: number;
+        count: number;
+    };
 }
 
 export const CourseCard = ({
@@ -30,6 +35,7 @@ export const CourseCard = ({
     tags,
     logo,
     isFree,
+    rating,
 }: CourseCardProps) => {
     return (
         <Link href={`/courses/${id}`}>
@@ -56,9 +62,27 @@ export const CourseCard = ({
                             </h3>
                         </div>
 
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                            By {author}
-                        </p>
+                        <div className="flex items-center gap-2 mb-3">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                By {author}
+                            </p>
+                            {rating?.value && (
+                                <>
+                                    <span className="text-gray-300 dark:text-gray-600">
+                                        •
+                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                                            {rating.value}
+                                        </span>
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                                            ({rating.count})
+                                        </span>
+                                    </div>
+                                </>
+                            )}
+                        </div>
 
                         <div className="min-h-[3rem] mb-4">
                             <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
