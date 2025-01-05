@@ -11,58 +11,20 @@ import {
     BreadcrumbSeparator,
     BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { Search, Sparkles, Users, Clock, TrendingUp } from "lucide-react";
+import {
+    Search,
+    Sparkles,
+    Users,
+    Clock,
+    TrendingUp,
+    Filter,
+    SlidersHorizontal,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { CoursesList } from "@/components/sections/courses-list";
-
-const directions = [
-    {
-        name: "Все направления",
-        count: 156,
-    },
-    {
-        name: "Программирование",
-        count: 42,
-        isPopular: true,
-    },
-    {
-        name: "Дизайн",
-        count: 28,
-        isPopular: true,
-    },
-    {
-        name: "Маркетинг",
-        count: 23,
-        isPopular: true,
-    },
-    {
-        name: "Управление",
-        count: 15,
-    },
-    {
-        name: "Аналитика",
-        count: 19,
-        isNew: true,
-    },
-    {
-        name: "Тестирование",
-        count: 12,
-    },
-    {
-        name: "Безопасность",
-        count: 8,
-        isNew: true,
-    },
-    {
-        name: "Игры",
-        count: 9,
-    },
-    {
-        name: "Мобильная разработка",
-        count: 11,
-    },
-];
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { MOCK_COURSES, DIRECTIONS } from "@/store/courses";
 
 const stats = [
     {
@@ -82,9 +44,123 @@ const stats = [
     },
 ];
 
+const SortOptions = () => (
+    <div className="flex items-center gap-2">
+        <SlidersHorizontal className="w-4 h-4 text-gray-500" />
+        <select className="text-sm border-0 bg-transparent focus:ring-0">
+            <option value="popular">По популярности</option>
+            <option value="newest">Сначала новые</option>
+            <option value="price-asc">По возрастанию цены</option>
+            <option value="price-desc">По убыванию цены</option>
+        </select>
+    </div>
+);
+
+const Filters = ({ filters, setFilters }) => {
+    const handleFilterChange = (category: string, value: string) => {
+        setFilters((prev) => ({
+            ...prev,
+            [category]: prev[category].includes(value)
+                ? prev[category].filter((item) => item !== value)
+                : [...prev[category], value],
+        }));
+    };
+
+    return (
+        <div className="space-y-6">
+            {/* Уровень сложности */}
+            <div className="space-y-4">
+                <h4 className="font-medium text-gray-900 dark:text-white">
+                    Уровень сложности
+                </h4>
+                <div className="space-y-2">
+                    {["Начинающий", "Средний", "Продвинутый"].map((level) => (
+                        <label key={level} className="flex items-center">
+                            <input
+                                type="checkbox"
+                                className="form-checkbox rounded text-purple-600"
+                                checked={filters.level.includes(level)}
+                                onChange={() =>
+                                    handleFilterChange("level", level)
+                                }
+                            />
+                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                                {level}
+                            </span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            {/* Длительность */}
+            <div className="space-y-4">
+                <h4 className="font-medium text-gray-900 dark:text-white">
+                    Длительность
+                </h4>
+                <div className="space-y-2">
+                    {["До 5 часов", "5-20 часов", "Более 20 часов"].map(
+                        (duration) => (
+                            <label key={duration} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    className="form-checkbox rounded text-purple-600"
+                                    checked={filters.duration.includes(
+                                        duration
+                                    )}
+                                    onChange={() =>
+                                        handleFilterChange("duration", duration)
+                                    }
+                                />
+                                <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                                    {duration}
+                                </span>
+                            </label>
+                        )
+                    )}
+                </div>
+            </div>
+
+            {/* Стоимость */}
+            <div className="space-y-4">
+                <h4 className="font-medium text-gray-900 dark:text-white">
+                    Стоимость
+                </h4>
+                <div className="space-y-2">
+                    {[
+                        "Бесплатные",
+                        "До 5000 ₽",
+                        "5000-10000 ₽",
+                        "Более 10000 ₽",
+                    ].map((price) => (
+                        <label key={price} className="flex items-center">
+                            <input
+                                type="checkbox"
+                                className="form-checkbox rounded text-purple-600"
+                                checked={filters.price.includes(price)}
+                                onChange={() =>
+                                    handleFilterChange("price", price)
+                                }
+                            />
+                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                                {price}
+                            </span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const CoursesContent = () => {
-    const [activeFilter, setActiveFilter] = useState("Все направления");
+    const [activeFilter, setActiveFilter] =
+        useState<(typeof DIRECTIONS)[number]>("Все направления");
     const [searchQuery, setSearchQuery] = useState("");
+    const [filters, setFilters] = useState({
+        level: [] as string[],
+        duration: [] as string[],
+        price: [] as string[],
+    });
 
     const handleButtonClick = (direction: string) => {
         localStorage.setItem("direction", direction);
@@ -147,66 +223,108 @@ const CoursesContent = () => {
                 </div>
 
                 {/* Фильтры по направлениям */}
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                    {directions.map((direction) => (
-                        <Button
-                            variant={
-                                activeFilter === direction.name
-                                    ? "default"
-                                    : "outline"
-                            }
-                            key={direction.name}
-                            onClick={() => handleButtonClick(direction.name)}
+                <div className="flex gap-4 pb-4 overflow-x-auto scrollbar-none">
+                    {DIRECTIONS.map((direction) => (
+                        <button
+                            key={direction}
+                            onClick={() => handleButtonClick(direction)}
                             className={`
-                                rounded-full group relative text-sm sm:text-base py-2 px-4
+                                whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium
+                                transition-colors duration-200
                                 ${
-                                    activeFilter === direction.name
-                                        ? "bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white"
-                                        : "bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm hover:bg-white dark:hover:bg-zinc-800 border-gray-200 dark:border-zinc-700"
+                                    activeFilter === direction
+                                        ? "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300"
+                                        : "text-gray-600 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-300"
                                 }
                             `}
                         >
-                            <span>{direction.name}</span>
-                            <span
-                                className={`ml-2 text-xs sm:text-sm ${
-                                    activeFilter === direction.name
-                                        ? "text-purple-100"
-                                        : "text-gray-500 dark:text-gray-400"
-                                }`}
-                            >
-                                {direction.count}
-                            </span>
-                            {direction.isPopular && (
-                                <Badge
-                                    variant="secondary"
-                                    className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700"
-                                >
-                                    <Sparkles className="w-3 h-3 mr-1" />
-                                    Популярно
-                                </Badge>
-                            )}
-                            {direction.isNew && (
-                                <Badge
-                                    variant="secondary"
-                                    className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700"
-                                >
-                                    Новое
-                                </Badge>
-                            )}
-                        </Button>
+                            {direction}
+                        </button>
                     ))}
                 </div>
 
-                {/* Список курсов */}
-                <div className="mt-8">
-                    <CoursesList
-                        direction={
-                            activeFilter !== "Все направления"
-                                ? activeFilter
-                                : undefined
-                        }
-                        searchQuery={searchQuery}
-                    />
+                {/* Фильтры и список курсов */}
+                <div className="flex gap-8 mt-8">
+                    {/* Десктопные фильтры */}
+                    <div className="hidden lg:block w-64 flex-shrink-0">
+                        <div className="sticky top-8">
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="font-medium text-lg">Фильтры</h3>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                        setFilters({
+                                            level: [],
+                                            duration: [],
+                                            price: [],
+                                        })
+                                    }
+                                >
+                                    Сбросить
+                                </Button>
+                            </div>
+                            <Filters
+                                filters={filters}
+                                setFilters={setFilters}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Мобильные фильтры */}
+                    <div className="lg:hidden mb-4">
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Button variant="outline" className="w-full">
+                                    <Filter className="w-4 h-4 mr-2" />
+                                    Фильтры
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[300px]">
+                                <div className="flex items-center justify-between mb-6">
+                                    <h3 className="font-medium text-lg">
+                                        Фильтры
+                                    </h3>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() =>
+                                            setFilters({
+                                                level: [],
+                                                duration: [],
+                                                price: [],
+                                            })
+                                        }
+                                    >
+                                        Сбросить
+                                    </Button>
+                                </div>
+                                <Filters
+                                    filters={filters}
+                                    setFilters={setFilters}
+                                />
+                            </SheetContent>
+                        </Sheet>
+                    </div>
+
+                    {/* Основной контент */}
+                    <div className="flex-grow">
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="text-sm text-gray-500">
+                                Найдено: {MOCK_COURSES.length} курсов
+                            </div>
+                            <SortOptions />
+                        </div>
+                        <CoursesList
+                            direction={
+                                activeFilter !== "Все направления"
+                                    ? activeFilter
+                                    : undefined
+                            }
+                            searchQuery={searchQuery}
+                            filters={filters}
+                        />
+                    </div>
                 </div>
             </Container>
         </div>

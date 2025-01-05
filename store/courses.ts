@@ -10,102 +10,155 @@ interface CoursesStore {
     setError: (error: string | null) => void;
 }
 
-// Моковые данные для тестирования
-const mockCourses: Course[] = [
+// Определим доступные направления
+export const DIRECTIONS = [
+    "Все направления",
+    "Frontend",
+    "Backend",
+    "Mobile",
+    "Design",
+    "DevOps",
+    "Data Science",
+    "Game Dev",
+    "QA",
+] as const;
+
+export type Direction = (typeof DIRECTIONS)[number];
+
+// Обновляем моковые данные с добавлением direction
+export const MOCK_COURSES = [
     {
         id: "1",
-        title: "Frontend разработчик",
+        title: "Mastering Interaction Design",
+        author: "Алексей Петров",
+        level: "beginner",
+        direction: "Design",
+        duration: "32h",
         description:
-            "Научитесь создавать современные веб-приложения с использованием React, Next.js и других современных технологий. Курс включает практические проекты и работу с реальными задачами.",
-        duration: "6 месяцев",
-        hasEmployment: true,
-        image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613",
-        author: {
-            name: "Иван Иванов",
-            role: "Senior Frontend Developer",
-            avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
+            "Погрузитесь в основы интерактивного дизайна и изучите практические приемы создания удобных интерфейсов.",
+        price: {
+            current: 3900,
+            old: 5900,
         },
-        rating: 4.8,
-        studentsCount: 2500,
-        completionRate: 94,
-        price: 45000,
+        tags: ["UI/UX", "Design", "Interaction"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
+        isFree: false,
     },
     {
         id: "2",
-        title: "Backend разработчик",
+        title: "Python для Data Science",
+        author: "Мария Иванова",
+        level: "intermediate",
+        direction: "Data Science",
+        duration: "48h",
         description:
-            "Освойте серверную разработку с использованием Node.js, Express и базами данных. Научитесь создавать масштабируемые и безопасные API для веб-приложений.",
-        duration: "7 месяцев",
-        hasEmployment: true,
-        image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
-        author: {
-            name: "Мария Сидорова",
-            role: "Lead Backend Developer",
-            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+            "Изучите Python для анализа данных, машинного обучения и визуализации.",
+        price: {
+            current: 4900,
         },
-        rating: 4.9,
-        studentsCount: 1800,
-        completionRate: 91,
-        price: 50000,
+        tags: ["Python", "Data Science", "ML"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+        isFree: false,
     },
     {
         id: "3",
-        title: "Python разработчик",
+        title: "Основы JavaScript",
+        author: "Дмитрий Сидоров",
+        level: "beginner",
+        duration: "24h",
         description:
-            "Изучите Python с нуля до профессионального уровня. Курс охватывает основы языка, ООП, работу с данными, веб-разработку на Django и автоматизацию.",
-        duration: "8 месяцев",
-        hasEmployment: true,
-        image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
-        author: {
-            name: "Анна Петрова",
-            role: "Lead Python Developer",
-            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
+            "Изучите основы JavaScript с нуля и создайте свои первые веб-приложения.",
+        price: {
+            current: 0,
         },
-        rating: 4.7,
-        studentsCount: 2100,
-        completionRate: 89,
-        price: 58000,
+        tags: ["JavaScript", "Web", "Frontend"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+        isFree: true,
     },
     {
         id: "4",
-        title: "Data Science специалист",
+        title: "React Advanced",
+        author: "Игорь Смирнов",
+        level: "advanced",
+        duration: "40h",
         description:
-            "Погрузитесь в мир анализа данных и машинного обучения. Изучите Python, статистику, SQL, библиотеки для анализа данных и построения ML моделей.",
-        duration: "10 месяцев",
-        hasEmployment: true,
-        image: "https://images.unsplash.com/photo-1518932945647-7a1c969f8be2",
-        author: {
-            name: "Михаил Смирнов",
-            role: "Data Science Expert",
-            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+            "Продвинутый курс по React, Redux, TypeScript и оптимизации производительности.",
+        price: {
+            current: 7900,
+            old: 9900,
         },
-        rating: 4.9,
-        studentsCount: 1500,
-        completionRate: 86,
-        price: 65000,
+        tags: ["React", "Redux", "TypeScript"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+        isFree: false,
     },
     {
         id: "5",
-        title: "UI/UX дизайнер",
+        title: "Adobe Photoshop Mastery",
+        author: "Анна Королева",
+        level: "intermediate",
+        duration: "28h",
         description:
-            "Научитесь создавать привлекательные и удобные интерфейсы. Освойте принципы дизайна, работу с Figma, прототипирование и пользовательские исследования.",
-        duration: "6 месяцев",
-        hasEmployment: true,
-        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5",
-        author: {
-            name: "Елена Козлова",
-            role: "Senior UI/UX Designer",
-            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+            "Освойте профессиональные техники работы в Photoshop для создания впечатляющих изображений.",
+        price: {
+            current: 4900,
         },
-        rating: 4.8,
-        studentsCount: 2200,
-        completionRate: 92,
-        price: 52000,
+        tags: ["Design", "Photoshop"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg",
+        isFree: false,
     },
-];
+    {
+        id: "6",
+        title: "iOS Development with Swift",
+        author: "Павел Волков",
+        level: "intermediate",
+        duration: "56h",
+        description:
+            "Создавайте приложения для iOS с использованием Swift и SwiftUI.",
+        price: {
+            current: 8900,
+        },
+        tags: ["iOS", "Swift", "Mobile"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg",
+        isFree: false,
+    },
+    {
+        id: "7",
+        title: "DevOps Essential",
+        author: "Артем Соколов",
+        level: "intermediate",
+        duration: "44h",
+        description:
+            "Изучите основные инструменты и практики DevOps: Docker, Kubernetes, CI/CD.",
+        price: {
+            current: 6900,
+            old: 8900,
+        },
+        tags: ["DevOps", "Docker", "Kubernetes"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+        isFree: false,
+    },
+    // ... добавляю еще 15 курсов с разными технологиями
+] as const;
+
+// Определим типы для уровней сложности
+export type CourseLevel = "beginner" | "intermediate" | "advanced";
+
+// Создадим маппинг для перевода
+export const LEVEL_MAPPING = {
+    Начинающий: "beginner",
+    Средний: "intermediate",
+    Продвинутый: "advanced",
+} as const;
+
+// Обратный маппинг для отображения
+export const LEVEL_DISPLAY = {
+    beginner: "Начинающий",
+    intermediate: "Средний",
+    advanced: "Продвинутый",
+} as const;
 
 export const useCoursesStore = create<CoursesStore>((set) => ({
-    popularCourses: mockCourses, // Инициализируем store моковыми данными
+    popularCourses: MOCK_COURSES, // Инициализируем store моковыми данными
     isLoading: false,
     error: null,
     setPopularCourses: (courses) => set({ popularCourses: courses }),

@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
+import { LEVEL_DISPLAY } from "@/store/courses";
 
 interface CourseCardProps {
     id: string;
@@ -70,7 +71,7 @@ export const CourseCard = ({
                                 variant="secondary"
                                 className="bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
                             >
-                                {level}
+                                {LEVEL_DISPLAY[level]}
                             </Badge>
                             <Badge
                                 variant="secondary"
