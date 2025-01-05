@@ -223,24 +223,128 @@ const CoursesContent = () => {
                 </div>
 
                 {/* Фильтры по направлениям */}
-                <div className="flex gap-4 pb-4 overflow-x-auto scrollbar-none">
-                    {DIRECTIONS.map((direction) => (
-                        <button
-                            key={direction}
-                            onClick={() => handleButtonClick(direction)}
-                            className={`
-                                whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium
-                                transition-colors duration-200
-                                ${
-                                    activeFilter === direction
-                                        ? "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300"
-                                        : "text-gray-600 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-300"
-                                }
-                            `}
-                        >
-                            {direction}
-                        </button>
-                    ))}
+                <div className="flex flex-wrap gap-2 mb-8">
+                    <button
+                        onClick={() => handleButtonClick("Все направления")}
+                        className={`
+                            flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                            ${
+                                activeFilter === "Все направления"
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+                            }
+                        `}
+                    >
+                        Все направления
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-white/20 dark:bg-black/20">
+                            156
+                        </span>
+                    </button>
+
+                    <button
+                        onClick={() => handleButtonClick("Программирование")}
+                        className={`
+                            flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                            ${
+                                activeFilter === "Программирование"
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+                            }
+                        `}
+                    >
+                        <span>Программирование</span>
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-white/20 dark:bg-black/20">
+                            42
+                        </span>
+                        {activeFilter === "Программирование" && (
+                            <span className="ml-1 text-xs text-purple-200">
+                                Популярно
+                            </span>
+                        )}
+                    </button>
+
+                    <button
+                        onClick={() => handleButtonClick("Дизайн")}
+                        className={`
+                            flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                            ${
+                                activeFilter === "Дизайн"
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+                            }
+                        `}
+                    >
+                        <span>Дизайн</span>
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-white/20 dark:bg-black/20">
+                            28
+                        </span>
+                        {activeFilter === "Дизайн" && (
+                            <span className="ml-1 text-xs text-purple-200">
+                                Популярно
+                            </span>
+                        )}
+                    </button>
+
+                    <button
+                        onClick={() => handleButtonClick("Маркетинг")}
+                        className={`
+                            flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                            ${
+                                activeFilter === "Маркетинг"
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+                            }
+                        `}
+                    >
+                        <span>Маркетинг</span>
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-white/20 dark:bg-black/20">
+                            23
+                        </span>
+                        {activeFilter === "Маркетинг" && (
+                            <span className="ml-1 text-xs text-purple-200">
+                                Популярно
+                            </span>
+                        )}
+                    </button>
+
+                    <button
+                        onClick={() => handleButtonClick("Управление")}
+                        className={`
+                            flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                            ${
+                                activeFilter === "Управление"
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+                            }
+                        `}
+                    >
+                        <span>Управление</span>
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-white/20 dark:bg-black/20">
+                            15
+                        </span>
+                    </button>
+
+                    <button
+                        onClick={() => handleButtonClick("Аналитика")}
+                        className={`
+                            flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                            ${
+                                activeFilter === "Аналитика"
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+                            }
+                        `}
+                    >
+                        <span>Аналитика</span>
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-white/20 dark:bg-black/20">
+                            19
+                        </span>
+                        <span className="ml-1 text-xs text-zinc-500 dark:text-zinc-400">
+                            Новое
+                        </span>
+                    </button>
+
+                    {/* Остальные направления */}
                 </div>
 
                 {/* Фильтры и список курсов */}
