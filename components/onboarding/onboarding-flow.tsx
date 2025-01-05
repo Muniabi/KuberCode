@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { OnboardingProgress } from "./onboarding-progress";
@@ -10,6 +10,24 @@ import { PreferencesStep } from "./steps/preferences";
 import { CompletionStep } from "./steps/completion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
+
+interface OnboardingData {
+    personal: {
+        fullName: string;
+        email: string;
+        bio: string;
+    } | null;
+    skills: {
+        skills: string[];
+        experienceLevel: "beginner" | "intermediate" | "advanced";
+    } | null;
+    preferences: {
+        studyTime: "morning" | "afternoon" | "evening";
+        notifications: boolean;
+        emailUpdates: boolean;
+    } | null;
+}
 
 const steps = [
     {
@@ -36,13 +54,14 @@ const steps = [
 
 export const OnboardingFlow = () => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<OnboardingData>({
         personal: null,
         skills: null,
         preferences: null,
     });
 
     const [isCurrentFormValid, setIsCurrentFormValid] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleNext = () => {
         setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -54,15 +73,40 @@ export const OnboardingFlow = () => {
         setIsCurrentFormValid(!!formData[steps[currentStep - 1].id]);
     };
 
-    const handleStepComplete = (stepId: string, data: any) => {
+    const handleStepComplete = useCallback((stepId: string, data: any) => {
         setFormData((prev) => ({
             ...prev,
             [stepId]: data,
         }));
-    };
+    }, []);
 
-    const handleFormValidityChange = (isValid: boolean) => {
+    const handleFormValidityChange = useCallback((isValid: boolean) => {
         setIsCurrentFormValid(isValid);
+    }, []);
+
+    const handleSubmitOnboarding = async () => {
+        try {
+            setIsSubmitting(true);
+
+            const response = await fetch("/api/onboarding", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error("Ошибка при отправке данных");
+            }
+
+            toast.success("Профиль успешно настроен!");
+        } catch (error) {
+            console.error("Ошибка:", error);
+            toast.error("Произошла ошибка при настройке профиля");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const getCurrentStep = () => {
@@ -101,6 +145,8 @@ export const OnboardingFlow = () => {
                 return (
                     <CompletionStep
                         data={formData}
+                        isSubmitting={isSubmitting}
+                        onSubmit={handleSubmitOnboarding}
                         onComplete={(data) =>
                             handleStepComplete("completion", data)
                         }

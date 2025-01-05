@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -42,11 +41,9 @@ export const PreferencesStep = ({
     });
 
     useEffect(() => {
-        const subscription = form.watch(() => {
-            const isValid = form.formState.isValid;
-            onValidityChange(isValid);
+        onValidityChange(true);
 
-            // Сохраняем данные при каждом изменении
+        const subscription = form.watch(() => {
             onComplete(form.getValues());
         });
 

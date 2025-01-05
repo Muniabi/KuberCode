@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 const formSchema = z.object({
     fullName: z.string().min(2, "Имя должно содержать минимум 2 символа"),
@@ -42,14 +42,15 @@ export const PersonalInfoStep = ({
         mode: "onChange",
     });
 
-    useEffect(() => {
-        const subscription = form.watch(() => {
-            onValidityChange(form.formState.isValid);
-            onComplete(form.getValues());
-        });
-
-        return () => subscription.unsubscribe();
+    const handleFormChange = useCallback(() => {
+        onValidityChange(form.formState.isValid);
+        onComplete(form.getValues());
     }, [form, onComplete, onValidityChange]);
+
+    useEffect(() => {
+        const subscription = form.watch(handleFormChange);
+        return () => subscription.unsubscribe();
+    }, [form, handleFormChange]);
 
     return (
         <motion.div

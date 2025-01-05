@@ -3,29 +3,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import {
     Form,
-    FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { motion } from "framer-motion";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect } from "react";
-
-const skills = [
-    { id: "html", label: "HTML" },
-    { id: "css", label: "CSS" },
-    { id: "javascript", label: "JavaScript" },
-    { id: "react", label: "React" },
-    { id: "typescript", label: "TypeScript" },
-    { id: "node", label: "Node.js" },
-    { id: "python", label: "Python" },
-    { id: "java", label: "Java" },
-] as const;
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
     skills: z.array(z.string()).min(1, "Выберите хотя бы один навык"),
@@ -41,6 +28,27 @@ export const SkillsStep = ({
     onComplete: (data: any) => void;
     onValidityChange: (isValid: boolean) => void;
 }) => {
+    const skills = [
+        { id: "html", label: "HTML", icon: "🌐", color: "bg-orange-500" },
+        { id: "css", label: "CSS", icon: "🎨", color: "bg-blue-500" },
+        {
+            id: "javascript",
+            label: "JavaScript",
+            icon: "⚡",
+            color: "bg-yellow-500",
+        },
+        { id: "react", label: "React", icon: "⚛️", color: "bg-cyan-500" },
+        {
+            id: "typescript",
+            label: "TypeScript",
+            icon: "📘",
+            color: "bg-blue-600",
+        },
+        { id: "node", label: "Node.js", icon: "🟢", color: "bg-green-600" },
+        { id: "python", label: "Python", icon: "🐍", color: "bg-yellow-600" },
+        { id: "java", label: "Java", icon: "☕", color: "bg-red-600" },
+    ] as const;
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
@@ -70,93 +78,124 @@ export const SkillsStep = ({
                     <FormField
                         control={form.control}
                         name="skills"
-                        render={() => (
+                        render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Выберите ваши навыки</FormLabel>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
-                                    {skills.map((skill) => (
-                                        <FormField
-                                            key={skill.id}
-                                            control={form.control}
-                                            name="skills"
-                                            render={({ field }) => (
-                                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                                    <FormControl>
-                                                        <Checkbox
-                                                            checked={field.value?.includes(
-                                                                skill.id
-                                                            )}
-                                                            onCheckedChange={(
-                                                                checked
-                                                            ) => {
-                                                                const value =
-                                                                    field.value ||
-                                                                    [];
-                                                                if (checked) {
-                                                                    field.onChange(
-                                                                        [
-                                                                            ...value,
-                                                                            skill.id,
-                                                                        ]
-                                                                    );
-                                                                } else {
-                                                                    field.onChange(
-                                                                        value.filter(
-                                                                            (
-                                                                                v
-                                                                            ) =>
-                                                                                v !==
-                                                                                skill.id
-                                                                        )
-                                                                    );
-                                                                }
-                                                            }}
-                                                        />
-                                                    </FormControl>
-                                                    <FormLabel className="text-sm font-normal">
+                                <FormLabel className="text-lg font-semibold">
+                                    Выберите ваши навыки
+                                </FormLabel>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                                    {skills.map((skill) => {
+                                        const isSelected =
+                                            field.value?.includes(skill.id);
+                                        return (
+                                            <motion.div
+                                                key={skill.id}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const value =
+                                                            field.value || [];
+                                                        if (isSelected) {
+                                                            field.onChange(
+                                                                value.filter(
+                                                                    (v) =>
+                                                                        v !==
+                                                                        skill.id
+                                                                )
+                                                            );
+                                                        } else {
+                                                            field.onChange([
+                                                                ...value,
+                                                                skill.id,
+                                                            ]);
+                                                        }
+                                                    }}
+                                                    className={cn(
+                                                        "w-full p-4 rounded-xl transition-all duration-200",
+                                                        "border-2 flex flex-col items-center gap-2",
+                                                        "hover:border-primary",
+                                                        isSelected
+                                                            ? "border-primary bg-primary/5 dark:bg-primary/10"
+                                                            : "border-muted bg-card hover:bg-accent/50"
+                                                    )}
+                                                >
+                                                    <div
+                                                        className={cn(
+                                                            "w-12 h-12 rounded-lg flex items-center justify-center text-2xl",
+                                                            "bg-gradient-to-br from-primary/10 to-primary/30"
+                                                        )}
+                                                    >
+                                                        {skill.icon}
+                                                    </div>
+                                                    <span className="font-medium">
                                                         {skill.label}
-                                                    </FormLabel>
-                                                </FormItem>
-                                            )}
-                                        />
-                                    ))}
+                                                    </span>
+                                                </button>
+                                            </motion.div>
+                                        );
+                                    })}
                                 </div>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
+
                     <FormField
                         control={form.control}
                         name="experienceLevel"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Уровень опыта</FormLabel>
-                                <div className="grid grid-cols-3 gap-4 mt-2">
+                                <FormLabel className="text-lg font-semibold">
+                                    Уровень опыта
+                                </FormLabel>
+                                <div className="grid grid-cols-3 gap-4 mt-4">
                                     {[
-                                        "beginner",
-                                        "intermediate",
-                                        "advanced",
+                                        {
+                                            value: "beginner",
+                                            label: "Начинающий",
+                                            icon: "🌱",
+                                        },
+                                        {
+                                            value: "intermediate",
+                                            label: "Средний",
+                                            icon: "🌿",
+                                        },
+                                        {
+                                            value: "advanced",
+                                            label: "Продвинутый",
+                                            icon: "🌳",
+                                        },
                                     ].map((level) => (
-                                        <Button
-                                            key={level}
-                                            type="button"
-                                            variant={
-                                                field.value === level
-                                                    ? "default"
-                                                    : "outline"
-                                            }
-                                            className="w-full"
-                                            onClick={() =>
-                                                field.onChange(level)
-                                            }
+                                        <motion.div
+                                            key={level.value}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
                                         >
-                                            {level === "beginner" &&
-                                                "Начинающий"}
-                                            {level === "intermediate" &&
-                                                "Средний"}
-                                            {level === "advanced" &&
-                                                "Продвинутый"}
-                                        </Button>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    field.onChange(level.value)
+                                                }
+                                                className={cn(
+                                                    "w-full p-4 rounded-xl transition-all duration-200",
+                                                    "border-2 flex flex-col items-center gap-2",
+                                                    "hover:border-primary",
+                                                    field.value === level.value
+                                                        ? "border-primary bg-primary/5 dark:bg-primary/10"
+                                                        : "border-muted bg-card hover:bg-accent/50"
+                                                )}
+                                            >
+                                                <span className="text-2xl">
+                                                    {level.icon}
+                                                </span>
+                                                <span className="font-medium">
+                                                    {level.label}
+                                                </span>
+                                            </button>
+                                        </motion.div>
                                     ))}
                                 </div>
                                 <FormMessage />
