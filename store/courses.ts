@@ -21,6 +21,9 @@ export const DIRECTIONS = [
     "Data Science",
     "Game Dev",
     "QA",
+    "Cybersecurity",
+    "3D Modeling",
+    "Databases",
 ] as const;
 
 export type Direction = (typeof DIRECTIONS)[number];
@@ -137,7 +140,134 @@ export const MOCK_COURSES = [
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
         isFree: false,
     },
-    // ... добавляю еще 15 курсов с разными технологиями
+    {
+        id: "8",
+        title: "Node.js Backend Разработка",
+        author: "Максим Чернов",
+        level: "intermediate",
+        direction: "Backend",
+        duration: "52h",
+        description:
+            "Создавайте масштабируемые веб-приложения с использованием Node.js, Express и MongoDB.",
+        price: {
+            current: 6900,
+            old: 8900,
+        },
+        tags: ["Node.js", "Express", "Backend"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+        isFree: false,
+    },
+    {
+        id: "9",
+        title: "Django для веб-разработки",
+        author: "Елена Васильева",
+        level: "intermediate",
+        direction: "Backend",
+        duration: "48h",
+        description:
+            "Разработка веб-приложений на Python с использованием Django framework.",
+        price: {
+            current: 5900,
+        },
+        tags: ["Python", "Django", "Backend"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg",
+        isFree: false,
+    },
+    {
+        id: "10",
+        title: "Flutter Mobile Development",
+        author: "Андрей Козлов",
+        level: "intermediate",
+        direction: "Mobile",
+        duration: "60h",
+        description:
+            "Создавайте кроссплатформенные мобильные приложения с Flutter и Dart.",
+        price: {
+            current: 7900,
+        },
+        tags: ["Flutter", "Dart", "Mobile"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg",
+        isFree: false,
+    },
+    {
+        id: "11",
+        title: "PostgreSQL Мастер-класс",
+        author: "Ольга Новикова",
+        level: "advanced",
+        direction: "Databases",
+        duration: "36h",
+        description:
+            "Глубокое погружение в PostgreSQL: оптимизация, масштабирование и администрирование.",
+        price: {
+            current: 5900,
+        },
+        tags: ["PostgreSQL", "Databases", "SQL"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+        isFree: false,
+    },
+    {
+        id: "12",
+        title: "Автоматизация тестирования",
+        author: "Сергей Белов",
+        level: "intermediate",
+        direction: "QA",
+        duration: "44h",
+        description:
+            "Изучите автоматизированное тестирование с Selenium, TestNG и Jenkins.",
+        price: {
+            current: 4900,
+        },
+        tags: ["QA", "Selenium", "Testing"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/selenium/selenium-original.svg",
+        isFree: false,
+    },
+    {
+        id: "13",
+        title: "Кибербезопасность: Основы",
+        author: "Николай Морозов",
+        level: "beginner",
+        direction: "Cybersecurity",
+        duration: "50h",
+        description:
+            "Изучите основы информационной безопасности и этичного хакинга.",
+        price: {
+            current: 6900,
+        },
+        tags: ["Security", "Ethical Hacking", "Network"],
+        logo: "/icons/security.svg",
+        isFree: false,
+    },
+    {
+        id: "14",
+        title: "3D моделирование в Blender",
+        author: "Марина Светлова",
+        level: "beginner",
+        direction: "3D Modeling",
+        duration: "56h",
+        description: "Создавайте 3D модели и анимации с нуля в Blender.",
+        price: {
+            current: 5900,
+        },
+        tags: ["3D", "Blender", "Animation"],
+        logo: "/icons/blender.svg",
+        isFree: false,
+    },
+    {
+        id: "15",
+        title: "Unreal Engine Game Development",
+        author: "Виктор Громов",
+        level: "intermediate",
+        direction: "Game Dev",
+        duration: "70h",
+        description:
+            "Разработка игр на Unreal Engine 5 с использованием Blueprint и C++.",
+        price: {
+            current: 8900,
+        },
+        tags: ["Game Dev", "Unreal Engine", "C++"],
+        logo: "/icons/unreal.svg",
+        isFree: false,
+    },
 ] as const;
 
 // Определим типы для уровней сложности
