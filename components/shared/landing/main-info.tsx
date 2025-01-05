@@ -95,7 +95,16 @@ export const MainInfoBlock: React.FC<Props> = ({ className }) => {
 
                         <div className="flex w-full max-w-md items-center gap-4 relative">
                             <Input
-                                className="bg-white/10 backdrop-blur-sm border-white/20 p-6 pr-12 text-base"
+                                className="bg-white/80 dark:bg-white/10 backdrop-blur-sm 
+                                         border-gray-200 dark:border-white/20 
+                                         p-6 pr-12 
+                                         text-base text-gray-900 dark:text-white 
+                                         placeholder:text-gray-500 dark:placeholder:text-gray-400
+                                         shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]
+                                         dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.2)]
+                                         focus:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.1),0_10px_20px_-2px_rgba(0,0,0,0.06)]
+                                         dark:focus:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3)]
+                                         transition-shadow"
                                 placeholder="Какую профессию хотите освоить?"
                                 value={search}
                                 onChange={handleSearchChange}
@@ -104,7 +113,7 @@ export const MainInfoBlock: React.FC<Props> = ({ className }) => {
                                 }
                             />
                             <Search
-                                className="absolute right-4 cursor-pointer hover:opacity-70 transition-opacity"
+                                className="absolute right-4 cursor-pointer hover:opacity-70 transition-opacity text-gray-500 dark:text-white"
                                 onClick={handleClick}
                             />
                         </div>

@@ -154,18 +154,6 @@ export const Header: React.FC<Props> = ({ className }) => {
                                             "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
                                             "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
                                         )}
-                                        href="/"
-                                    >
-                                        Главная
-                                    </Link>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <Link
-                                        className={cn(
-                                            navigationMenuTriggerStyle(),
-                                            "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
-                                            "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
-                                        )}
                                         href="/courses"
                                     >
                                         Курсы
@@ -268,13 +256,6 @@ export const Header: React.FC<Props> = ({ className }) => {
                                     className="w-[300px] bg-white dark:bg-black border-stone-200 dark:border-stone-200/10"
                                 >
                                     <div className="flex flex-col space-y-6 pt-6">
-                                        <Link
-                                            href="/"
-                                            className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
-                                            onClick={() => setIsOpen(false)}
-                                        >
-                                            Главная
-                                        </Link>
                                         <Link
                                             href="/courses"
                                             className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
