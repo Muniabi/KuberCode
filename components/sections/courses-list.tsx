@@ -19,122 +19,131 @@ interface CoursesListProps {
     };
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 9;
 
 export const CoursesList = ({
     direction,
     searchQuery,
     filters,
 }: CoursesListProps) => {
-    const [courses, setCourses] = useState(
-        MOCK_COURSES.slice(0, ITEMS_PER_PAGE)
-    );
+    const [displayedCourses, setDisplayedCourses] = useState<
+        typeof MOCK_COURSES
+    >([]);
+    const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const [page, setPage] = useState(1);
 
     const { ref, inView } = useInView({
         threshold: 0,
         rootMargin: "100px",
     });
 
+    // Фильтруем курсы
+    const filteredCourses = MOCK_COURSES.filter((course) => {
+        // Фильтр по направлению
+        if (
+            direction &&
+            direction !== "Все направления" &&
+            course.direction !== direction
+        ) {
+            return false;
+        }
+
+        // Фильтр по поиску
+        if (
+            searchQuery &&
+            !course.title.toLowerCase().includes(searchQuery.toLowerCase())
+        ) {
+            return false;
+        }
+
+        // Фильтр по уровню
+        if (filters.level.length > 0) {
+            const mappedLevels = filters.level.map(
+                (level) => LEVEL_MAPPING[level]
+            );
+            if (!mappedLevels.includes(course.level)) {
+                return false;
+            }
+        }
+
+        // Фильтр по длительности
+        if (filters.duration.length > 0) {
+            const duration = parseInt(course.duration);
+            const matchesDuration = filters.duration.some((filter) => {
+                if (filter === "До 5 часов") return duration < 5;
+                if (filter === "5-20 часов")
+                    return duration >= 5 && duration <= 20;
+                if (filter === "Более 20 часов") return duration > 20;
+                return false;
+            });
+            if (!matchesDuration) return false;
+        }
+
+        // Обновленный фильтр по цене
+        const price = course.price.current;
+        if (filters.price.min === 0 && filters.price.max === 0) {
+            if (!course.isFree) return false;
+        } else {
+            if (price < filters.price.min || price > filters.price.max)
+                return false;
+        }
+
+        return true;
+    });
+
     const loadMoreCourses = async () => {
         setIsLoading(true);
         try {
-            // Имитация загрузки с задержкой
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 500)); // Имитация задержки
 
-            const start = page * ITEMS_PER_PAGE;
-            const end = start + ITEMS_PER_PAGE;
-            const newCourses = MOCK_COURSES.slice(start, end);
+            const startIndex = (page - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const newCourses = filteredCourses.slice(startIndex, endIndex);
 
             if (newCourses.length === 0) {
                 setHasMore(false);
                 return;
             }
 
-            setCourses((prev) => [...prev, ...newCourses]);
+            setDisplayedCourses((prev) => [...prev, ...newCourses]);
             setPage((prev) => prev + 1);
         } catch (error) {
-            console.error("Failed to fetch courses:", error);
+            console.error("Failed to load courses:", error);
         } finally {
             setIsLoading(false);
         }
     };
 
+    // Сброс при изменении фильтров
+    useEffect(() => {
+        setDisplayedCourses([]);
+        setPage(1);
+        setHasMore(true);
+    }, [direction, searchQuery, filters]);
+
+    // Загрузка первой порции данных при сбросе
+    useEffect(() => {
+        if (page === 1 && displayedCourses.length === 0) {
+            loadMoreCourses();
+        }
+    }, [page, displayedCourses.length]);
+
+    // Подгрузка следующей порции при скролле
     useEffect(() => {
         if (inView && hasMore && !isLoading) {
             loadMoreCourses();
         }
     }, [inView, hasMore, isLoading]);
 
-    const filterCourses = (courses: typeof MOCK_COURSES) => {
-        return courses.filter((course) => {
-            // Фильтр по направлению
-            if (
-                direction &&
-                direction !== "Все направления" &&
-                course.direction !== direction
-            ) {
-                return false;
-            }
-
-            // Фильтр по поиску
-            if (
-                searchQuery &&
-                !course.title.toLowerCase().includes(searchQuery.toLowerCase())
-            ) {
-                return false;
-            }
-
-            // Фильтр по уровню
-            if (filters.level.length > 0) {
-                const mappedLevels = filters.level.map(
-                    (level) => LEVEL_MAPPING[level]
-                );
-                if (!mappedLevels.includes(course.level)) {
-                    return false;
-                }
-            }
-
-            // Фильтр по длительности
-            if (filters.duration.length > 0) {
-                const duration = parseInt(course.duration);
-                const matchesDuration = filters.duration.some((filter) => {
-                    if (filter === "До 5 часов") return duration < 5;
-                    if (filter === "5-20 часов")
-                        return duration >= 5 && duration <= 20;
-                    if (filter === "Более 20 часов") return duration > 20;
-                    return false;
-                });
-                if (!matchesDuration) return false;
-            }
-
-            // Обновленный фильтр по цене
-            const price = course.price.current;
-            if (filters.price.min === 0 && filters.price.max === 0) {
-                if (!course.isFree) return false;
-            } else {
-                if (price < filters.price.min || price > filters.price.max)
-                    return false;
-            }
-
-            return true;
-        });
-    };
-
-    // Применяем фильтры к курсам
-    const filteredCourses = filterCourses(MOCK_COURSES);
-
     return (
         <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredCourses.map((course) => (
+                {displayedCourses.map((course) => (
                     <CourseCard key={course.id} {...course} />
                 ))}
             </div>
 
-            {/* Loader */}
             {hasMore && (
                 <div ref={ref} className="flex justify-center py-8">
                     {isLoading && (
@@ -143,10 +152,15 @@ export const CoursesList = ({
                 </div>
             )}
 
-            {/* No more courses message */}
-            {!hasMore && (
+            {!hasMore && displayedCourses.length > 0 && (
                 <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                     Больше курсов нет
+                </div>
+            )}
+
+            {!hasMore && displayedCourses.length === 0 && (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    Курсы не найдены
                 </div>
             )}
         </div>
