@@ -21,6 +21,7 @@ export interface Course {
         role: string;
         avatar: string;
     };
+    price: number;
 }
 
 export interface CourseResponse {
