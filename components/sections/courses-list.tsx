@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 import { MOCK_COURSES, LEVEL_MAPPING, DIRECTIONS } from "@/store/courses";
 
 interface CoursesListProps {
-    direction?: (typeof DIRECTIONS)[number];
+    direction?: string;
     searchQuery?: string;
     filters: {
         level: string[];
