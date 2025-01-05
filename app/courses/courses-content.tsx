@@ -26,24 +26,8 @@ import { CoursesList } from "@/components/sections/courses-list";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MOCK_COURSES, DIRECTIONS } from "@/store/courses";
 import { Slider } from "@/components/ui/slider";
-
-const stats = [
-    {
-        icon: <Users className="w-5 h-5" />,
-        label: "Активных студентов",
-        value: "12,000+",
-    },
-    {
-        icon: <Clock className="w-5 h-5" />,
-        label: "Часов контента",
-        value: "2,400+",
-    },
-    {
-        icon: <TrendingUp className="w-5 h-5" />,
-        label: "Трудоустроено",
-        value: "82%",
-    },
-];
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const SortOptions = () => (
     <div className="flex items-center gap-2">
@@ -57,18 +41,9 @@ const SortOptions = () => (
     </div>
 );
 
-const Filters = ({ filters, setFilters, maxPrice }: any) => {
-    const handleFilterChange = (category: string, value: string) => {
-        setFilters((prev: any) => ({
-            ...prev,
-            [category]: prev[category].includes(value)
-                ? prev[category].filter((item: any) => item !== value)
-                : [...prev[category], value],
-        }));
-    };
-
+const Filters = ({ filters, setFilters, maxPrice }) => {
     const handlePriceChange = (values: number[]) => {
-        setFilters((prev: any) => ({
+        setFilters((prev) => ({
             ...prev,
             price: {
                 min: values[0],
@@ -84,21 +59,33 @@ const Filters = ({ filters, setFilters, maxPrice }: any) => {
                 <h4 className="font-medium text-gray-900 dark:text-white">
                     Уровень сложности
                 </h4>
-                <div className="space-y-2">
+                <div className="space-y-3">
                     {["Начинающий", "Средний", "Продвинутый"].map((level) => (
-                        <label key={level} className="flex items-center">
-                            <input
-                                type="checkbox"
-                                className="form-checkbox rounded text-purple-600"
+                        <div
+                            key={level}
+                            className="flex items-center space-x-2"
+                        >
+                            <Checkbox
+                                id={level}
                                 checked={filters.level.includes(level)}
-                                onChange={() =>
-                                    handleFilterChange("level", level)
-                                }
+                                onCheckedChange={(checked) => {
+                                    setFilters((prev) => ({
+                                        ...prev,
+                                        level: checked
+                                            ? [...prev.level, level]
+                                            : prev.level.filter(
+                                                  (l) => l !== level
+                                              ),
+                                    }));
+                                }}
                             />
-                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                            <Label
+                                htmlFor={level}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700 dark:text-gray-300"
+                            >
                                 {level}
-                            </span>
-                        </label>
+                            </Label>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -108,24 +95,36 @@ const Filters = ({ filters, setFilters, maxPrice }: any) => {
                 <h4 className="font-medium text-gray-900 dark:text-white">
                     Длительность
                 </h4>
-                <div className="space-y-2">
+                <div className="space-y-3">
                     {["До 5 часов", "5-20 часов", "Более 20 часов"].map(
                         (duration) => (
-                            <label key={duration} className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    className="form-checkbox rounded text-purple-600"
+                            <div
+                                key={duration}
+                                className="flex items-center space-x-2"
+                            >
+                                <Checkbox
+                                    id={duration}
                                     checked={filters.duration.includes(
                                         duration
                                     )}
-                                    onChange={() =>
-                                        handleFilterChange("duration", duration)
-                                    }
+                                    onCheckedChange={(checked) => {
+                                        setFilters((prev) => ({
+                                            ...prev,
+                                            duration: checked
+                                                ? [...prev.duration, duration]
+                                                : prev.duration.filter(
+                                                      (d) => d !== duration
+                                                  ),
+                                        }));
+                                    }}
                                 />
-                                <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                                <Label
+                                    htmlFor={duration}
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700 dark:text-gray-300"
+                                >
                                     {duration}
-                                </span>
-                            </label>
+                                </Label>
+                            </div>
                         )
                     )}
                 </div>
@@ -153,25 +152,27 @@ const Filters = ({ filters, setFilters, maxPrice }: any) => {
                             {filters.price.max.toLocaleString("ru-RU")} ₽
                         </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
-                            className="form-checkbox rounded text-purple-600"
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="free-courses"
                             checked={
                                 filters.price.min === 0 &&
                                 filters.price.max === 0
                             }
-                            onChange={(e) => {
-                                if (e.target.checked) {
+                            onCheckedChange={(checked) => {
+                                if (checked) {
                                     handlePriceChange([0, 0]);
                                 } else {
                                     handlePriceChange([0, maxPrice]);
                                 }
                             }}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
+                        <Label
+                            htmlFor="free-courses"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700 dark:text-gray-300"
+                        >
                             Только бесплатные
-                        </span>
+                        </Label>
                     </div>
                 </div>
             </div>
