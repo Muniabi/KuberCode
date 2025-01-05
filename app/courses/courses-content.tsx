@@ -212,14 +212,14 @@ const CoursesContent = () => {
                         />
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
                     </div>
-                    <Link href="/create" className="w-full sm:w-auto">
+                    {/* <Link href="/create" className="w-full sm:w-auto">
                         <Button
                             size="lg"
                             className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white"
                         >
                             Создать курс
                         </Button>
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* Фильтры по направлениям */}
