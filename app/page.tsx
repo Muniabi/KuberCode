@@ -6,8 +6,7 @@ import PopularCategories from "@/components/shared/landing/popular-categories";
 import BestAuthors from "@/components/shared/landing/best-authors";
 import Integrations from "@/components/shared/landing/Integrations";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { LampContainer } from "@/components/shared/landing/lamp";
+import AlumniStories from "@/components/shared/landing/alumni-stories";
 
 export default function Home() {
     return (
@@ -40,6 +39,7 @@ export default function Home() {
             <Integrations />
             <PopularCategories />
             <BestAuthors />
+            <AlumniStories />
         </main>
     );
 }
