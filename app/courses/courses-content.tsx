@@ -57,7 +57,7 @@ const SortOptions = () => (
     </div>
 );
 
-const Filters = ({ filters, setFilters }: any) => {
+const Filters = ({ filters, setFilters, maxPrice }: any) => {
     const handleFilterChange = (category: string, value: string) => {
         setFilters((prev: any) => ({
             ...prev,
@@ -139,7 +139,7 @@ const Filters = ({ filters, setFilters }: any) => {
                 <div className="space-y-5">
                     <Slider
                         defaultValue={[filters.price.min, filters.price.max]}
-                        max={15000}
+                        max={maxPrice}
                         step={100}
                         minStepsBetweenThumbs={1}
                         onValueChange={handlePriceChange}
@@ -165,7 +165,7 @@ const Filters = ({ filters, setFilters }: any) => {
                                 if (e.target.checked) {
                                     handlePriceChange([0, 0]);
                                 } else {
-                                    handlePriceChange([0, 15000]);
+                                    handlePriceChange([0, maxPrice]);
                                 }
                             }}
                         />
@@ -183,12 +183,15 @@ const CoursesContent = () => {
     const [activeFilter, setActiveFilter] =
         useState<(typeof DIRECTIONS)[number]>("Все направления");
     const [searchQuery, setSearchQuery] = useState("");
+    const maxCoursePrice = Math.max(
+        ...MOCK_COURSES.map((course) => course.price.current)
+    );
     const [filters, setFilters] = useState({
         level: [] as string[],
         duration: [] as string[],
         price: {
             min: 0,
-            max: 15000,
+            max: maxCoursePrice,
         },
     });
 
@@ -393,7 +396,7 @@ const CoursesContent = () => {
                                             duration: [],
                                             price: {
                                                 min: 0,
-                                                max: 15000,
+                                                max: maxCoursePrice,
                                             },
                                         })
                                     }
@@ -404,6 +407,7 @@ const CoursesContent = () => {
                             <Filters
                                 filters={filters}
                                 setFilters={setFilters}
+                                maxPrice={maxCoursePrice}
                             />
                         </div>
                     </div>
@@ -431,7 +435,7 @@ const CoursesContent = () => {
                                                 duration: [],
                                                 price: {
                                                     min: 0,
-                                                    max: 15000,
+                                                    max: maxCoursePrice,
                                                 },
                                             })
                                         }
@@ -442,6 +446,7 @@ const CoursesContent = () => {
                                 <Filters
                                     filters={filters}
                                     setFilters={setFilters}
+                                    maxPrice={maxCoursePrice}
                                 />
                             </SheetContent>
                         </Sheet>
