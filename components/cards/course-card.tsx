@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
+import { Star, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { LEVEL_DISPLAY } from "@/store/courses";
@@ -37,10 +37,21 @@ export const CourseCard = ({
     isFree,
     rating,
 }: CourseCardProps) => {
+    const discount = price.old
+        ? Math.round(((price.old - price.current) / price.old) * 100)
+        : 0;
+
     return (
         <Link href={`/courses/${id}`}>
             <div className="group relative flex flex-col h-full bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 hover:border-purple-500 dark:hover:border-purple-500 transition-colors">
-                {/* Превью курса */}
+                {discount > 0 && (
+                    <div className="absolute top-4 right-4 z-10">
+                        <Badge className="bg-red-500 text-white border-0 flex items-center gap-1">
+                            <Sparkles className="w-3 h-3" />-{discount}%
+                        </Badge>
+                    </div>
+                )}
+
                 <div className="relative h-32 rounded-t-xl bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/20 dark:to-blue-900/20">
                     {logo && (
                         <Image
@@ -53,7 +64,6 @@ export const CourseCard = ({
                     )}
                 </div>
 
-                {/* Основной контент */}
                 <div className="flex flex-col flex-grow p-6">
                     <div className="flex-grow">
                         <div className="min-h-[4rem] mb-3">
@@ -111,7 +121,6 @@ export const CourseCard = ({
                         </div>
                     </div>
 
-                    {/* Цена */}
                     <div className="pt-4 border-t border-gray-100 dark:border-zinc-800">
                         <div className="flex items-center gap-2">
                             {isFree ? (
@@ -128,6 +137,11 @@ export const CourseCard = ({
                                         <span className="text-sm text-gray-500 line-through">
                                             {price.old.toLocaleString("ru-RU")}{" "}
                                             ₽
+                                        </span>
+                                    )}
+                                    {discount > 0 && (
+                                        <span className="text-sm font-medium ml-auto text-[#9DFF3B]">
+                                            Скидка {discount}%
                                         </span>
                                     )}
                                 </>
