@@ -9,10 +9,28 @@ import { useRouter } from "next/navigation";
 import { Sparkles, Star, Users, Trophy } from "lucide-react";
 
 interface CourseCardProps {
-    course: Course;
+    course: {
+        id: string;
+        title: string;
+        author: {
+            name: string;
+            avatar: string;
+        };
+        level: string;
+        duration: string;
+        description: string;
+        price: {
+            current: number;
+            old?: number;
+        };
+        tags: string[];
+        logo: string;
+        isFree: boolean;
+        direction: string;
+    };
 }
 
-export const CourseCard = ({ course }: CourseCardProps) => {
+export function CourseCard({ course }: CourseCardProps) {
     const router = useRouter();
 
     const handleClick = () => {
@@ -108,24 +126,27 @@ export const CourseCard = ({ course }: CourseCardProps) => {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-zinc-800">
-                        <Avatar>
-                            <AvatarImage src={course.author.avatar} />
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                            <AvatarImage
+                                src={course.author.avatar}
+                                alt={course.author.name}
+                            />
                             <AvatarFallback>
-                                {course.author.name[0]}
+                                {course.author.name?.charAt(0) || "U"}
                             </AvatarFallback>
                         </Avatar>
                         <div>
-                            <div className="font-medium text-gray-900 dark:text-white">
+                            <p className="text-sm font-medium leading-none">
                                 {course.author.name}
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                                {course.author.role}
-                            </div>
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                                Автор курса
+                            </p>
                         </div>
                     </div>
                 </div>
             </CardContent>
         </Card>
     );
-};
+}
