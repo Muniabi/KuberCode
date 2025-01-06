@@ -382,7 +382,7 @@ const CoursesContent = () => {
                 </div>
 
                 {/* Фильтры и список курсов */}
-                <div className="flex gap-8 mt-8">
+                <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 mt-8">
                     {/* Десктопные фильтры */}
                     <div className="hidden lg:block w-64 flex-shrink-0">
                         <div className="sticky top-8">
@@ -456,7 +456,7 @@ const CoursesContent = () => {
                     {/* Основной контент */}
                     <div className="flex-grow">
                         <div className="flex items-center justify-between mb-6">
-                            <div className="text-sm text-gray-500">
+                            <div className="hidden sm:block text-sm text-gray-500">
                                 Найдено: {MOCK_COURSES.length} курсов
                             </div>
                             <SortOptions />
