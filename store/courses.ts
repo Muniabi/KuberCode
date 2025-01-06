@@ -46,6 +46,7 @@ export const MOCK_COURSES = [
         tags: ["UI/UX", "Design", "Interaction"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
         isFree: false,
+        image: "/course-school-bg.svg",
     },
     {
         id: "2",
@@ -62,6 +63,7 @@ export const MOCK_COURSES = [
         tags: ["Python", "Data Science", "ML"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
         isFree: false,
+        image: "",
     },
     {
         id: "3",
@@ -77,6 +79,7 @@ export const MOCK_COURSES = [
         tags: ["JavaScript", "Web", "Frontend"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
         isFree: true,
+        image: "",
     },
     {
         id: "4",
@@ -93,6 +96,7 @@ export const MOCK_COURSES = [
         tags: ["React", "Redux", "TypeScript"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
         isFree: false,
+        image: "",
     },
     {
         id: "5",
@@ -108,6 +112,7 @@ export const MOCK_COURSES = [
         tags: ["Design", "Photoshop"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg",
         isFree: false,
+        image: "",
     },
     {
         id: "6",
@@ -123,6 +128,7 @@ export const MOCK_COURSES = [
         tags: ["iOS", "Swift", "Mobile"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg",
         isFree: false,
+        image: "/images/courses/ios-development-with-swift.jpg",
     },
     {
         id: "7",
@@ -139,6 +145,7 @@ export const MOCK_COURSES = [
         tags: ["DevOps", "Docker", "Kubernetes"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
         isFree: false,
+        image: "/images/courses/devops-essential.jpg",
     },
     {
         id: "8",
@@ -156,6 +163,7 @@ export const MOCK_COURSES = [
         tags: ["Node.js", "Express", "Backend"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
         isFree: false,
+        image: "/images/courses/nodejs-backend-development.jpg",
     },
     {
         id: "9",
@@ -172,6 +180,7 @@ export const MOCK_COURSES = [
         tags: ["Python", "Django", "Backend"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg",
         isFree: false,
+        image: "/images/courses/django-for-web-development.jpg",
     },
     {
         id: "10",
@@ -188,6 +197,7 @@ export const MOCK_COURSES = [
         tags: ["Flutter", "Dart", "Mobile"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg",
         isFree: false,
+        image: "/images/courses/flutter-mobile-development.jpg",
     },
     {
         id: "11",
@@ -204,6 +214,7 @@ export const MOCK_COURSES = [
         tags: ["PostgreSQL", "Databases", "SQL"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
         isFree: false,
+        image: "/images/courses/postgresql-master-class.jpg",
     },
     {
         id: "12",
@@ -220,6 +231,7 @@ export const MOCK_COURSES = [
         tags: ["QA", "Selenium", "Testing"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/selenium/selenium-original.svg",
         isFree: false,
+        image: "/images/courses/automation-testing.jpg",
     },
     {
         id: "13",
@@ -236,6 +248,7 @@ export const MOCK_COURSES = [
         tags: ["Security", "Ethical Hacking", "Network"],
         logo: "/icons/security.svg",
         isFree: false,
+        image: "/images/courses/cybersecurity-basics.jpg",
     },
     {
         id: "14",
@@ -251,6 +264,7 @@ export const MOCK_COURSES = [
         tags: ["3D", "Blender", "Animation"],
         logo: "/icons/blender.svg",
         isFree: false,
+        image: "/images/courses/3d-modeling-in-blender.jpg",
     },
     {
         id: "15",
@@ -267,6 +281,7 @@ export const MOCK_COURSES = [
         tags: ["Game Dev", "Unreal Engine", "C++"],
         logo: "/icons/unreal.svg",
         isFree: false,
+        image: "/images/courses/unreal-engine-game-development.jpg",
     },
     {
         id: "16",
@@ -283,6 +298,7 @@ export const MOCK_COURSES = [
         tags: ["Machine Learning", "Data Science"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/machinelearning/machinelearning-original.svg",
         isFree: false,
+        image: "/images/courses/machine-learning-basics.jpg",
     },
     {
         id: "17",
@@ -299,6 +315,7 @@ export const MOCK_COURSES = [
         tags: ["CSS", "Frontend"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
         isFree: false,
+        image: "/images/courses/advanced-css-techniques.jpg",
     },
     {
         id: "18",
@@ -315,6 +332,7 @@ export const MOCK_COURSES = [
         tags: ["Cloud", "DevOps"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloud/cloud-original.svg",
         isFree: false,
+        image: "/images/courses/introduction-to-cloud-computing.jpg",
     },
     {
         id: "19",
@@ -330,6 +348,7 @@ export const MOCK_COURSES = [
         tags: ["Unity", "Game Dev"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg",
         isFree: false,
+        image: "/images/courses/game-development-with-unity.jpg",
     },
     {
         id: "20",
@@ -345,6 +364,7 @@ export const MOCK_COURSES = [
         tags: ["Marketing", "Digital"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/marketing/marketing-original.svg",
         isFree: false,
+        image: "/images/courses/digital-marketing-strategies.jpg",
     },
     {
         id: "21",
@@ -361,6 +381,7 @@ export const MOCK_COURSES = [
         tags: ["Blockchain"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blockchain/blockchain-original.svg",
         isFree: false,
+        image: "/images/courses/blockchain-fundamentals.jpg",
     },
     {
         id: "22",
@@ -376,6 +397,7 @@ export const MOCK_COURSES = [
         tags: ["Cybersecurity"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/security/security-original.svg",
         isFree: false,
+        image: "/images/courses/cybersecurity-essentials.jpg",
     },
     {
         id: "23",
@@ -392,6 +414,7 @@ export const MOCK_COURSES = [
         tags: ["Python", "Data Analysis"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
         isFree: false,
+        image: "/images/courses/data-analysis-with-python.jpg",
     },
     {
         id: "24",
@@ -408,6 +431,7 @@ export const MOCK_COURSES = [
         tags: ["AI", "Artificial Intelligence"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/artificialintelligence/artificialintelligence-original.svg",
         isFree: false,
+        image: "/images/courses/introduction-to-artificial-intelligence.jpg",
     },
     {
         id: "25",
@@ -424,6 +448,7 @@ export const MOCK_COURSES = [
         tags: ["Web Development"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/web/web-original.svg",
         isFree: false,
+        image: "/images/courses/web-development-bootcamp.jpg",
     },
     {
         id: "26",
@@ -440,6 +465,7 @@ export const MOCK_COURSES = [
         tags: ["React Native", "Mobile"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
         isFree: false,
+        image: "/images/courses/mobile-app-development-with-react-native.jpg",
     },
     {
         id: "27",
@@ -456,6 +482,7 @@ export const MOCK_COURSES = [
         tags: ["SEO", "Marketing"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/seo/seo-original.svg",
         isFree: false,
+        image: "/images/courses/seo-optimization-techniques.jpg",
     },
     {
         id: "28",
@@ -471,6 +498,7 @@ export const MOCK_COURSES = [
         tags: ["VR", "Virtual Reality"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vr/vr-original.svg",
         isFree: false,
+        image: "/images/courses/introduction-to-virtual-reality.jpg",
     },
     {
         id: "29",
@@ -486,6 +514,7 @@ export const MOCK_COURSES = [
         tags: ["Ethical Hacking", "Cybersecurity"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hacking/hacking-original.svg",
         isFree: false,
+        image: "/images/courses/ethical-hacking-basics.jpg",
     },
     {
         id: "30",
@@ -501,6 +530,7 @@ export const MOCK_COURSES = [
         tags: ["Data Visualization", "Tableau"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tableau/tableau-original.svg",
         isFree: false,
+        image: "/images/courses/data-visualization-with-tableau.jpg",
     },
 ] as const;
 

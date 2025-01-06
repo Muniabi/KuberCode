@@ -17,8 +17,9 @@ interface CourseCardProps {
     };
     tags: string[];
     logo?: string;
+    image?: string;
     isFree?: boolean;
-    rating: {
+    rating?: {
         value: number;
         count: number;
     };
@@ -34,6 +35,7 @@ export const CourseCard = ({
     price,
     tags,
     logo,
+    image,
     isFree,
     rating,
 }: CourseCardProps) => {
@@ -52,14 +54,33 @@ export const CourseCard = ({
                     </div>
                 )}
 
-                <div className="relative h-32 rounded-t-xl bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/20 dark:to-blue-900/20">
+                <div className="relative h-32 rounded-t-xl overflow-hidden">
+                    {image ? (
+                        <div className="relative h-full w-full">
+                            <Image
+                                src={image}
+                                alt={title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        </div>
+                    ) : (
+                        <div className="relative h-full w-full">
+                            <div className="absolute inset-0  bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20 dark:from-indigo-500/30 dark:via-purple-500/30 dark:to-pink-500/30" />
+                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-blue-500/10 to-cyan-500/10 dark:via-blue-500/20 dark:to-cyan-500/20" />
+                            <div className="absolute inset-0 backdrop-blur-[2px]" />
+                        </div>
+                    )}
+
                     {logo && (
                         <Image
                             src={logo}
                             alt={title}
                             width={64}
                             height={64}
-                            className="absolute bottom-4 left-6 rounded-lg object-cover"
+                            className="absolute bottom-4 left-6 rounded-lg object-cover shadow-lg z-10"
                         />
                     )}
                 </div>
