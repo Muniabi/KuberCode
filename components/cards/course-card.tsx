@@ -95,7 +95,16 @@ export const CourseCard = ({
 
                         <div className="flex items-center gap-2 mb-3">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                By {author}
+                                Автор:{" "}
+                                {author == "Kuber Code" ? (
+                                    <span className="text-purple-500 ">
+                                        Kuber Code
+                                    </span>
+                                ) : (
+                                    <span className="text-black dark:text-white">
+                                        {author}
+                                    </span>
+                                )}
                             </p>
                             {rating?.value && (
                                 <>
