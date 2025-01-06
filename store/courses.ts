@@ -33,7 +33,7 @@ export const MOCK_COURSES = [
     {
         id: "1",
         title: "Mastering Interaction Design",
-        author: "Kuber Code",
+        author: "KC Team",
         level: "beginner",
         direction: "Design",
         duration: "32h",
@@ -42,10 +42,6 @@ export const MOCK_COURSES = [
         price: {
             current: 3900,
             old: 5900,
-        },
-        rating: {
-            value: 4.5,
-            count: 100,
         },
         tags: ["UI/UX", "Design", "Interaction"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",

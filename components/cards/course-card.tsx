@@ -96,9 +96,9 @@ export const CourseCard = ({
                         <div className="flex items-center gap-2 mb-3">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 Автор:{" "}
-                                {author == "Kuber Code" ? (
+                                {author == "KC Team" ? (
                                     <span className="text-purple-500 ">
-                                        Kuber Code
+                                        KC Team
                                     </span>
                                 ) : (
                                     <span className="text-black dark:text-white">
@@ -170,7 +170,7 @@ export const CourseCard = ({
                                         </span>
                                     )}
                                     {discount > 0 && (
-                                        <span className="text-sm font-medium ml-auto text-[#9DFF3B]">
+                                        <span className="text-sm font-medium ml-auto dark:text-[#9DFF3B] text-primary">
                                             Скидка {discount}%
                                         </span>
                                     )}
