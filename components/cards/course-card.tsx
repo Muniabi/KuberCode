@@ -68,9 +68,9 @@ export const CourseCard = ({
                         </div>
                     ) : (
                         <div className="relative h-full w-full">
-                            <div className="absolute inset-0  bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20 dark:from-indigo-500/30 dark:via-purple-500/30 dark:to-pink-500/30" />
-                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-blue-500/10 to-cyan-500/10 dark:via-blue-500/20 dark:to-cyan-500/20" />
-                            <div className="absolute inset-0 backdrop-blur-[2px]" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#E1FF01]/10 via-purple-500/5 to-blue-500/10 dark:from-[#E1FF01]/20 dark:via-purple-500/10 dark:to-blue-500/20" />
+                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#E1FF01]/5 to-purple-500/10 dark:via-[#E1FF01]/10 dark:to-purple-500/20" />
+                            <div className="absolute inset-0 backdrop-blur-[1px]" />
                         </div>
                     )}
 
