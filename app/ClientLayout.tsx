@@ -2,6 +2,8 @@
 
 import { Header } from "@/components/shared/index";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Loader } from "@/components/shared/loader";
 
 export default function ClientLayout({
     children,
@@ -10,6 +12,19 @@ export default function ClientLayout({
 }) {
     const pathname = usePathname();
     const isAccountPage = pathname.startsWith("/account");
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return (
         <>

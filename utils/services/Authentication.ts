@@ -50,7 +50,6 @@ export const register = async (
             throw new Error(error.message || "Ошибка при регистрации");
         }
 
-        // После успешной регистрации выполняем вход через NextAuth
         await signIn("credentials", {
             email,
             password,
@@ -89,9 +88,19 @@ export const login = async (email: string, password: string) => {
 // Выход
 export const logout = async () => {
     try {
+        const session = await fetch("/api/auth/session");
+        const sessionData = await session.json();
+
+        if (sessionData?.accessToken) {
+            await api.post("/logout", {
+                accessToken: sessionData.accessToken,
+            });
+        }
+
         await signOut({ redirect: false });
     } catch (error) {
         console.error("Ошибка выхода:", error);
+        await signOut({ redirect: false });
         throw error;
     }
 };
@@ -101,7 +110,7 @@ export const refreshTokens = async (
     refreshToken: string
 ): Promise<TokenResponse> => {
     try {
-        const response = await fetch(`${IP}/refresh-token`, {
+        const response = await fetch(`${IP}/updateToken`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -114,13 +123,24 @@ export const refreshTokens = async (
         }
 
         const data = await response.json();
+
+        await fetch("/api/auth/session", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+            }),
+        });
+
         return {
             accessToken: data.accessToken,
             refreshToken: data.refreshToken,
         };
     } catch (error) {
         console.error("Ошибка обновления токена:", error);
-        // При ошибке обновления токена выходим из системы
         await signOut({ redirect: false });
         throw error;
     }
@@ -131,20 +151,7 @@ export const requestPasswordReset = async (
     email: string
 ): Promise<ResetPasswordResponse> => {
     try {
-        const response = await fetch(`${IP}/reset-password`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Ошибка при запросе сброса пароля");
-        }
-
+        const { data } = await api.post("/resetPassword", { email });
         return data;
     } catch (error) {
         console.error("Ошибка запроса сброса пароля:", error);
@@ -158,23 +165,10 @@ export const confirmPasswordReset = async (
     newPassword: string
 ): Promise<{ success: boolean; message: string }> => {
     try {
-        const response = await fetch(`${IP}/reset-password/confirm`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                token,
-                newPassword,
-            }),
+        const { data } = await api.post("/confirmResetPassword", {
+            token,
+            newPassword,
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Ошибка при сбросе пароля");
-        }
-
         return data;
     } catch (error) {
         console.error("Ошибка подтверждения сброса пароля:", error);
@@ -182,24 +176,40 @@ export const confirmPasswordReset = async (
     }
 };
 
-// Создаем axios инстанс с перехватчиком для автоматического обновления токена
+// Создаем axios инстанс с перехватчиками
 export const api = axios.create({
     baseURL: IP,
 });
 
+// Добавляем токен к каждому запросу
+api.interceptors.request.use(
+    async (config) => {
+        // Получаем текущую сессию
+        const session = await fetch("/api/auth/session");
+        const sessionData = await session.json();
+
+        if (sessionData?.accessToken) {
+            config.headers.Authorization = `Bearer ${sessionData.accessToken}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Обработка ответов и обновление токена при необходимости
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
         const originalRequest = error.config;
         if (!originalRequest) return Promise.reject(error);
 
-        // Если получили 401 и это не запрос на обновление токена
         if (
             error.response?.status === 401 &&
-            originalRequest.url !== "/refresh-token"
+            originalRequest.url !== "/updateToken"
         ) {
             try {
-                // Получаем текущую сессию
                 const session = await fetch("/api/auth/session");
                 const sessionData = await session.json();
 
@@ -210,13 +220,10 @@ api.interceptors.response.use(
                 // Обновляем токены
                 const tokens = await refreshTokens(sessionData.refreshToken);
 
-                // Обновляем заголовок в оригинальном запросе
+                // Обновляем заголовок и повторяем запрос
                 originalRequest.headers.Authorization = `Bearer ${tokens.accessToken}`;
-
-                // Повторяем оригинальный запрос
                 return api(originalRequest);
             } catch (refreshError) {
-                // Если не удалось обновить токен, выходим из системы
                 await signOut({ redirect: false });
                 return Promise.reject(refreshError);
             }
