@@ -110,6 +110,7 @@ export const OnboardingProgress = ({
                                 <div className="text-sm font-medium text-gray-900 dark:text-white">
                                     {step.title}
                                 </div>
+                                {/* max-w-[150px] поменять елси будут изменения текста, фиксированая ширина */}
                                 <div className="text-xs text-gray-500 dark:text-gray-400 max-w-[150px]">
                                     {step.description}
                                 </div>

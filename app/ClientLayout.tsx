@@ -12,7 +12,7 @@ export default function ClientLayout({
 }) {
     const pathname = usePathname();
     const isAccountPage = pathname.startsWith("/account");
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false); // включить/выключить лоадер
 
     useEffect(() => {
         const timer = setTimeout(() => {

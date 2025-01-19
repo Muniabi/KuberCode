@@ -13,6 +13,7 @@ import {
     Database,
     Lightbulb,
 } from "lucide-react";
+import { Button } from "@/components/ui";
 
 // Ленивая загрузка компонента карточки
 const CategoryCard = dynamic(() => import("./category-card"), {
@@ -136,12 +137,12 @@ const PopularCategories: React.FC = () => {
                 {isLoading && (
                     <div className="text-center mt-8 text-muted-foreground">
                         <p>Загрузка категорий...</p>
-                        <button
+                        <Button
                             onClick={() => setIsLoading(false)}
                             className="mt-2 text-primary hover:underline"
                         >
                             Показать категории без анимации
-                        </button>
+                        </Button>
                     </div>
                 )}
             </div>
