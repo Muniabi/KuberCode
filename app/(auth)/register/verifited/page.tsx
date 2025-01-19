@@ -36,9 +36,9 @@ export default function Verified() {
         if (storedEmail) {
             const [name, domain] = storedEmail.split("@");
             if (name && domain) {
-                const maskedName =
-                    name.slice(0, 3) + "*".repeat(name.length - 3);
-                setMaskedEmail(`${maskedName}@${domain}`);
+                // const maskedName =
+                //     name.slice(0, 3) + "*".repeat(name.length - 3);   показ только первых 3 символов почты (не работает)
+                setMaskedEmail(`${name}@${domain}`);
             } else {
                 setMaskedEmail(storedEmail);
             }

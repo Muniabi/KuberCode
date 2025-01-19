@@ -19,6 +19,7 @@ import { Avatar, AvatarImage } from "@/components/ui";
 import { register } from "@/utils/services/Authentication";
 import PasswordInput from "@/components/ui/password-input";
 import { sendVerificationEmail } from "@/utils/services/emailService";
+import Link from "next/link";
 
 const formSchema = z.object({
     isTeacher: z.boolean({
@@ -192,13 +193,12 @@ export default function RegisterPage() {
                         </form>
                         <div className="text-center text-sm">
                             Уже есть аккаунт?{" "}
-                            <Button
-                                variant="link"
-                                className="px-0 font-normal hover:underline hover:bg-transparent"
-                                onClick={() => router.push("/login")}
+                            <Link
+                                href="/login"
+                                className="underline underline-offset-4"
                             >
                                 Войти
-                            </Button>
+                            </Link>
                         </div>
                     </CardContent>
                 </Card>
@@ -302,13 +302,12 @@ export default function RegisterPage() {
                         </form>
                         <div className="text-center text-sm">
                             Уже есть аккаунт?{" "}
-                            <Button
-                                variant="link"
-                                className="px-0 font-normal hover:no-underline"
-                                onClick={() => router.push("/login")}
+                            <Link
+                                href="/login"
+                                className="underline underline-offset-4"
                             >
                                 Войти
-                            </Button>
+                            </Link>
                         </div>
                     </CardContent>
                 </Card>
