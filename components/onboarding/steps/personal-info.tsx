@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -18,8 +17,8 @@ import { motion } from "framer-motion";
 import { useEffect, useCallback } from "react";
 
 const formSchema = z.object({
-    fullName: z.string().min(2, "Имя должно содержать минимум 2 символа"),
-    email: z.string().email("Введите корректный email"),
+    firstName: z.string().min(2, "Имя должно содержать минимум 2 символа"),
+    lastName: z.string().min(2, "Фамилия должна содержать минимум 2 символа"),
     bio: z.string().min(10, "Расскажите немного больше о себе"),
 });
 
@@ -35,8 +34,8 @@ export const PersonalInfoStep = ({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
-            fullName: "",
-            email: "",
+            firstName: "",
+            lastName: "",
             bio: "",
         },
         mode: "onChange",
@@ -62,15 +61,12 @@ export const PersonalInfoStep = ({
                 <div className="space-y-6">
                     <FormField
                         control={form.control}
-                        name="fullName"
+                        name="firstName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Полное имя</FormLabel>
+                                <FormLabel>Имя</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="Иван Иванов"
-                                        {...field}
-                                    />
+                                    <Input placeholder="Луиз" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -78,15 +74,12 @@ export const PersonalInfoStep = ({
                     />
                     <FormField
                         control={form.control}
-                        name="email"
+                        name="lastName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel>Фамилия</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="ivan@example.com"
-                                        {...field}
-                                    />
+                                    <Input placeholder="Шишиков" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -102,6 +95,7 @@ export const PersonalInfoStep = ({
                                     <Textarea
                                         placeholder="Расскажите немного о себе..."
                                         {...field}
+                                        maxLength={500}
                                     />
                                 </FormControl>
                                 <FormMessage />

@@ -1,5 +1,4 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
@@ -15,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import { Badge } from "@/components/ui/badge";
 
+// Установка динамического рендеринга
 export const dynamic = "force-dynamic";
 
 export default function Verified() {
@@ -29,6 +29,7 @@ export default function Verified() {
     const [email, setEmail] = useState<string | null>(null);
     const [maskedEmail, setMaskedEmail] = useState<string>("");
 
+    // Эффект для получения сохраненного email из localStorage
     useEffect(() => {
         const storedEmail = localStorage.getItem("pendingEmail");
         setEmail(storedEmail);
@@ -36,15 +37,17 @@ export default function Verified() {
         if (storedEmail) {
             const [name, domain] = storedEmail.split("@");
             if (name && domain) {
+                // показ только первых 3 символов почты (не работает), возможно сделаем в будущем
                 // const maskedName =
-                //     name.slice(0, 3) + "*".repeat(name.length - 3);   показ только первых 3 символов почты (не работает)
-                setMaskedEmail(`${name}@${domain}`);
+                //     name.slice(0, 3) + "*".repeat(name.length - 3);
+                setMaskedEmail(`${name}@${domain}`); // Маскируем email
             } else {
                 setMaskedEmail(storedEmail);
             }
         }
     }, []);
 
+    // Функция для повторной отправки кода подтверждения
     const handleResendCode = async () => {
         try {
             if (!email) {
@@ -77,6 +80,7 @@ export default function Verified() {
         }
     };
 
+    // Эффект для управления таймером обратного отсчета
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (countdown > 0) {
@@ -89,6 +93,7 @@ export default function Verified() {
         return () => clearInterval(timer);
     }, [countdown]);
 
+    // Функция для проверки кода подтверждения
     const verifyCode = async (inputCode: string) => {
         setIsVerifying(true);
         setError(null);
@@ -112,6 +117,7 @@ export default function Verified() {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 await register(email, password, isTeacher);
 
+                // Очистка localStorage после успешной регистрации
                 localStorage.removeItem("verificationCode");
                 localStorage.removeItem("pendingEmail");
                 localStorage.removeItem("pendingPassword");
@@ -120,7 +126,7 @@ export default function Verified() {
                 toast.success("Регистрация успешно завершена!");
 
                 setTimeout(() => {
-                    router.push("/account");
+                    router.push("/account"); // Перенаправление на страницу аккаунта
                 }, 1500);
             } else {
                 setIsError(true);
@@ -140,12 +146,14 @@ export default function Verified() {
         }
     };
 
+    // Эффект для проверки длины введенного кода
     useEffect(() => {
         if (value.length === 6) {
             verifyCode(value);
         }
     }, [value]);
 
+    // Возврат JSX для отображения интерфейса
     return (
         <div className="flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
             <motion.div
@@ -208,7 +216,7 @@ export default function Verified() {
                     </AnimatePresence>
 
                     <div className="flex flex-col items-center gap-2 px-4 sm:px-0">
-                        <p className="text-xs sm:text-sm text-gray-500">
+                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">
                             Не получили код?
                         </p>
                         <Button

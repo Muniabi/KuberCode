@@ -52,7 +52,7 @@ export const Hero3D = () => {
                         }}
                         className="absolute top-20 sm:top-40 right-20 sm:right-40 p-3 sm:p-4 bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl shadow-xl border border-black/10 dark:border-white/20"
                     >
-                        <pre className="text-[10px] sm:text-xs text-purple-600 dark:text-purple-300">
+                        <pre className="text-[14px] sm:text-sm text-purple-600 dark:text-purple-300">
                             {`function code() {
   return magic;
 }`}
@@ -70,7 +70,7 @@ export const Hero3D = () => {
                         }}
                         className="absolute bottom-10 sm:bottom-20 left-20 sm:left-40 p-3 sm:p-4 bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl shadow-xl border border-black/10 dark:border-white/20"
                     >
-                        <pre className="text-[10px] sm:text-xs text-blue-600 dark:text-blue-300">
+                        <pre className="text-[14px] sm:text-sm text-blue-600 dark:text-blue-300">
                             {`const future = {
   skills: "∞"
 };`}

@@ -68,7 +68,7 @@ const AlumniStories = () => {
                             Истории успеха
                         </h2>
                         <p className="text-xl text-muted-foreground">
-                            Выпускники, которые уже работают в ведущих компаниях
+                            Студенты, которые уже работают в ведущих компаниях
                         </p>
                     </motion.div>
                 </div>

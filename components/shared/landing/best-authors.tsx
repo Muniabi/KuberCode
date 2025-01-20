@@ -69,7 +69,7 @@ const BestAuthors = ({ className }: PopularCoursesProps) => {
     }, [api]);
 
     return (
-        <section className="relative bg-white dark:bg-zinc-900">
+        <section className="relative bg-white dark:bg-zinc-900 overflow-hidden">
             <Container className="px-4 py-16 md:py-24">
                 <div className="flex justify-between items-center mb-12 md:mb-16">
                     <h2 className="text-4xl md:text-5xl font-bold">

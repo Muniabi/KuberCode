@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { OnboardingProgress } from "./onboarding-progress";
 import { PersonalInfoStep } from "./steps/personal-info";
 import { SkillsStep } from "./steps/skills";
@@ -14,8 +13,8 @@ import { toast } from "sonner";
 
 interface OnboardingData {
     personal: {
-        fullName: string;
-        email: string;
+        firstName: string;
+        lastName: string;
         bio: string;
     } | null;
     skills: {
