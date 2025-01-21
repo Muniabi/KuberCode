@@ -28,24 +28,27 @@ interface OnboardingData {
     } | null;
 }
 
+// Определите тип для шагов
+type StepId = keyof OnboardingData;
+
 const steps = [
     {
-        id: "personal",
+        id: "personal" as StepId,
         title: "Личная информация",
         description: "Расскажите немного о себе",
     },
     {
-        id: "skills",
+        id: "skills" as StepId,
         title: "Навыки и опыт",
         description: "Ваши текущие навыки и опыт",
     },
     {
-        id: "preferences",
+        id: "preferences" as StepId,
         title: "Предпочтения",
         description: "Настройте свои предпочтения обучения",
     },
     {
-        id: "completion",
+        id: "completion" as StepId,
         title: "Завершение",
         description: "Всё готово!",
     },

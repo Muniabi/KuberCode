@@ -24,10 +24,32 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { CoursesList } from "@/components/sections/courses-list";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { MOCK_COURSES, DIRECTIONS } from "@/store/courses";
+import { MOCK_COURSES, DIRECTIONS, CourseLevel } from "@/store/courses";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+
+interface FiltersProps {
+    filters: {
+        level: CourseLevel[];
+        duration: string[];
+        price: {
+            min: number;
+            max: number;
+        };
+    };
+    setFilters: React.Dispatch<
+        React.SetStateAction<{
+            level: CourseLevel[];
+            duration: string[];
+            price: {
+                min: number;
+                max: number;
+            };
+        }>
+    >;
+    maxPrice: number;
+}
 
 const SortOptions = () => (
     <div className="flex items-center gap-2">
@@ -41,7 +63,7 @@ const SortOptions = () => (
     </div>
 );
 
-const Filters = ({ filters, setFilters, maxPrice }) => {
+const Filters: React.FC<FiltersProps> = ({ filters, setFilters, maxPrice }) => {
     const handlePriceChange = (values: number[]) => {
         setFilters((prev) => ({
             ...prev,
@@ -67,14 +89,21 @@ const Filters = ({ filters, setFilters, maxPrice }) => {
                         >
                             <Checkbox
                                 id={level}
-                                checked={filters.level.includes(level)}
+                                checked={filters.level.includes(
+                                    level as CourseLevel
+                                )}
                                 onCheckedChange={(checked) => {
                                     setFilters((prev) => ({
                                         ...prev,
                                         level: checked
-                                            ? [...prev.level, level]
+                                            ? [
+                                                  ...prev.level,
+                                                  level as CourseLevel,
+                                              ]
                                             : prev.level.filter(
-                                                  (l) => l !== level
+                                                  (l) =>
+                                                      l !==
+                                                      (level as CourseLevel)
                                               ),
                                     }));
                                 }}
@@ -187,9 +216,16 @@ const CoursesContent = () => {
     const maxCoursePrice = Math.max(
         ...MOCK_COURSES.map((course) => course.price.current)
     );
-    const [filters, setFilters] = useState({
-        level: [] as string[],
-        duration: [] as string[],
+    const [filters, setFilters] = useState<{
+        level: CourseLevel[];
+        duration: string[];
+        price: {
+            min: number;
+            max: number;
+        };
+    }>({
+        level: [],
+        duration: [],
         price: {
             min: 0,
             max: maxCoursePrice,
