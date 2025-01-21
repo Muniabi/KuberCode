@@ -4,9 +4,40 @@ import { CourseCard } from "@/components/cards/course-card";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Loader2 } from "lucide-react";
-import { MOCK_COURSES, Direction } from "@/store/courses";
+import {
+    MOCK_COURSES,
+    Direction,
+    LEVEL_MAPPING,
+    CourseLevel,
+} from "@/store/courses";
+import { Course } from "@/types/course";
 
 const ITEMS_PER_PAGE = 6;
+
+const isCourse = (course: any): course is Course => {
+    return (
+        typeof course.id === "string" &&
+        typeof course.title === "string" &&
+        typeof course.description === "string" &&
+        typeof course.image === "string" &&
+        typeof course.duration === "string" &&
+        typeof course.hasEmployment === "boolean" &&
+        typeof course.rating === "number" &&
+        typeof course.studentsCount === "number" &&
+        typeof course.completionRate === "number" &&
+        typeof course.price === "object" &&
+        typeof course.price.current === "number" &&
+        typeof course.author === "object" &&
+        typeof course.author.name === "string" &&
+        typeof course.author.role === "string" &&
+        typeof course.author.avatar === "string" &&
+        typeof course.level === "string" &&
+        typeof course.direction === "string" &&
+        Array.isArray(course.tags) &&
+        typeof course.logo === "string" &&
+        typeof course.isFree === "boolean"
+    );
+};
 
 export const CoursesList = ({
     direction,
@@ -16,7 +47,7 @@ export const CoursesList = ({
     direction?: Direction;
     searchQuery?: string;
     filters: {
-        level: string[];
+        level: CourseLevel[];
         duration: string[];
         price: {
             min: number;
@@ -24,9 +55,7 @@ export const CoursesList = ({
         };
     };
 }) => {
-    const [displayedCourses, setDisplayedCourses] = useState<
-        typeof MOCK_COURSES
-    >([]);
+    const [displayedCourses, setDisplayedCourses] = useState<Course[]>([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -99,12 +128,15 @@ export const CoursesList = ({
             const endIndex = startIndex + ITEMS_PER_PAGE;
             const newCourses = filteredCourses.slice(startIndex, endIndex);
 
-            if (newCourses.length === 0) {
+            // Используйте функцию для проверки типа
+            const validCourses = newCourses.filter(isCourse);
+
+            if (validCourses.length === 0) {
                 setHasMore(false);
                 return;
             }
 
-            setDisplayedCourses((prev) => [...prev, ...newCourses]);
+            setDisplayedCourses((prev) => [...prev, ...validCourses]);
         } finally {
             setIsLoading(false);
         }

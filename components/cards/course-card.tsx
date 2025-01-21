@@ -96,13 +96,13 @@ export const CourseCard = ({
                         <div className="flex items-center gap-2 mb-3">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 Автор:{" "}
-                                {author == "KC Team" ? (
+                                {author === "KC Team" ? (
                                     <span className="text-purple-500 ">
-                                        KC Team
+                                        {author}
                                     </span>
                                 ) : (
                                     <span className="text-black dark:text-white">
-                                        {author}
+                                        {author.name}
                                     </span>
                                 )}
                             </p>

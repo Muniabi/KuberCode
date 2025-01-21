@@ -22,6 +22,7 @@ export interface Course {
         avatar: string;
     };
     price: number;
+    direction: string;
 }
 
 export interface CourseResponse {
