@@ -456,7 +456,7 @@ const CoursesContent = () => {
                     {/* Основной контент */}
                     <div className="flex-grow">
                         <div className="flex items-center justify-between mb-6">
-                            <div className="hidden sm:block text-sm text-gray-500">
+                            <div className="hidden sm:block text-sm text-gray-600">
                                 Найдено: {MOCK_COURSES.length} курсов
                             </div>
                             <SortOptions />
