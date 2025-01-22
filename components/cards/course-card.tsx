@@ -4,10 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { LEVEL_DISPLAY } from "@/store/courses";
 
+interface Author {
+    name: string;
+    role: string;
+    avatar: string;
+}
+
 interface CourseCardProps {
     id: string;
     title: string;
-    author: string;
+    author: Author;
     level: "beginner" | "intermediate" | "advanced";
     duration: string;
     description: string;
@@ -17,7 +23,7 @@ interface CourseCardProps {
     };
     tags: string[];
     logo?: string;
-    image?: string;
+    image: string;
     isFree?: boolean;
     rating?: {
         value: number;
@@ -96,9 +102,9 @@ export const CourseCard = ({
                         <div className="flex items-center gap-2 mb-3">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 Автор:{" "}
-                                {author === "KC Team" ? (
+                                {author.name === "KC Team" ? (
                                     <span className="text-purple-500 ">
-                                        {author}
+                                        {author.name}
                                     </span>
                                 ) : (
                                     <span className="text-black dark:text-white">
