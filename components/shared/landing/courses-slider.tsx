@@ -35,7 +35,15 @@ export const CoursesSlider = () => {
             >
                 {popularCourses.map((course) => (
                     <div key={course.id} className="min-w-full px-2">
-                        <CourseCard course={course} />
+                        <CourseCard
+                            course={{
+                                ...course,
+                                isPopular: course.isPopular || false,
+                                rating: course.rating,
+                                completionRate: course.completionRate,
+                                studentsCount: course.studentsCount,
+                            }}
+                        />
                     </div>
                 ))}
             </div>

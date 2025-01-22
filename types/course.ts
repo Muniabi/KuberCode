@@ -14,6 +14,7 @@ export interface Course {
     hasEmployment: boolean;
     isPopular?: boolean;
     rating: number;
+    level: "beginner" | "intermediate" | "advanced";
     studentsCount: number;
     completionRate: number;
     author: {
@@ -21,8 +22,14 @@ export interface Course {
         role: string;
         avatar: string;
     };
-    price: number;
+    price: {
+        current: number;
+        old?: number;
+    };
     direction: string;
+    isFree: boolean;
+    tags: string[];
+    logo: string;
 }
 
 export interface CourseResponse {

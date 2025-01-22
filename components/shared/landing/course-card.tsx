@@ -27,6 +27,12 @@ interface CourseCardProps {
         logo: string;
         isFree: boolean;
         direction: string;
+        image: string;
+        rating: number;
+        hasEmployment: boolean;
+        completionRate: number;
+        studentsCount: number;
+        isPopular: boolean;
     };
 }
 

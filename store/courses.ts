@@ -48,6 +48,7 @@ export const MOCK_COURSES: Course[] = [
         logo: "",
         isFree: false,
         image: "/course-school-bg.svg",
+        isPopular: true,
     },
     {
         id: "2",
@@ -73,6 +74,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.2,
         studentsCount: 80,
         completionRate: 75,
+        isPopular: true,
     },
     {
         id: "3",
@@ -98,6 +100,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.0,
         studentsCount: 50,
         completionRate: 60,
+        isPopular: true,
     },
     {
         id: "4",
@@ -124,6 +127,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.8,
         studentsCount: 150,
         completionRate: 90,
+        isPopular: true,
     },
     {
         id: "5",
@@ -149,6 +153,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.3,
         studentsCount: 100,
         completionRate: 80,
+        isPopular: true,
     },
     {
         id: "6",
@@ -174,6 +179,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.7,
         studentsCount: 180,
         completionRate: 95,
+        isPopular: true,
     },
     {
         id: "7",
@@ -200,6 +206,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.6,
         studentsCount: 120,
         completionRate: 80,
+        isPopular: true,
     },
     {
         id: "8",
@@ -226,6 +233,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.4,
         studentsCount: 100,
         completionRate: 75,
+        isPopular: true,
     },
     {
         id: "9",
@@ -251,6 +259,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.3,
         studentsCount: 80,
         completionRate: 70,
+        isPopular: true,
     },
     {
         id: "10",
@@ -276,6 +285,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.5,
         studentsCount: 150,
         completionRate: 85,
+        isPopular: true,
     },
     {
         id: "11",
@@ -301,6 +311,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.2,
         studentsCount: 60,
         completionRate: 70,
+        isPopular: true,
     },
     {
         id: "12",
@@ -326,6 +337,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.0,
         studentsCount: 50,
         completionRate: 60,
+        isPopular: true,
     },
     {
         id: "13",
@@ -351,6 +363,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.3,
         studentsCount: 70,
         completionRate: 70,
+        isPopular: true,
     },
     {
         id: "14",
@@ -375,6 +388,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.1,
         studentsCount: 50,
         completionRate: 60,
+        isPopular: true,
     },
     {
         id: "15",
@@ -400,6 +414,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.7,
         studentsCount: 180,
         completionRate: 90,
+        isPopular: true,
     },
     {
         id: "16",
@@ -425,6 +440,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.0,
         studentsCount: 40,
         completionRate: 50,
+        isPopular: true,
     },
     {
         id: "17",
@@ -450,6 +466,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.5,
         studentsCount: 80,
         completionRate: 70,
+        isPopular: true,
     },
     {
         id: "18",
@@ -475,6 +492,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.3,
         studentsCount: 100,
         completionRate: 75,
+        isPopular: true,
     },
     {
         id: "19",
@@ -499,6 +517,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.6,
         studentsCount: 150,
         completionRate: 85,
+        isPopular: true,
     },
     {
         id: "20",
@@ -523,6 +542,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.1,
         studentsCount: 50,
         completionRate: 50,
+        isPopular: true,
     },
     {
         id: "21",
@@ -548,6 +568,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.2,
         studentsCount: 60,
         completionRate: 60,
+        isPopular: true,
     },
     {
         id: "22",
@@ -572,6 +593,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.4,
         studentsCount: 100,
         completionRate: 75,
+        isPopular: true,
     },
     {
         id: "23",
@@ -597,6 +619,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.0,
         studentsCount: 50,
         completionRate: 50,
+        isPopular: true,
     },
     {
         id: "24",
@@ -622,6 +645,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.1,
         studentsCount: 40,
         completionRate: 50,
+        isPopular: true,
     },
     {
         id: "25",
@@ -647,6 +671,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.6,
         studentsCount: 150,
         completionRate: 85,
+        isPopular: true,
     },
     {
         id: "26",
@@ -672,6 +697,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.4,
         studentsCount: 120,
         completionRate: 80,
+        isPopular: true,
     },
     {
         id: "27",
@@ -697,6 +723,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.2,
         studentsCount: 50,
         completionRate: 60,
+        isPopular: true,
     },
     {
         id: "28",
@@ -721,6 +748,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.3,
         studentsCount: 70,
         completionRate: 70,
+        isPopular: true,
     },
     {
         id: "29",
@@ -745,6 +773,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.4,
         studentsCount: 80,
         completionRate: 75,
+        isPopular: true,
     },
     {
         id: "30",
@@ -769,6 +798,7 @@ export const MOCK_COURSES: Course[] = [
         rating: 4.0,
         studentsCount: 40,
         completionRate: 50,
+        isPopular: true,
     },
 ] as const;
 
