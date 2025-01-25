@@ -62,12 +62,7 @@ export const Header: React.FC<Props> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <header
-            className={cn(
-                "w-full bg-white dark:bg-black border-b border-stone-200 dark:border-stone-200/10",
-                className
-            )}
-        >
+        <header className={cn("w-full bg-white dark:bg-black", className)}>
             <Container className="max-w-[1500px] mx-auto">
                 <div className="flex items-center justify-between py-6 px-10">
                     {/* Логотип */}

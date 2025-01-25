@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-    BookOpen,
     Calendar,
     Command,
     Frame,
@@ -15,6 +14,8 @@ import {
     Send,
     Settings,
     Users,
+    File,
+    FolderClosed,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -47,9 +48,14 @@ const data = {
             icon: Calendar,
         },
         {
+            title: "Мои курсы",
+            url: "/account/courses",
+            icon: FolderClosed,
+        },
+        {
             title: "Домашнее задание",
             url: "/account/homeworks",
-            icon: BookOpen,
+            icon: File,
         },
         {
             title: "Группы",
@@ -78,29 +84,6 @@ const data = {
             title: "Сообщения",
             url: "#",
             icon: MessageCircle,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "#",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Настройки",
-            url: "#",
-            icon: Settings,
             items: [
                 {
                     title: "General",

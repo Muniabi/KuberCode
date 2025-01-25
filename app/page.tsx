@@ -10,7 +10,7 @@ import AlumniStories from "@/components/shared/landing/alumni-stories";
 
 export default function Home() {
     return (
-        <main className="dark:bg-black">
+        <main className="">
             <MainInfoBlock />
             <div className="flex flex-col overflow-hidden">
                 <ContainerScroll

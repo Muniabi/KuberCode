@@ -27,32 +27,6 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Dark theme variables */
-[data-theme="dark"] {
-    --shadowBefore: -4px -4px 12px hsla(0, 0%, 100%, 0.05), 4px 4px 12px #000,
-        inset -22px -14px 14px 2px hsla(0, 0%, 100%, 0),
-        inset 8px 4px 20px 12px transparent;
-
-    --shadowAfter: -4px -4px 12px hsla(0, 0%, 100%, 0), 4px 4px 12px transparent,
-        inset -22px -14px 14px 2px hsla(0, 0%, 100%, 0.015),
-        inset 8px 4px 20px 12px rgba(0, 0, 0, 0.8);
-
-    --shadowDark: -4px -4px 12px hsla(0, 0%, 100%, 0.05), 4px 4px 12px #000,
-        inset -22px -14px 14px 2px hsla(0, 0%, 100%, 0),
-        inset 8px 4px 20px 12px rgba(0, 0, 0, 0.8);
-}
-
-/* Apply light shadow by default */
-.card {
-    box-shadow: var(--shadowBefore);
-    transition: box-shadow 0.3s ease;
-}
-
-/* On hover, apply the 'after' shadow */
-.card:hover {
-    box-shadow: var(--shadowAfter);
-}
-
 @layer utilities {
     .text-balance {
         text-wrap: balance;
@@ -61,8 +35,8 @@ body {
 
 @layer base {
     :root {
-        --bg-color-light: #fff;
-        --bg-color-dark: #191919;
+        --bg-color-light: #fafafa;
+        --bg-color-dark: #101011;
         --button-bg: #8948ff;
         --purple: #8948ff;
         --yellow: #ffb870;

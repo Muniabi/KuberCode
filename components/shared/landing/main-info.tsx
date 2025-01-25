@@ -57,7 +57,7 @@ export const MainInfoBlock: React.FC<Props> = ({ className }) => {
     return (
         <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20">
             {/* Фоновые элементы */}
-            <div className="absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute inset-0 -z-10 overflow-hidden  bg-[--bg-color-light] dark:bg-[--bg-color-dark]">
                 <div className="absolute top-0 -left-4 w-60 h-60 bg-purple-500/30 rounded-full blur-[100px]" />
                 <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/30 rounded-full blur-[100px]" />
             </div>

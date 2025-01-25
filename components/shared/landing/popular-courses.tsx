@@ -37,7 +37,7 @@ const stats = [
 
 const PopularCourses = () => {
     return (
-        <section className="py-12 sm:py-16 lg:py-20">
+        <section className="py-12 sm:py-16 lg:py-20  bg-[--bg-color-light] dark:bg-[--bg-color-dark]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     <div className="space-y-6 sm:space-y-8">

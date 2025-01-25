@@ -16,7 +16,7 @@ import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
 
 export default function DashboardPage() {
     // Временно для демонстрации
-    const isProfileIncomplete = true;
+    const isProfileIncomplete = false;
 
     return (
         <SidebarInset>
