@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const CoursesPage = () => {
     return (
@@ -26,7 +27,15 @@ const CoursesPage = () => {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator className="hidden md:block" />
                             <BreadcrumbItem>
-                                <BreadcrumbPage>Курсы</BreadcrumbPage>
+                                <BreadcrumbLink>
+                                    <Link href={"/account"}>
+                                        Личный кабинет
+                                    </Link>
+                                </BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator className="hidden md:block" />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Мои Курсы</BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>

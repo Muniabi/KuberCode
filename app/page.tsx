@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <main className="">
             <MainInfoBlock />
-            <div className="flex flex-col overflow-hidden">
+            {/* <div className="flex flex-col overflow-hidden">
                 <ContainerScroll
                     titleComponent={
                         <>
@@ -34,7 +34,7 @@ export default function Home() {
                         draggable={false}
                     />
                 </ContainerScroll>
-            </div>
+            </div> */}
             <PopularCourses />
             <Integrations />
             <PopularCategories />

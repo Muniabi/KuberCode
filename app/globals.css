@@ -41,6 +41,7 @@ body {
         --purple: #8948ff;
         --yellow: #ffb870;
         --bg-gray: #434343;
+        --lime: #ceff1a;
         --shadowBefore: -8px -8px 12px hsla(0, 0%, 100%, 0.8),
             8px 8px 12px rgba(0, 0, 0, 0.05),
             inset -2px -2px 4px hsla(0, 0%, 100%, 0),
@@ -175,4 +176,11 @@ body {
     to {
         transform: translateX(100%);
     }
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
 }
