@@ -58,7 +58,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
                         {tags.map((tag) => (
                             <span
                                 key={tag}
-                                className="bg-[#232529] text-white text-xs px-3 py-2 rounded-lg"
+                                className="bg-[#232529] text-white text-sm px-3 py-2 rounded-lg"
                             >
                                 {tag}
                             </span>

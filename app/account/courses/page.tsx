@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import Link from "next/link";
 
 const CoursesPage = () => {
     return (
@@ -27,15 +26,7 @@ const CoursesPage = () => {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator className="hidden md:block" />
                             <BreadcrumbItem>
-                                <BreadcrumbLink>
-                                    <Link href={"/account"}>
-                                        Личный кабинет
-                                    </Link>
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator className="hidden md:block" />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Мои Курсы</BreadcrumbPage>
+                                <BreadcrumbPage>Курсы</BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
@@ -45,7 +36,12 @@ const CoursesPage = () => {
                 <div className="flex-grow">
                     <CourseCardList />
                 </div>
-                <div className="min-h-[100vh] max-w-lg flex-1 rounded-xl bg-stone-100/50 md:min-h-min dark:bg-stone-800/50" />
+                <div className="min-h-[calc(100vh-64px)] max-w-md flex-none rounded-xl bg-stone-100/50 md:min-h-min dark:bg-stone-800/50 sticky top-0">
+                    {/* Содержимое блока */}
+                    <div className="p-4">
+                        gdfgdfgsdfgsdfgsdfggdgdfsfdggsdfgdsfg
+                    </div>
+                </div>
             </div>
         </SidebarInset>
     );
