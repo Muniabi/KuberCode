@@ -44,6 +44,55 @@ npm run build
 npm start
 ```
 
+Сборка и запуск контейнера:
+
+```
+docker build -t kuber-code-client .
+```
+
+```
+docker run -d -p 3000:3000 --name kuber-code-client kuber-code-client
+```
+
+Проверьте запущенные контейнеры:
+
+```
+docker ps
+```
+
+Посмотрите логи контейнера (если нужно):
+
+```
+docker logs -f kuber-code-client
+```
+
+Остановите контейнер:
+
+```
+docker stop kuber-code-client
+```
+
+Перезапустите контейнер:
+
+```
+docker start kuber-code-client
+```
+
+Удаление контейнера (если нужно):
+
+```
+docker rm -f kuber-code-client
+docker rmi -f kuber-code-client
+```
+
+Дополнительно: Удаление старого образа (если нужно)
+
+После пересборки новый образ займет место, но старый останется в системе. Можно удалить ненужные образы:
+
+```
+docker image prune -af
+```
+
 ## Структура проекта:
 
     •   app/ – все страницы приложения.
