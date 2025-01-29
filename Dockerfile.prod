@@ -1,0 +1,34 @@
+FROM node:20-iron AS builder
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем package.json и package-lock.json
+COPY package*.json ./
+
+# Устанавливаем зависимости
+RUN npm install --frozen-lockfile
+
+# Копируем исходный код проекта
+COPY . .
+
+# Билдим проект
+RUN npm run build
+
+# Второй этап — запуск контейнера
+FROM node:18-alpine AS runner
+WORKDIR /app
+
+# Копируем собранные файлы из builder
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+# Указываем переменную среды для production
+ENV NODE_ENV=production
+
+# Открываем порт для контейнера
+EXPOSE 3000
+
+# Запускаем Next.js приложение
+CMD ["npm", "run", "start"]
