@@ -26,28 +26,29 @@ export type Direction = (typeof DIRECTIONS)[number];
 export const MOCK_COURSES: Course[] = [
     {
         id: "1",
-        title: "Mastering Interaction Design",
+        title: "JavaScript Основы",
         author: {
-            name: "Алексей Иванов",
-            role: "Дизайнер",
-            avatar: "/avatars/alexey_ivanov.png",
+            name: "Иван Петров",
+            role: "Senior JavaScript Developer",
+            avatar: "/avatars/ivan_petrov.png",
         },
         level: "beginner",
-        direction: "Дизайн",
+        direction: "Frontend",
         duration: "32h",
         description:
-            "Погрузитесь в основы интерактивного дизайна и изучите практические приемы создания удобных интерфейсов.",
+            "Изучите основы JavaScript с нуля. Курс для начинающих разработчиков.",
         price: {
-            current: 5000,
+            current: 5900,
+            old: 7900,
         },
-        hasEmployment: true,
-        rating: 4.5,
-        studentsCount: 120,
-        completionRate: 85,
-        tags: ["Design", "UI/UX"],
-        logo: "",
+        tags: ["JavaScript", "Frontend", "Web"],
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+        image: "/course-images/javascript-basics.jpg",
         isFree: false,
-        image: "/course-school-bg.svg",
+        hasEmployment: true,
+        rating: 4.8,
+        studentsCount: 1250,
+        completionRate: 85,
         isPopular: true,
     },
     {
@@ -802,17 +803,13 @@ export const MOCK_COURSES: Course[] = [
     },
 ] as const;
 
-// Определите типы для уровней сложности
-export type CourseLevel = "Начинающий" | "Средний" | "Продвинутый";
-
-// Обновите LEVEL_MAPPING
-export const LEVEL_MAPPING: Record<CourseLevel, string> = {
+// Обновляем типы без as const
+export const LEVEL_MAPPING = {
     Начинающий: "beginner",
     Средний: "intermediate",
     Продвинутый: "advanced",
 } as const;
 
-// Обратный маппинг для отображения
 export const LEVEL_DISPLAY = {
     beginner: "Начинающий",
     intermediate: "Средний",
