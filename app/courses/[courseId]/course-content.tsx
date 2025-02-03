@@ -231,7 +231,8 @@ const CourseContent = ({ courseId }: CourseContentProps) => {
                             />
                             <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                 <span>
-                                    Пройдено: {progress?.completed || 0} из{" "}
+                                    Пройдено:{" "}
+                                    {progress?.completedLessons.length || 0} из{" "}
                                     {progress?.total || 0} уроков
                                 </span>
                                 <span>
@@ -245,7 +246,21 @@ const CourseContent = ({ courseId }: CourseContentProps) => {
                             <h3 className="text-xl font-semibold mb-4">
                                 Карта обучения
                             </h3>
-                            <Roadmap progress={progress} />
+                            {progress ? (
+                                <Roadmap
+                                    completed={progress.completedLessons.length}
+                                    total={progress.total}
+                                    currentTopic={progress.lastAccessedLesson}
+                                    nextTopic={
+                                        progress.completedModules[0] ||
+                                        "Нет следующей темы"
+                                    }
+                                />
+                            ) : (
+                                <p className="text-gray-600 dark:text-gray-400">
+                                    Загрузка прогресса...
+                                </p>
+                            )}
                         </div>
 
                         {/* Чему вы научитесь */}

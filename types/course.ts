@@ -53,6 +53,8 @@ export interface CourseProgress {
     totalProgress: number; // Процент завершения
     startedAt: string;
     lastAccessedAt: string;
+    completed?: number; // Добавлено свойство для количества завершенных уроков
+    total: number;
 }
 
 // Расширенный тип курса
@@ -84,7 +86,10 @@ export interface Course {
     image: string;
     isFree: boolean;
     hasEmployment: boolean;
-    rating?: number;
+    rating: {
+        value: number; // Рейтинг
+        count: number; // Количество отзывов
+    };
     studentsCount: number;
     completionRate: number;
     isPopular: boolean;

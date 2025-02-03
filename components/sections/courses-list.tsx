@@ -164,7 +164,10 @@ export const CoursesList = ({
                         key={course.id}
                         {...{
                             ...course,
-                            rating: { value: course.rating, count: 0 },
+                            rating: {
+                                value: course.rating?.value ?? 0,
+                                count: course.rating?.count ?? 0,
+                            },
                         }}
                     />
                 ))}

@@ -103,7 +103,12 @@ const HomeworksPage = () => {
                             Карта обучения
                         </h2>
                         <div className="rounded-xl border dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 overflow-hidden">
-                            <Roadmap progress={progress} />
+                            <Roadmap
+                                completed={progress.completed}
+                                total={progress.total}
+                                currentTopic={progress.currentTopic}
+                                nextTopic={progress.nextTopic}
+                            />
                         </div>
                     </div>
                 </div>

@@ -39,9 +39,10 @@ export const CoursesSlider = () => {
                             course={{
                                 ...course,
                                 isPopular: course.isPopular || false,
-                                rating: course.rating,
+                                rating: course.rating.value,
                                 completionRate: course.completionRate,
                                 studentsCount: course.studentsCount,
+                                logo: course.logo ?? "course-school-bg.svg",
                             }}
                         />
                     </div>

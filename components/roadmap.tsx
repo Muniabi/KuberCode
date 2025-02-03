@@ -25,12 +25,10 @@ import {
 } from "@/components/ui/dialog";
 
 interface RoadmapProps {
-    progress: {
-        completed: number;
-        total: number;
-        currentTopic: string;
-        nextTopic: string;
-    };
+    completed: number;
+    total: number;
+    currentTopic: string;
+    nextTopic: string;
 }
 
 // Компонент тултипа
@@ -545,12 +543,17 @@ const edges = [
     },
 ];
 
-const Roadmap = ({ progress }: RoadmapProps) => {
+const Roadmap = ({
+    completed,
+    total,
+    currentTopic,
+    nextTopic,
+}: RoadmapProps) => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const [scale, setScale] = useState(1);
     const [isEditing, setIsEditing] = useState(false);
     const [currentNodes, setCurrentNodes] = useState(nodes);
-    const [currentEdges, setCurrentEdges] = useState(edges);
+    const [currentEdges, setCurrentEdges] = useState<Edge[]>(edges);
     const [showViewport, setShowViewport] = useState(false);
     const [viewport, setViewport] = useState({ x: -80, y: 151, zoom: 1.22 });
 
@@ -628,13 +631,7 @@ const Roadmap = ({ progress }: RoadmapProps) => {
     const onConnect = (params: Connection) => {
         setCurrentEdges((eds) => {
             const newEdges = addEdge(params, eds);
-            return newEdges as {
-                id: string;
-                source: string;
-                target: string;
-                animated?: boolean;
-                style?: { stroke: string; strokeWidth: number };
-            }[];
+            return newEdges as Edge[];
         });
     };
 

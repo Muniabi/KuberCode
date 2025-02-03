@@ -46,7 +46,10 @@ export const MOCK_COURSES: Course[] = [
         image: "/course-images/javascript-basics.jpg",
         isFree: false,
         hasEmployment: true,
-        rating: 4.8,
+        rating: {
+            value: 4.5,
+            count: 100, // Пример количества отзывов
+        },
         studentsCount: 1250,
         completionRate: 85,
         isPopular: true,
@@ -74,7 +77,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "https://images.unsplash.com/photo-1518818608552-195ed130cdf4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         hasEmployment: true,
-        rating: 4.2,
+        rating: {
+            value: 4.2,
+            count: 80, // Пример количества отзывов
+        },
         studentsCount: 80,
         completionRate: 75,
         isPopular: true,
@@ -102,7 +108,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: true,
         image: "https://images.unsplash.com/photo-1613490900233-141c5560d75d?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         hasEmployment: true,
-        rating: 4.0,
+        rating: {
+            value: 4.0,
+            count: 50, // Пример количества отзывов
+        },
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
@@ -131,7 +140,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         hasEmployment: true,
-        rating: 4.8,
+        rating: {
+            value: 4.8,
+            count: 150, // Пример количества отзывов
+        },
         studentsCount: 150,
         completionRate: 90,
         isPopular: true,
@@ -159,7 +171,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "https://images.unsplash.com/photo-1609619385002-f40f1df9b7eb?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         hasEmployment: true,
-        rating: 4.3,
+        rating: {
+            value: 4.3,
+            count: 100, // Пример количества отзывов
+        },
         studentsCount: 100,
         completionRate: 80,
         isPopular: true,
@@ -187,7 +202,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "https://images.unsplash.com/photo-1650636353551-1275516077b6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         hasEmployment: true,
-        rating: 4.7,
+        rating: {
+            value: 4.7,
+            count: 180, // Пример количества отзывов
+        },
         studentsCount: 180,
         completionRate: 95,
         isPopular: true,
@@ -216,7 +234,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "https://images.unsplash.com/photo-1668854096791-df5455fb60ee?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         hasEmployment: true,
-        rating: 4.6,
+        rating: {
+            value: 4.6,
+            count: 120, // Пример количества отзывов
+        },
         studentsCount: 120,
         completionRate: 80,
         isPopular: true,
@@ -245,7 +266,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.4,
+        rating: {
+            value: 4.4,
+            count: 100, // Пример количества отзывов
+        },
         studentsCount: 100,
         completionRate: 75,
         isPopular: true,
@@ -273,7 +297,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.3,
+        rating: {
+            value: 4.3,
+            count: 80, // Пример количества отзывов
+        },
         studentsCount: 80,
         completionRate: 70,
         isPopular: true,
@@ -299,9 +326,12 @@ export const MOCK_COURSES: Course[] = [
         tags: ["Flutter", "Dart", "Mobile"],
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg",
         isFree: false,
-        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.5,
+        rating: {
+            value: 4.5,
+            count: 150, // Пример количества отзывов
+        },
         studentsCount: 150,
         completionRate: 85,
         isPopular: true,
@@ -329,7 +359,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.2,
+        rating: {
+            value: 4.2,
+            count: 60, // Пример количества отзывов
+        },
         studentsCount: 60,
         completionRate: 70,
         isPopular: true,
@@ -357,7 +390,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.0,
+        rating: {
+            value: 4.0,
+            count: 50, // Пример количества отзывов
+        },
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
@@ -385,7 +421,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.3,
+        rating: {
+            value: 4.3,
+            count: 70, // Пример количества отзывов
+        },
         studentsCount: 70,
         completionRate: 70,
         isPopular: true,
@@ -412,7 +451,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.1,
+        rating: {
+            value: 4.1,
+            count: 50, // Пример количества отзывов
+        },
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
@@ -440,7 +482,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.7,
+        rating: {
+            value: 4.7,
+            count: 180, // Пример количества отзывов
+        },
         studentsCount: 180,
         completionRate: 90,
         isPopular: true,
@@ -468,7 +513,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.0,
+        rating: {
+            value: 4.0,
+            count: 40, // Пример количества отзывов
+        },
         studentsCount: 40,
         completionRate: 50,
         isPopular: true,
@@ -496,7 +544,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.5,
+        rating: {
+            value: 4.5,
+            count: 80, // Пример количества отзывов
+        },
         studentsCount: 80,
         completionRate: 70,
         isPopular: true,
@@ -524,7 +575,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.3,
+        rating: {
+            value: 4.3,
+            count: 100, // Пример количества отзывов
+        },
         studentsCount: 100,
         completionRate: 75,
         isPopular: true,
@@ -551,7 +605,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.6,
+        rating: {
+            value: 4.6,
+            count: 150, // Пример количества отзывов
+        },
         studentsCount: 150,
         completionRate: 85,
         isPopular: true,
@@ -578,7 +635,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.1,
+        rating: {
+            value: 4.1,
+            count: 50, // Пример количества отзывов
+        },
         studentsCount: 50,
         completionRate: 50,
         isPopular: true,
@@ -606,7 +666,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.2,
+        rating: {
+            value: 4.2,
+            count: 60, // Пример количества отзывов
+        },
         studentsCount: 60,
         completionRate: 60,
         isPopular: true,
@@ -633,7 +696,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.4,
+        rating: {
+            value: 4.4,
+            count: 100, // Пример количества отзывов
+        },
         studentsCount: 100,
         completionRate: 75,
         isPopular: true,
@@ -661,7 +727,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.0,
+        rating: {
+            value: 4.0,
+            count: 50, // Пример количества отзывов
+        },
         studentsCount: 50,
         completionRate: 50,
         isPopular: true,
@@ -689,7 +758,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.1,
+        rating: {
+            value: 4.1,
+            count: 40, // Пример количества отзывов
+        },
         studentsCount: 40,
         completionRate: 50,
         isPopular: true,
@@ -717,7 +789,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.6,
+        rating: {
+            value: 4.6,
+            count: 150, // Пример количества отзывов
+        },
         studentsCount: 150,
         completionRate: 85,
         isPopular: true,
@@ -745,7 +820,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.4,
+        rating: {
+            value: 4.4,
+            count: 120, // Пример количества отзывов
+        },
         studentsCount: 120,
         completionRate: 80,
         isPopular: true,
@@ -773,7 +851,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.2,
+        rating: {
+            value: 4.2,
+            count: 50, // Пример количества отзывов
+        },
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
@@ -800,7 +881,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.3,
+        rating: {
+            value: 4.3,
+            count: 70, // Пример количества отзывов
+        },
         studentsCount: 70,
         completionRate: 70,
         isPopular: true,
@@ -827,7 +911,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.4,
+        rating: {
+            value: 4.4,
+            count: 80, // Пример количества отзывов
+        },
         studentsCount: 80,
         completionRate: 75,
         isPopular: true,
@@ -854,7 +941,10 @@ export const MOCK_COURSES: Course[] = [
         isFree: false,
         image: "/course-school-bg.svg",
         hasEmployment: true,
-        rating: 4.0,
+        rating: {
+            value: 4.0,
+            count: 40, // Пример количества отзывов
+        },
         studentsCount: 40,
         completionRate: 50,
         isPopular: true,
