@@ -5,31 +5,99 @@ export interface Author {
     position: string;
 }
 
-export interface Course {
+export type CourseLevel = "beginner" | "intermediate" | "advanced";
+export type CourseStatus = "not_started" | "in_progress" | "completed";
+
+// Тип для модуля курса
+export interface CourseModule {
     id: string;
     title: string;
     description: string;
-    image: string;
     duration: string;
-    hasEmployment: boolean;
-    isPopular?: boolean;
+    lessons: CourseLesson[];
+    isCompleted?: boolean;
+}
+
+// Тип для урока
+export interface CourseLesson {
+    id: string;
+    title: string;
+    duration: string;
+    type: "video" | "article" | "quiz";
+    isCompleted?: boolean;
+}
+
+// Тип для отзыва
+export interface CourseReview {
+    id: string;
+    userId: string;
+    courseId: string;
     rating: number;
-    level: "beginner" | "intermediate" | "advanced";
-    studentsCount: number;
-    completionRate: number;
+    comment: string;
+    createdAt: string;
+    user: {
+        name: string;
+        avatar: string;
+    };
+    helpful: number;
+}
+
+// Тип для прогресса обучения
+export interface CourseProgress {
+    courseId: string;
+    userId: string;
+    status: CourseStatus;
+    completedLessons: string[]; // ID завершенных уроков
+    completedModules: string[]; // ID завершенных модулей
+    lastAccessedLesson: string;
+    totalProgress: number; // Процент завершения
+    startedAt: string;
+    lastAccessedAt: string;
+}
+
+// Расширенный тип курса
+export interface Course {
+    id: string;
+    title: string;
     author: {
         name: string;
         role: string;
         avatar: string;
+        bio?: string;
+        socialLinks?: {
+            website?: string;
+            github?: string;
+            twitter?: string;
+            linkedin?: string;
+        };
     };
+    level: CourseLevel;
+    direction: string;
+    duration: string;
+    description: string;
     price: {
         current: number;
         old?: number;
     };
-    direction: string;
-    isFree: boolean;
     tags: string[];
-    logo: string;
+    logo?: string;
+    image: string;
+    isFree: boolean;
+    hasEmployment: boolean;
+    rating?: number;
+    studentsCount: number;
+    completionRate: number;
+    isPopular: boolean;
+    modules?: CourseModule[];
+    skills?: string[];
+    requirements?: string[];
+    features?: string[];
+    certificate?: {
+        available: boolean;
+        previewUrl?: string;
+    };
+    updatedAt: string;
+    language: string;
 }
 
 export interface CourseResponse {

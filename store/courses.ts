@@ -803,13 +803,17 @@ export const MOCK_COURSES: Course[] = [
     },
 ] as const;
 
-// Обновляем типы без as const
-export const LEVEL_MAPPING = {
+// Определите типы для уровней сложности
+export type CourseLevel = "Начинающий" | "Средний" | "Продвинутый";
+
+// Обновите LEVEL_MAPPING
+export const LEVEL_MAPPING: Record<CourseLevel, string> = {
     Начинающий: "beginner",
     Средний: "intermediate",
     Продвинутый: "advanced",
 } as const;
 
+// Обратный маппинг для отображения
 export const LEVEL_DISPLAY = {
     beginner: "Начинающий",
     intermediate: "Средний",

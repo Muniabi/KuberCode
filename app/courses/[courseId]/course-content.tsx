@@ -30,9 +30,16 @@ import {
     BookOpen,
     CheckCircle2,
     ArrowRight,
+    CheckCircle,
+    Lock,
 } from "lucide-react";
 import Roadmap from "@/components/roadmap";
 import { useState, useEffect } from "react";
+import { CourseReviews } from "@/components/sections/course-reviews";
+import { useCourseProgress } from "@/hooks/useCourseProgress";
+import { useCoursePurchase } from "@/hooks/useCoursePurchase";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface CourseContentProps {
     courseId: string;
@@ -40,6 +47,16 @@ interface CourseContentProps {
 
 const CourseContent = ({ courseId }: CourseContentProps) => {
     const course = MOCK_COURSES.find((c) => c.id === courseId);
+    const { toast } = useToast();
+    const userId = "user-123"; // В реальном приложении получаем из авторизации
+    const router = useRouter();
+
+    const { progress, markLessonComplete } = useCourseProgress(
+        courseId,
+        userId
+    );
+    const { purchaseCourse, isLoading: isPurchasing } = useCoursePurchase();
+    const [selectedModule, setSelectedModule] = useState<string | null>(null);
 
     if (!course) {
         notFound();
@@ -52,13 +69,8 @@ const CourseContent = ({ courseId }: CourseContentProps) => {
     );
     console.log("Requested course ID:", courseId);
 
-    const [activeTab, setActiveTab] = useState("overview");
-
-    const progress = {
-        completed: 3,
-        total: 10,
-        currentTopic: "Основы JavaScript",
-        nextTopic: "Работа с DOM",
+    const handlePurchase = () => {
+        router.push(`/courses/${courseId}/purchase`);
     };
 
     return (
@@ -132,13 +144,29 @@ const CourseContent = ({ courseId }: CourseContentProps) => {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button
-                                    size="lg"
-                                    className="bg-purple-600 hover:bg-purple-700"
-                                >
-                                    Начать обучение
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                </Button>
+                                {progress ? (
+                                    <div className="space-y-4">
+                                        <Progress
+                                            value={progress.totalProgress}
+                                            className="w-full"
+                                        />
+                                        <p className="text-sm text-gray-600">
+                                            Прогресс: {progress.totalProgress}%
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <Button
+                                        size="lg"
+                                        onClick={handlePurchase}
+                                        disabled={isPurchasing}
+                                    >
+                                        {course.isFree
+                                            ? "Начать обучение"
+                                            : `Купить за ${course.price.current.toLocaleString(
+                                                  "ru-RU"
+                                              )} ₽`}
+                                    </Button>
+                                )}
                                 <div className="text-right">
                                     {course.isFree ? (
                                         <span className="text-2xl font-bold text-green-600 dark:text-green-400">
@@ -181,26 +209,34 @@ const CourseContent = ({ courseId }: CourseContentProps) => {
 
             {/* Основной контент */}
             <Container className="px-4 py-12 sm:px-6 lg:px-8">
-                <Tabs defaultValue="overview" className="space-y-8">
+                <Tabs defaultValue="curriculum" className="space-y-8">
                     <TabsList className="w-full justify-start border-b">
-                        <TabsTrigger value="overview">Обзор</TabsTrigger>
                         <TabsTrigger value="curriculum">Программа</TabsTrigger>
-                        <TabsTrigger value="instructor">
-                            Преподаватель
-                        </TabsTrigger>
+                        <TabsTrigger value="overview">Обзор</TabsTrigger>
                         <TabsTrigger value="reviews">Отзывы</TabsTrigger>
+                        <TabsTrigger value="achievements">
+                            Достижения
+                        </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="overview" className="space-y-8">
+                    <TabsContent value="curriculum" className="space-y-8">
                         {/* Прогресс обучения */}
                         <div className="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm">
                             <h3 className="text-xl font-semibold mb-4">
                                 Прогресс обучения
                             </h3>
-                            <Progress value={30} className="mb-4" />
+                            <Progress
+                                value={progress?.totalProgress || 0}
+                                className="mb-4"
+                            />
                             <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                <span>Пройдено: 3 из 10 уроков</span>
-                                <span>30% курса завершено</span>
+                                <span>
+                                    Пройдено: {progress?.completed || 0} из{" "}
+                                    {progress?.total || 0} уроков
+                                </span>
+                                <span>
+                                    Прогресс: {progress?.totalProgress || 0}%
+                                </span>
                             </div>
                         </div>
 
@@ -236,121 +272,51 @@ const CourseContent = ({ courseId }: CourseContentProps) => {
                         </div>
                     </TabsContent>
 
-                    <TabsContent value="curriculum">
-                        <Accordion type="single" collapsible className="w-full">
-                            {[1, 2, 3].map((module) => (
-                                <AccordionItem
-                                    key={module}
-                                    value={`module-${module}`}
-                                >
-                                    <AccordionTrigger>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                                                {module}
-                                            </div>
-                                            <div className="text-left">
-                                                <h4 className="font-medium">
-                                                    Модуль {module}
-                                                </h4>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                    4 урока • 2 часа
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </AccordionTrigger>
-                                    <AccordionContent>
-                                        <div className="space-y-4 pl-12">
-                                            {[1, 2, 3, 4].map((lesson) => (
-                                                <div
-                                                    key={lesson}
-                                                    className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800"
-                                                >
-                                                    <BookOpen className="w-5 h-5 text-gray-400" />
-                                                    <div>
-                                                        <h5 className="font-medium">
-                                                            Урок {lesson}
-                                                        </h5>
-                                                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                            30 минут
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
-                    </TabsContent>
-
-                    <TabsContent value="instructor">
-                        <div className="flex items-start gap-6">
-                            <div className="relative w-32 h-32 rounded-xl overflow-hidden">
-                                <Image
-                                    src={course.author.avatar}
-                                    alt={course.author.name}
-                                    fill
-                                    className="object-cover"
-                                />
+                    <TabsContent value="overview" className="space-y-8">
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 className="text-xl font-medium mb-4">
+                                    Чему вы научитесь
+                                </h3>
+                                <ul className="space-y-2">
+                                    {course.skills?.map((skill, index) => (
+                                        <li
+                                            key={index}
+                                            className="flex items-center gap-2"
+                                        >
+                                            <CheckCircle className="w-4 h-4 text-green-500" />
+                                            <span>{skill}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                             <div>
-                                <h3 className="text-2xl font-semibold mb-2">
-                                    {course.author.name}
+                                <h3 className="text-xl font-medium mb-4">
+                                    Требования
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                                    {course.author.role}
-                                </p>
-                                <p className="text-gray-600 dark:text-gray-400">
-                                    Опытный разработчик с более чем 10-летним
-                                    стажем в индустрии. Работал в крупных
-                                    технологических компаниях и руководил
-                                    командами разработчиков. Страстно увлечен
-                                    обучением и помощью другим в освоении
-                                    программирования.
-                                </p>
+                                <ul className="space-y-2">
+                                    {course.requirements?.map(
+                                        (requirement, index) => (
+                                            <li
+                                                key={index}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <span>•</span>
+                                                <span>{requirement}</span>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
                             </div>
                         </div>
                     </TabsContent>
 
                     <TabsContent value="reviews">
-                        <div className="space-y-6">
-                            {[1, 2, 3].map((review) => (
-                                <div
-                                    key={review}
-                                    className="p-6 rounded-xl border border-gray-200 dark:border-gray-800"
-                                >
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                                            <Image
-                                                src="/avatars/placeholder.jpg"
-                                                alt="User"
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium">
-                                                Студент {review}
-                                            </h4>
-                                            <div className="flex items-center gap-1">
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <Star
-                                                        key={star}
-                                                        className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        Отличный курс! Материал подается понятно
-                                        и структурировано. Особенно понравились
-                                        практические задания и поддержка
-                                        преподавателя.
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
+                        <CourseReviews courseId={courseId} />
+                    </TabsContent>
+
+                    <TabsContent value="achievements">
+                        {/* Добавьте компонент CourseAchievements */}
                     </TabsContent>
                 </Tabs>
             </Container>
