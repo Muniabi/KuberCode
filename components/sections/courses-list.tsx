@@ -16,26 +16,11 @@ const ITEMS_PER_PAGE = 6;
 
 const isCourse = (course: any): course is Course => {
     return (
-        typeof course.id === "string" &&
-        typeof course.title === "string" &&
-        typeof course.description === "string" &&
-        typeof course.image === "string" &&
-        typeof course.duration === "string" &&
-        typeof course.hasEmployment === "boolean" &&
-        typeof course.rating === "number" &&
-        typeof course.studentsCount === "number" &&
-        typeof course.completionRate === "number" &&
-        typeof course.price === "object" &&
-        typeof course.price.current === "number" &&
-        typeof course.author === "object" &&
-        typeof course.author.name === "string" &&
-        typeof course.author.role === "string" &&
-        typeof course.author.avatar === "string" &&
-        typeof course.level === "string" &&
-        typeof course.direction === "string" &&
-        Array.isArray(course.tags) &&
-        typeof course.logo === "string" &&
-        typeof course.isFree === "boolean"
+        course &&
+        typeof course === "object" &&
+        "id" in course &&
+        "title" in course &&
+        "description" in course
     );
 };
 
@@ -122,21 +107,16 @@ export const CoursesList = ({
     const loadMoreCourses = async () => {
         setIsLoading(true);
         try {
-            await new Promise((resolve) => setTimeout(resolve, 500));
-
             const startIndex = displayedCourses.length;
             const endIndex = startIndex + ITEMS_PER_PAGE;
             const newCourses = filteredCourses.slice(startIndex, endIndex);
 
-            // Используйте функцию для проверки типа
-            const validCourses = newCourses.filter(isCourse);
-
-            if (validCourses.length === 0) {
+            if (newCourses.length === 0) {
                 setHasMore(false);
                 return;
             }
 
-            setDisplayedCourses((prev) => [...prev, ...validCourses]);
+            setDisplayedCourses((prev) => [...prev, ...newCourses]);
         } finally {
             setIsLoading(false);
         }
@@ -144,6 +124,7 @@ export const CoursesList = ({
 
     // Сброс при изменении фильтров
     useEffect(() => {
+        loadMoreCourses();
         setDisplayedCourses([]);
         setPage(1);
         setHasMore(true);
@@ -155,6 +136,11 @@ export const CoursesList = ({
             loadMoreCourses();
         }
     }, [inView, isLoading, hasMore]);
+
+    // Добавьте этот эффект для начальной загрузки
+    useEffect(() => {
+        loadMoreCourses();
+    }, []); // Пустой массив зависимостей для однократного выполнения
 
     return (
         <div className="space-y-6">

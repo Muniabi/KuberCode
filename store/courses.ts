@@ -30,7 +30,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Иван Петров",
             role: "Senior JavaScript Developer",
-            avatar: "/avatars/ivan_petrov.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "Frontend",
@@ -62,7 +62,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Мария Петрова",
             role: "Data Scientist",
-            avatar: "/avatars/maria_petrova.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Аналитика",
@@ -93,7 +93,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Дмитрий Сидоров",
             role: "Frontend Developer",
-            avatar: "/avatars/dmitry_sidorov.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "Программирование",
@@ -124,7 +124,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Игорь Смирнов",
             role: "Senior Developer",
-            avatar: "/avatars/igor_smirnov.png",
+            avatar: "avatar2.png",
         },
         level: "advanced",
         direction: "Программирование",
@@ -156,7 +156,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Анна Королева",
             role: "Графический дизайнер",
-            avatar: "/avatars/anna_koroleva.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Дизайн",
@@ -187,7 +187,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Павел Волков",
             role: "iOS Developer",
-            avatar: "/avatars/pavel_volkov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Мобильная разработка",
@@ -218,7 +218,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Артем Соколов",
             role: "DevOps Engineer",
-            avatar: "/avatars/artem_sokolov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "DevOps",
@@ -250,7 +250,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Максим Чернов",
             role: "Backend Developer",
-            avatar: "/avatars/maxim_chernov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Backend",
@@ -282,7 +282,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Елена Васильева",
             role: "Backend Developer",
-            avatar: "/avatars/elena_vasileva.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Backend",
@@ -313,7 +313,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Андрей Козлов",
             role: "Mobile Developer",
-            avatar: "/avatars/andrey_kozlov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Мобильная разработка",
@@ -344,7 +344,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Ольга Новикова",
             role: "Database Administrator",
-            avatar: "/avatars/olga_novikova.png",
+            avatar: "avatar2.png",
         },
         level: "advanced",
         direction: "Базы данных",
@@ -375,7 +375,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Сергей Белов",
             role: "QA Engineer",
-            avatar: "/avatars/sergey_belov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "QA",
@@ -406,7 +406,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Николай Морозов",
             role: "Cybersecurity Expert",
-            avatar: "/avatars/nikolai_morozov.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "Кибербезопасность",
@@ -437,7 +437,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Марина Светлова",
             role: "3D Artist",
-            avatar: "/avatars/marina_svetlova.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "3D Modeling",
@@ -467,7 +467,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Виктор Громов",
             role: "Game Developer",
-            avatar: "/avatars/viktor_gromov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Game Dev",
@@ -498,7 +498,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Александр Кузнецов",
             role: "Data Scientist",
-            avatar: "/avatars/alexander_kuznetsov.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "Аналитика",
@@ -529,7 +529,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Екатерина Смирнова",
             role: "Frontend Developer",
-            avatar: "/avatars/ekaterina_smirnova.png",
+            avatar: "avatar2.png",
         },
         level: "advanced",
         direction: "Frontend",
@@ -560,7 +560,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Сергей Петров",
             role: "Cloud Engineer",
-            avatar: "/avatars/sergey_petrov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "DevOps",
@@ -591,7 +591,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Андрей Сидоров",
             role: "Game Developer",
-            avatar: "/avatars/andrey_sidorov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Game Dev",
@@ -621,7 +621,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Мария Коваленко",
             role: "Digital Marketer",
-            avatar: "/avatars/maria_kovalenko.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Маркетинг",
@@ -651,7 +651,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Иван Громов",
             role: "Blockchain Developer",
-            avatar: "/avatars/ivan_gromov.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "Blockchain",
@@ -682,7 +682,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Ольга Васильева",
             role: "Cybersecurity Specialist",
-            avatar: "/avatars/olga_vasileva.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Кибербезопасность",
@@ -712,7 +712,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Алексей Федоров",
             role: "Data Analyst",
-            avatar: "/avatars/alexey_fedorov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Аналитика",
@@ -743,7 +743,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Светлана Петрова",
             role: "AI Researcher",
-            avatar: "/avatars/svetlana_petrova.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "AI",
@@ -774,7 +774,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Дмитрий Кузнецов",
             role: "Web Developer",
-            avatar: "/avatars/dmitry_kuznetsov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Web Development",
@@ -805,7 +805,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Анастасия Смирнова",
             role: "Mobile Developer",
-            avatar: "/avatars/anastasia_smirnova.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Мобильная разработка",
@@ -836,7 +836,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Игорь Сидоров",
             role: "SEO Specialist",
-            avatar: "/avatars/igor_sidorov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Маркетинг",
@@ -867,7 +867,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Александр Громов",
             role: "VR Developer",
-            avatar: "/avatars/alexander_gromov.png",
+            avatar: "avatar2.png",
         },
         level: "beginner",
         direction: "VR",
@@ -897,7 +897,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Николай Морозов",
             role: "Cybersecurity Expert",
-            avatar: "/avatars/nikolai_morozov.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Кибербезопасность",
@@ -927,7 +927,7 @@ export const MOCK_COURSES: Course[] = [
         author: {
             name: "Елена Васильева",
             role: "Data Analyst",
-            avatar: "/avatars/elena_vasileva.png",
+            avatar: "avatar2.png",
         },
         level: "intermediate",
         direction: "Аналитика",
