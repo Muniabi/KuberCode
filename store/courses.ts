@@ -50,6 +50,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 1250,
         completionRate: 85,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "2",
@@ -76,6 +78,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 80,
         completionRate: 75,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "3",
@@ -102,6 +106,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "4",
@@ -129,6 +135,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 150,
         completionRate: 90,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "5",
@@ -155,6 +163,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 100,
         completionRate: 80,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "6",
@@ -181,6 +191,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 180,
         completionRate: 95,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "7",
@@ -208,6 +220,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 120,
         completionRate: 80,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "8",
@@ -235,6 +249,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 100,
         completionRate: 75,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "9",
@@ -261,6 +277,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 80,
         completionRate: 70,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "10",
@@ -287,6 +305,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 150,
         completionRate: 85,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "11",
@@ -313,6 +333,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 60,
         completionRate: 70,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "12",
@@ -339,6 +361,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "13",
@@ -365,6 +389,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 70,
         completionRate: 70,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "14",
@@ -390,6 +416,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "15",
@@ -416,6 +444,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 180,
         completionRate: 90,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "16",
@@ -442,6 +472,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 40,
         completionRate: 50,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "17",
@@ -468,6 +500,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 80,
         completionRate: 70,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "18",
@@ -494,6 +528,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 100,
         completionRate: 75,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "19",
@@ -519,6 +555,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 150,
         completionRate: 85,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "20",
@@ -544,6 +582,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 50,
         completionRate: 50,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "21",
@@ -570,6 +610,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 60,
         completionRate: 60,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "22",
@@ -595,6 +637,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 100,
         completionRate: 75,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "23",
@@ -621,6 +665,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 50,
         completionRate: 50,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "24",
@@ -647,6 +693,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 40,
         completionRate: 50,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "25",
@@ -673,6 +721,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 150,
         completionRate: 85,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "26",
@@ -699,6 +749,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 120,
         completionRate: 80,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "27",
@@ -725,6 +777,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 50,
         completionRate: 60,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "28",
@@ -750,6 +804,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 70,
         completionRate: 70,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "29",
@@ -775,6 +831,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 80,
         completionRate: 75,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
     {
         id: "30",
@@ -800,6 +858,8 @@ export const MOCK_COURSES: Course[] = [
         studentsCount: 40,
         completionRate: 50,
         isPopular: true,
+        updatedAt: "",
+        language: "",
     },
 ] as const;
 
