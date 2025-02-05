@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactFlow, {
     Background,
     Controls,
@@ -556,6 +556,8 @@ const Roadmap = ({
     const [currentEdges, setCurrentEdges] = useState<Edge[]>(edges);
     const [showViewport, setShowViewport] = useState(false);
     const [viewport, setViewport] = useState({ x: -80, y: 151, zoom: 1.22 });
+    const reactFlowWrapper = useRef(null);
+    const reactFlowInstance = useRef(null);
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -585,6 +587,16 @@ const Roadmap = ({
         window.addEventListener("resize", updateDimensions);
         return () => window.removeEventListener("resize", updateDimensions);
     }, []);
+
+    useEffect(() => {
+        if (reactFlowInstance.current) {
+            // Автоматически перемещаем вид к первой ноде
+            const firstNode = currentNodes[0];
+            if (firstNode) {
+                reactFlowInstance.current.fitView({ padding: 0.1 });
+            }
+        }
+    }, [currentNodes]);
 
     const onNodesChange = (changes: any) => {
         setCurrentNodes((nds) => {
@@ -669,7 +681,7 @@ const Roadmap = ({
     };
 
     return (
-        <div className="relative">
+        <div className="relative" ref={reactFlowWrapper}>
             {/* Кнопки управления */}
             <div className="absolute top-0 right-0 z-10 flex gap-2 m-4">
                 {!isEditing ? (
@@ -790,6 +802,9 @@ const Roadmap = ({
                         nodesDraggable={isEditing}
                         nodesConnectable={isEditing}
                         elementsSelectable={isEditing}
+                        onLoad={(instance) =>
+                            (reactFlowInstance.current = instance)
+                        }
                     >
                         {isEditing && (
                             <>

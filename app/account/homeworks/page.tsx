@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Roadmap from "@/components/roadmap";
+import SimpleRoadmap from "@/components/SimpleRoadmap";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -21,12 +23,22 @@ const HomeworksPage = () => {
         nextTopic: "Логические значения",
     });
 
+    const isMobile = useIsMobile();
+
     // В реальном приложении здесь будет запрос к API
     useEffect(() => {
         // fetchProgress().then(setProgress);
     }, []);
 
     const progressPercentage = (progress.completed / progress.total) * 100;
+
+    const topics = [
+        { label: "Основы", completed: true },
+        { label: "Числа", completed: true },
+        { label: "Операторы", completed: true },
+        { label: "Строки", completed: false },
+        { label: "Логические значения", completed: false },
+    ];
 
     return (
         <SidebarInset>
@@ -103,12 +115,16 @@ const HomeworksPage = () => {
                             Карта обучения
                         </h2>
                         <div className="rounded-xl border dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 overflow-hidden">
-                            <Roadmap
-                                completed={progress.completed}
-                                total={progress.total}
-                                currentTopic={progress.currentTopic}
-                                nextTopic={progress.nextTopic}
-                            />
+                            {isMobile ? (
+                                <SimpleRoadmap topics={topics} />
+                            ) : (
+                                <Roadmap
+                                    completed={progress.completed}
+                                    total={progress.total}
+                                    currentTopic={progress.currentTopic}
+                                    nextTopic={progress.nextTopic}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
