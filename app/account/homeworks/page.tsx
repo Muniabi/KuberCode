@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Roadmap from "@/components/roadmap";
-import SimpleRoadmap from "@/components/SimpleRoadmap";
+import { ReactFlowProvider } from "reactflow";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
     Breadcrumb,
@@ -115,16 +115,18 @@ const HomeworksPage = () => {
                             Карта обучения
                         </h2>
                         <div className="rounded-xl border dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 overflow-hidden">
-                            {isMobile ? (
-                                <SimpleRoadmap topics={topics} />
-                            ) : (
-                                <Roadmap
-                                    completed={progress.completed}
-                                    total={progress.total}
-                                    currentTopic={progress.currentTopic}
-                                    nextTopic={progress.nextTopic}
-                                />
-                            )}
+                            <ReactFlowProvider>
+                                {isMobile ? (
+                                    <SimpleRoadmap topics={topics} />
+                                ) : (
+                                    <Roadmap
+                                        completed={progress.completed}
+                                        total={progress.total}
+                                        currentTopic={progress.currentTopic}
+                                        nextTopic={progress.nextTopic}
+                                    />
+                                )}
+                            </ReactFlowProvider>
                         </div>
                     </div>
                 </div>

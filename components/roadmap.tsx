@@ -13,6 +13,8 @@ import ReactFlow, {
     Edge,
     useViewport,
     ReactFlowInstance,
+    useReactFlow,
+    ReactFlowProvider,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import Link from "next/link";
@@ -552,13 +554,13 @@ const Roadmap = ({
 }: RoadmapProps) => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const [scale, setScale] = useState(1);
-    const [isEditing, setIsEditing] = useState(false);
     const [currentNodes, setCurrentNodes] = useState(nodes);
     const [currentEdges, setCurrentEdges] = useState<Edge[]>(edges);
     const [showViewport, setShowViewport] = useState(false);
     const [viewport, setViewport] = useState({ x: -80, y: 151, zoom: 1.22 });
     const reactFlowWrapper = useRef<HTMLDivElement | null>(null);
     const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
+    const { fitView } = useReactFlow();
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -591,38 +593,9 @@ const Roadmap = ({
 
     useEffect(() => {
         if (reactFlowInstance.current) {
-            const firstNode = currentNodes[0];
-            if (firstNode) {
-                reactFlowInstance.current.fitView({ padding: 0.1 });
-            }
+            reactFlowInstance.current.fitView({ padding: 0.1 });
         }
     }, [currentNodes]);
-
-    const onNodesChange = (changes: any) => {
-        setCurrentNodes((nds) => {
-            const updatedNodes = [...nds];
-            changes.forEach((change: any) => {
-                const nodeIndex = updatedNodes.findIndex(
-                    (n) => n.id === change.id
-                );
-                if (nodeIndex !== -1) {
-                    if (change.type === "position" && change.position) {
-                        updatedNodes[nodeIndex] = {
-                            ...updatedNodes[nodeIndex],
-                            position: change.position,
-                        };
-                    } else {
-                        // Обрабатываем другие типы изменений
-                        updatedNodes[nodeIndex] = {
-                            ...updatedNodes[nodeIndex],
-                            ...change,
-                        };
-                    }
-                }
-            });
-            return updatedNodes;
-        });
-    };
 
     const onEdgesChange = (changes: any) => {
         setCurrentEdges((eds) => {
@@ -645,12 +618,6 @@ const Roadmap = ({
             const newEdges = addEdge(params, eds);
             return newEdges as Edge[];
         });
-    };
-
-    const handleSave = () => {
-        console.log("Nodes:", currentNodes);
-        console.log("Edges:", currentEdges);
-        setIsEditing(false);
     };
 
     const exportToJson = () => {
@@ -681,10 +648,10 @@ const Roadmap = ({
     };
 
     return (
-        <div className="relative" ref={reactFlowWrapper}>
-            {/* Кнопки управления */}
-            <div className="absolute top-0 right-0 z-10 flex gap-2 m-4">
-                {!isEditing ? (
+        <ReactFlowProvider>
+            <div className="relative" ref={reactFlowWrapper}>
+                {/* Кнопки управления */}
+                <div className="absolute top-0 right-0 z-10 flex gap-2 m-4">
                     <>
                         <Button
                             onClick={() => setShowViewport(true)}
@@ -702,121 +669,89 @@ const Roadmap = ({
                             <Download size={16} />
                             Экспорт JSON
                         </Button>
-                        <Button
-                            onClick={() => setIsEditing(true)}
-                            variant="outline"
-                        >
-                            Редактировать
-                        </Button>
                     </>
-                ) : (
-                    <>
-                        <Button
-                            onClick={() => {
-                                setCurrentNodes(nodes);
-                                setCurrentEdges(edges);
-                                setIsEditing(false);
-                            }}
-                            variant="outline"
-                        >
-                            Отменить
-                        </Button>
-                        <Button onClick={handleSave} variant="default">
-                            Сохранить
-                        </Button>
-                    </>
-                )}
-            </div>
+                </div>
 
-            {/* Диалоговое окно с параметрами */}
-            <Dialog open={showViewport} onOpenChange={setShowViewport}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Параметры отображения карты</DialogTitle>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col gap-2">
-                                <span className="text-sm font-medium">
-                                    Позиция X:
-                                </span>
-                                <code className="rounded bg-muted px-2 py-1">
-                                    {viewport.x}
-                                </code>
+                {/* Диалоговое окно с параметрами */}
+                <Dialog open={showViewport} onOpenChange={setShowViewport}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>
+                                Параметры отображения карты
+                            </DialogTitle>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-sm font-medium">
+                                        Позиция X:
+                                    </span>
+                                    <code className="rounded bg-muted px-2 py-1">
+                                        {viewport.x}
+                                    </code>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-sm font-medium">
+                                        Позиция Y:
+                                    </span>
+                                    <code className="rounded bg-muted px-2 py-1">
+                                        {viewport.y}
+                                    </code>
+                                </div>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <span className="text-sm font-medium">
-                                    Позиция Y:
+                                    Масштаб:
                                 </span>
                                 <code className="rounded bg-muted px-2 py-1">
-                                    {viewport.y}
+                                    {viewport.zoom}x
                                 </code>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <span className="text-sm font-medium">
-                                Масштаб:
-                            </span>
-                            <code className="rounded bg-muted px-2 py-1">
-                                {viewport.zoom}x
-                            </code>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+                    </DialogContent>
+                </Dialog>
 
-            <div className="roadmap-container w-full overflow-x-auto">
-                <div
-                    style={{
-                        width: dimensions.width,
-                        height: dimensions.height,
-                        // transform: `scale(${scale})`,
-                        transformOrigin: "top left",
-                    }}
-                >
-                    <ReactFlow
-                        nodes={currentNodes}
-                        edges={currentEdges}
-                        nodeTypes={nodeTypes}
-                        fitView={false}
-                        panOnScroll={true}
-                        zoomOnScroll={true}
-                        zoomOnPinch={true}
-                        panOnDrag={isEditing}
-                        preventScrolling={false}
-                        zoomOnDoubleClick={isEditing}
-                        minZoom={0.5}
-                        maxZoom={2}
-                        defaultViewport={viewport}
-                        style={{ background: "transparent" }}
-                        proOptions={{ hideAttribution: true }}
-                        onNodesChange={isEditing ? onNodesChange : undefined}
-                        onEdgesChange={isEditing ? onEdgesChange : undefined}
-                        onConnect={isEditing ? onConnect : undefined}
-                        deleteKeyCode={["Backspace", "Delete"]}
-                        onMoveEnd={onMoveEnd}
-                        fitViewOptions={{
-                            padding: 0.2,
-                            includeHiddenNodes: true,
+                <div className="roadmap-container w-full overflow-x-auto">
+                    <div
+                        style={{
+                            width: dimensions.width,
+                            height: dimensions.height,
+                            // transform: `scale(${scale})`,
+                            transformOrigin: "top left",
                         }}
-                        nodesDraggable={isEditing}
-                        nodesConnectable={isEditing}
-                        elementsSelectable={isEditing}
-                        // onLoad={(instance) => {
-                        //     reactFlowInstance.current = instance;
-                        //     instance.fitView({ padding: 0.1 });
-                        // }}
                     >
-                        {isEditing && (
-                            <>
-                                <Background />
-                                <Controls />
-                            </>
-                        )}
-                    </ReactFlow>
+                        <ReactFlow
+                            nodes={currentNodes}
+                            edges={currentEdges}
+                            nodeTypes={nodeTypes}
+                            fitView={true}
+                            panOnScroll={false}
+                            zoomOnScroll={true}
+                            zoomOnPinch={true}
+                            panOnDrag={true}
+                            preventScrolling={true}
+                            zoomOnDoubleClick={true}
+                            minZoom={0.7}
+                            maxZoom={2}
+                            defaultViewport={viewport}
+                            style={{ background: "transparent" }}
+                            proOptions={{ hideAttribution: true }}
+                            onEdgesChange={onEdgesChange}
+                            onConnect={onConnect}
+                            deleteKeyCode={["Backspace", "Delete"]}
+                            onMoveEnd={onMoveEnd}
+                            fitViewOptions={{
+                                padding: 0.2,
+                                includeHiddenNodes: true,
+                            }}
+                            nodesDraggable={false}
+                            nodesConnectable={false}
+                            elementsSelectable={false}
+                        ></ReactFlow>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ReactFlowProvider>
     );
 };
 
