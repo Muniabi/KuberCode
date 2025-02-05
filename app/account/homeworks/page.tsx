@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import SimpleRoadmap from "@/components/SimpleRoadmap";
 
 const HomeworksPage = () => {
     const [progress, setProgress] = useState({
