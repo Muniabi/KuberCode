@@ -12,6 +12,7 @@ import ReactFlow, {
     Connection,
     Edge,
     useViewport,
+    ReactFlowInstance,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import Link from "next/link";
@@ -556,8 +557,8 @@ const Roadmap = ({
     const [currentEdges, setCurrentEdges] = useState<Edge[]>(edges);
     const [showViewport, setShowViewport] = useState(false);
     const [viewport, setViewport] = useState({ x: -80, y: 151, zoom: 1.22 });
-    const reactFlowWrapper = useRef(null);
-    const reactFlowInstance = useRef(null);
+    const reactFlowWrapper = useRef<HTMLDivElement | null>(null);
+    const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -590,7 +591,6 @@ const Roadmap = ({
 
     useEffect(() => {
         if (reactFlowInstance.current) {
-            // Автоматически перемещаем вид к первой ноде
             const firstNode = currentNodes[0];
             if (firstNode) {
                 reactFlowInstance.current.fitView({ padding: 0.1 });
@@ -779,11 +779,11 @@ const Roadmap = ({
                         edges={currentEdges}
                         nodeTypes={nodeTypes}
                         fitView={false}
-                        panOnScroll={isEditing}
-                        zoomOnScroll={isEditing}
+                        panOnScroll={true}
+                        zoomOnScroll={true}
+                        zoomOnPinch={true}
                         panOnDrag={isEditing}
                         preventScrolling={false}
-                        zoomOnPinch={isEditing}
                         zoomOnDoubleClick={isEditing}
                         minZoom={0.5}
                         maxZoom={2}
@@ -802,9 +802,10 @@ const Roadmap = ({
                         nodesDraggable={isEditing}
                         nodesConnectable={isEditing}
                         elementsSelectable={isEditing}
-                        onLoad={(instance) =>
-                            (reactFlowInstance.current = instance)
-                        }
+                        // onLoad={(instance) => {
+                        //     reactFlowInstance.current = instance;
+                        //     instance.fitView({ padding: 0.1 });
+                        // }}
                     >
                         {isEditing && (
                             <>
