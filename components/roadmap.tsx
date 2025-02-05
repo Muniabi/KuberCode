@@ -670,6 +670,7 @@ const Roadmap = ({
 
     return (
         <div className="relative">
+            {/* Кнопки управления */}
             <div className="absolute top-0 right-0 z-10 flex gap-2 m-4">
                 {!isEditing ? (
                     <>
@@ -757,7 +758,7 @@ const Roadmap = ({
                     style={{
                         width: dimensions.width,
                         height: dimensions.height,
-                        transform: `scale(${scale})`,
+                        // transform: `scale(${scale})`,
                         transformOrigin: "top left",
                     }}
                 >
