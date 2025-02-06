@@ -221,7 +221,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                             "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
                                             "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
                                         )}
-                                        href="/"
+                                        href="/media"
                                     >
                                         Медиа
                                     </Link>
@@ -311,7 +311,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                         </div>
 
                                         <Link
-                                            href="/"
+                                            href="/media"
                                             className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
                                             onClick={() => setIsOpen(false)}
                                         >
