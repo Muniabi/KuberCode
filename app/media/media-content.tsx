@@ -12,6 +12,7 @@ import { BookText, Podcast, PlayCircle, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ComponentPropsWithoutRef } from "react";
 import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const tabs = [
     {
@@ -50,17 +51,28 @@ type CustomTabsTriggerProps = ComponentPropsWithoutRef<typeof TabsTrigger> & {
 };
 
 const MediaContent = () => {
-    const [activeTab, setActiveTab] = useState("blog");
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const defaultTab = searchParams.get("tab") || "blog";
+    const videoId = searchParams.get("videoId");
+
+    const handleTabChange = (value: string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("tab", value);
+        // Удаляем videoId при смене таба
+        params.delete("videoId");
+        router.push(`/media?${params.toString()}`, { scroll: false });
+    };
 
     return (
         <main className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-zinc-900 dark:to-black">
             <MediaHero />
 
-            <Container className="p-12">
+            <Container className="py-8 mx-4">
                 <Tabs
-                    defaultValue="blog"
+                    defaultValue={defaultTab}
                     className="w-full"
-                    onValueChange={setActiveTab}
+                    onValueChange={handleTabChange}
                 >
                     <div className="flex justify-center w-full mb-8">
                         <TabsList className="w-full max-w-2xl bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-2 rounded-2xl">
@@ -84,7 +96,7 @@ const MediaContent = () => {
                                             initial={false}
                                             animate={{
                                                 scale:
-                                                    activeTab === tab.value
+                                                    defaultTab === tab.value
                                                         ? 1.05
                                                         : 1,
                                             }}
@@ -123,7 +135,7 @@ const MediaContent = () => {
                         <PodcastSection />
                     </TabsContent>
                     <TabsContent value="video">
-                        <VideoSection />
+                        <VideoSection initialVideoId={videoId} />
                     </TabsContent>
                     <TabsContent value="digest">
                         <DigestSection />

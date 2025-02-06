@@ -6,6 +6,10 @@ export const metadata: Metadata = {
     description: "Блог, подкасты и видео об IT и программировании",
 };
 
-export default function MediaPage() {
+export default function MediaPage({
+    searchParams,
+}: {
+    searchParams: { tab?: string };
+}) {
     return <MediaContent />;
 }
