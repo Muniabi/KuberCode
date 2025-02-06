@@ -9,7 +9,7 @@ COPY package*.json ./
 # Устанавливаем зависимости
 RUN npm install --frozen-lockfile
 
-# Копируем исходный код проекта
+# Копируем весь проект, включая папку public
 COPY . .
 
 # Билдим проект
@@ -19,10 +19,13 @@ RUN npm run build
 FROM node:22.9.0-alpine AS runner
 WORKDIR /app
 
-# Копируем собранные файлы из builder
+# Копируем собранные файлы и зависимости
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+
+# Копируем папку public целиком
+COPY --from=builder /app/public ./public
 
 # Указываем переменную среды для production
 ENV NODE_ENV=production
