@@ -22,7 +22,7 @@ const tabs = [
         shadowColor: "shadow-purple-500/25",
     },
     {
-        value: "podcasts",
+        value: "podcast",
         label: "Подкасты",
         icon: Podcast,
         color: "from-blue-500 to-cyan-500",
@@ -56,87 +56,75 @@ const MediaContent = () => {
         <main className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-zinc-900 dark:to-black">
             <MediaHero />
 
-            <Container className="py-12">
+            <Container className="p-12">
                 <Tabs
                     defaultValue="blog"
                     className="w-full"
                     onValueChange={setActiveTab}
                 >
-                    <TabsList className="w-full justify-start mb-8 bg-transparent border-none">
-                        <div className="flex flex-wrap gap-2 md:gap-4">
-                            {tabs.map((tab) => (
-                                <TabsTrigger
-                                    key={tab.value}
-                                    value={tab.value}
-                                    className="group relative"
-                                >
-                                    <motion.div
-                                        className={cn(
-                                            "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer",
-                                            "transition-all duration-300",
-                                            "[data-state=active]&:bg-gradient-to-r [data-state=active]&:shadow-lg " +
-                                                tab.color +
-                                                " " +
-                                                tab.shadowColor,
-                                            "[data-state=inactive]&:bg-white/80 [data-state=inactive]&:dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-800"
-                                        )}
-                                        initial={false}
-                                        animate={{
-                                            scale:
-                                                activeTab === tab.value
-                                                    ? 1.05
-                                                    : 1,
-                                        }}
-                                        transition={{
-                                            type: "spring",
-                                            bounce: 0.3,
-                                        }}
+                    <div className="flex justify-center w-full mb-8">
+                        <TabsList className="w-full max-w-2xl bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-2 rounded-2xl">
+                            <div className="flex justify-center gap-2 w-full">
+                                {tabs.map((tab) => (
+                                    <TabsTrigger
+                                        key={tab.value}
+                                        value={tab.value}
+                                        className="group relative"
                                     >
-                                        <tab.icon
-                                            className={cn(
-                                                "w-5 h-5 transition-colors",
-                                                "[data-state=active]&:text-white",
-                                                "[data-state=inactive]&:text-gray-600 [data-state=inactive]&:dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                            )}
-                                        />
-                                        <span
-                                            className={cn(
-                                                "font-medium transition-colors",
-                                                "[data-state=active]&:text-white",
-                                                "[data-state=inactive]&:text-gray-600 [data-state=inactive]&:dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                            )}
-                                        >
-                                            {tab.label}
-                                        </span>
-
                                         <motion.div
-                                            className="absolute -bottom-1 left-2 right-2 h-0.5 bg-white rounded-full"
-                                            layoutId="activeTab"
+                                            className={cn(
+                                                "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer",
+                                                "transition-all duration-300",
+                                                "[data-state=active]&:bg-gradient-to-r [data-state=active]&:shadow-lg " +
+                                                    tab.color +
+                                                    " " +
+                                                    tab.shadowColor,
+                                                "[data-state=inactive]&:hover:bg-white dark:[data-state=inactive]&:hover:bg-zinc-700"
+                                            )}
                                             initial={false}
+                                            animate={{
+                                                scale:
+                                                    activeTab === tab.value
+                                                        ? 1.05
+                                                        : 1,
+                                            }}
                                             transition={{
                                                 type: "spring",
                                                 bounce: 0.3,
-                                                duration: 0.6,
                                             }}
-                                        />
-                                    </motion.div>
-                                </TabsTrigger>
-                            ))}
-                        </div>
-                    </TabsList>
+                                        >
+                                            <tab.icon
+                                                className={cn(
+                                                    "w-4 h-4",
+                                                    "[data-state=active]&:text-white",
+                                                    "[data-state=inactive]&:text-gray-600 dark:[data-state=inactive]&:text-gray-400"
+                                                )}
+                                            />
+                                            <span
+                                                className={cn(
+                                                    "hidden sm:block text-sm font-medium",
+                                                    "[data-state=active]&:text-white",
+                                                    "[data-state=inactive]&:text-gray-600 dark:[data-state=inactive]&:text-gray-400"
+                                                )}
+                                            >
+                                                {tab.label}
+                                            </span>
+                                        </motion.div>
+                                    </TabsTrigger>
+                                ))}
+                            </div>
+                        </TabsList>
+                    </div>
 
                     <TabsContent value="blog">
                         <BlogSection />
                     </TabsContent>
-
-                    <TabsContent value="podcasts">
+                    <TabsContent value="podcast">
                         <PodcastSection />
                     </TabsContent>
-
                     <TabsContent value="video">
                         <VideoSection />
                     </TabsContent>
-
                     <TabsContent value="digest">
                         <DigestSection />
                     </TabsContent>
