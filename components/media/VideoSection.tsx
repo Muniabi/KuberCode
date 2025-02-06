@@ -1,13 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { videos } from "@/lib/data/videos";
@@ -54,7 +47,7 @@ const formatViews = (views: number): string => {
     return views.toString();
 };
 
-export const VideoSection = () => {
+export const VideoSection = ({ initialVideoId }: VideoSectionProps) => {
     return (
         <motion.div
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import MediaContent from "./media-content";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Kuber Code | Медиа",
@@ -11,5 +12,9 @@ export default function MediaPage({
 }: {
     searchParams: { tab?: string };
 }) {
-    return <MediaContent />;
+    return (
+        <Suspense>
+            <MediaContent />
+        </Suspense>
+    );
 }

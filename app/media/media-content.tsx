@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 import { BookText, Podcast, PlayCircle, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ComponentPropsWithoutRef } from "react";
-import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const tabs = [
@@ -128,14 +127,14 @@ const MediaContent = () => {
                         </TabsList>
                     </div>
 
-                    <TabsContent value="blog">
-                        <BlogSection />
+                    <TabsContent value="video">
+                        <VideoSection initialVideoId={videoId} />
                     </TabsContent>
                     <TabsContent value="podcast">
                         <PodcastSection />
                     </TabsContent>
-                    <TabsContent value="video">
-                        <VideoSection initialVideoId={videoId} />
+                    <TabsContent value="blog">
+                        <BlogSection />
                     </TabsContent>
                     <TabsContent value="digest">
                         <DigestSection />
