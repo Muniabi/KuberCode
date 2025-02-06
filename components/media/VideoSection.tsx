@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -32,7 +32,7 @@ const videos = [
         title: "Введение в React: основы и хуки",
         description:
             "Подробный разбор основ React и работы с хуками. Изучим useState, useEffect и другие важные концепции.",
-        thumbnail: "/videos/thumbnails/react-intro.jpg",
+        thumbnail: "/course-school-bg.svg",
         videoUrl: "/BMW M8 Gran Coupe Venom.mp4",
         duration: "12:30",
         views: 1234,
@@ -40,7 +40,7 @@ const videos = [
         comments: 56,
         author: {
             name: "Александр Петров",
-            avatar: "/avatars/alex.jpg",
+            avatar: "/avatar1.png",
             subscribers: "10.2K",
         },
         tags: ["React", "Frontend", "JavaScript"],
@@ -50,7 +50,7 @@ const videos = [
         id: 2,
         title: "TypeScript для начинающих",
         description: "Базовые концепции TypeScript, типы данных и интерфейсы",
-        thumbnail: "/videos/thumbnails/typescript.jpg",
+        thumbnail: "/course-school-bg.svg",
         videoUrl: "/Akrapovic BMW M5 Stingray.mp4",
         duration: "15:45",
         views: 2300,
@@ -58,7 +58,7 @@ const videos = [
         comments: 89,
         author: {
             name: "Мария Иванова",
-            avatar: "/avatars/maria.jpg",
+            avatar: "/avatar2.png",
             subscribers: "8.5K",
         },
         tags: ["TypeScript", "Frontend", "JavaScript"],
@@ -68,7 +68,7 @@ const videos = [
         id: 3,
         title: "Next.js 14: Что нового?",
         description: "Обзор новых возможностей Next.js 14 и Server Components",
-        thumbnail: "/videos/thumbnails/nextjs.jpg",
+        thumbnail: "/course-school-bg.svg",
         videoUrl: "/IMG_3434.MP4",
         duration: "20:15",
         views: 3500,
@@ -76,7 +76,7 @@ const videos = [
         comments: 145,
         author: {
             name: "Дмитрий Сидоров",
-            avatar: "/avatars/dmitry.jpg",
+            avatar: "/avatar1.png",
             subscribers: "15.3K",
         },
         tags: ["Next.js", "React", "Frontend"],
@@ -90,7 +90,7 @@ const relatedVideos = [
         title: "TypeScript для начинающих",
         duration: "15:45",
         views: "2.3K",
-        thumbnail: "/videos/thumbnails/typescript.jpg",
+        thumbnail: "/course-school-bg.svg",
         author: "Мария Иванова",
     },
     {
@@ -98,7 +98,7 @@ const relatedVideos = [
         title: "Next.js 14: Что нового?",
         duration: "20:15",
         views: "3.5K",
-        thumbnail: "/videos/thumbnails/nextjs.jpg",
+        thumbnail: "/course-school-bg.svg",
         author: "Дмитрий Сидоров",
     },
     {
@@ -106,7 +106,7 @@ const relatedVideos = [
         title: "CSS Grid на практике",
         duration: "18:30",
         views: "1.8K",
-        thumbnail: "/videos/thumbnails/css-grid.jpg",
+        thumbnail: "/course-school-bg.svg",
         author: "Елена Попова",
     },
 ];
@@ -124,21 +124,51 @@ export const VideoSection = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const controlsTimeoutRef = useRef<NodeJS.Timeout>();
 
-    const handleVideoSelect = (video: (typeof videos)[0]) => {
-        setSelectedVideo(video);
-        setIsPlaying(false);
-        setCurrentTime(0);
-    };
-
     const togglePlay = () => {
         if (videoRef.current) {
             if (isPlaying) {
                 videoRef.current.pause();
             } else {
-                videoRef.current.play();
+                if (videoRef.current.readyState >= 2) {
+                    videoRef.current.play().catch(() => {
+                        setIsPlaying(false);
+                    });
+                }
             }
             setIsPlaying(!isPlaying);
         }
+    };
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            if (!document.fullscreenElement && videoRef.current) {
+                setIsPlaying(!videoRef.current.paused);
+            }
+        };
+
+        const handleKeyPress = (e: KeyboardEvent) => {
+            if (document.fullscreenElement && e.code === "Space") {
+                e.preventDefault();
+                togglePlay();
+            }
+        };
+
+        document.addEventListener("fullscreenchange", handleFullscreenChange);
+        document.addEventListener("keydown", handleKeyPress);
+
+        return () => {
+            document.removeEventListener(
+                "fullscreenchange",
+                handleFullscreenChange
+            );
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, [togglePlay]);
+
+    const handleVideoSelect = (video: (typeof videos)[0]) => {
+        setSelectedVideo(video);
+        setIsPlaying(false);
+        setCurrentTime(0);
     };
 
     const handleMouseMove = () => {
@@ -202,7 +232,7 @@ export const VideoSection = () => {
                                         alt={video.author.name}
                                         width={40}
                                         height={40}
-                                        className="rounded-full"
+                                        className="rounded-full w-10 h-10 object-cover"
                                     />
                                     <div>
                                         <h3 className="font-semibold line-clamp-2">
@@ -499,7 +529,7 @@ export const VideoSection = () => {
                                                 alt={selectedVideo.author.name}
                                                 width={48}
                                                 height={48}
-                                                className="rounded-full"
+                                                className="rounded-full w-12 h-12 object-cover"
                                             />
                                             <div>
                                                 <h3 className="font-semibold">
