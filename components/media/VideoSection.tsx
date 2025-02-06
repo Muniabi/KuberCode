@@ -278,12 +278,12 @@ export const VideoSection = () => {
                             >
                                 <ChevronLeft className="h-6 w-6" />
                             </Button>
-                            <h2 className="ml-4 font-semibold">
+                            <h2 className="ml-4 font-semibold line-clamp-1">
                                 {selectedVideo.title}
                             </h2>
                         </div>
 
-                        <div className="flex-1 flex overflow-hidden">
+                        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
                             {/* Основная область с видео */}
                             <div className="flex-1 overflow-y-auto">
                                 {/* Видеоплеер */}
@@ -473,12 +473,12 @@ export const VideoSection = () => {
 
                                 {/* Информация о видео */}
                                 <div className="p-4 space-y-4">
-                                    <div className="flex items-start justify-between">
+                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                                         <div>
-                                            <h1 className="text-2xl font-semibold">
+                                            <h1 className="text-xl sm:text-2xl font-semibold">
                                                 {selectedVideo.title}
                                             </h1>
-                                            <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                                            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mt-1">
                                                 <span>
                                                     {formatViews(
                                                         selectedVideo.views
@@ -493,7 +493,7 @@ export const VideoSection = () => {
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex flex-wrap items-center gap-2">
                                             <Button className="gap-2">
                                                 <ThumbsUp className="h-5 w-5" />
                                                 <span>
@@ -505,16 +505,15 @@ export const VideoSection = () => {
                                                 className="gap-2"
                                             >
                                                 <Share2 className="h-5 w-5" />
-                                                Поделиться
+                                                <span className="hidden sm:inline">
+                                                    Поделиться
+                                                </span>
                                             </Button>
                                             <Button
                                                 variant="outline"
                                                 size="icon"
                                             >
                                                 <BookmarkPlus className="h-5 w-5" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon">
-                                                <MoreVertical className="h-5 w-5" />
                                             </Button>
                                         </div>
                                     </div>
@@ -567,7 +566,7 @@ export const VideoSection = () => {
                             </div>
 
                             {/* Боковая панель с рекомендациями */}
-                            <div className="w-[400px] border-l">
+                            <div className="border-t lg:border-t-0 lg:border-l lg:w-[400px] h-[300px] lg:h-auto">
                                 <ScrollArea className="h-full">
                                     <div className="p-4 space-y-4">
                                         <h3 className="font-semibold mb-4">
