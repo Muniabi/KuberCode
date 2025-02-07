@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Video from "next-video";
 import { Button } from "@/components/ui/button";
@@ -33,15 +33,32 @@ const formatViews = (views: number): string => {
 export const VideoPlayer = ({ video }: VideoPlayerProps) => {
     const router = useRouter();
     const [isInfoOpen, setIsInfoOpen] = useState(false);
+    const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentQuality, setCurrentQuality] = useState<string>("auto");
+
+    // Обработчики событий видео
+    const handleError = useCallback(() => {
+        setError(true);
+        setIsLoading(false);
+    }, []);
+
+    const handleLoadStart = useCallback(() => {
+        setIsLoading(true);
+        setError(false);
+    }, []);
+
+    const handleLoadedData = useCallback(() => {
+        setIsLoading(false);
+    }, []);
 
     return (
-        <div className="min-h-screen bg-background touch-manipulation">
-            <div className="flex items-center p-4 border-b touch-manipulation">
+        <div className="min-h-screen bg-background">
+            <div className="flex items-center p-4 border-b">
                 <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => router.back()}
-                    className="touch-manipulation"
                 >
                     <ChevronLeft className="h-6 w-6" />
                 </Button>
@@ -52,28 +69,56 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
 
             <div className="flex flex-col lg:flex-row">
                 <div className="flex-1">
-                    <div
-                        className="relative aspect-video bg-black touch-manipulation select-none"
-                        style={{
-                            WebkitUserSelect: "none",
-                            WebkitTouchCallout: "none",
-                        }}
-                    >
+                    <div className="relative w-full aspect-video bg-black">
                         <Video
                             src={video.videoUrl}
                             poster={video.thumbnail}
                             controls
-                            className="w-full h-full touch-manipulation"
+                            autoPlay
+                            playsInline
+                            preload="metadata"
+                            className="absolute inset-0 w-full h-full object-cover"
                             style={{
                                 backgroundColor: "black",
-                                color: "white",
-                                maxWidth: "100%",
-                                height: "auto",
-                                WebkitUserSelect: "none",
-                                WebkitTouchCallout: "none",
-                                touchAction: "manipulation",
+                                "--video-brand-color": "var(--primary)",
                             }}
+                            onError={handleError}
+                            onLoadStart={handleLoadStart}
+                            onLoadedData={handleLoadedData}
                         />
+
+                        {/* Индикатор загрузки */}
+                        {isLoading && !error && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                            </div>
+                        )}
+
+                        {/* Сообщение об ошибке */}
+                        {error && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/80 text-white">
+                                <div className="text-center p-4">
+                                    <p className="mb-2">
+                                        Ошибка при загрузке видео
+                                    </p>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => {
+                                            setError(false);
+                                            setIsLoading(true);
+                                            // Перезагрузка видео
+                                            const videoElement =
+                                                document.querySelector("video");
+                                            if (videoElement) {
+                                                videoElement.load();
+                                            }
+                                        }}
+                                    >
+                                        Попробовать снова
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="p-4">
@@ -92,7 +137,7 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                             <h3 className="font-medium">
                                                 {video.author.name}
                                             </h3>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-muted-foreground">
                                                 {video.author.subscribers}{" "}
                                                 подписчиков
                                             </p>
@@ -102,50 +147,28 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                         animate={{
                                             rotate: isInfoOpen ? 180 : 0,
                                         }}
-                                        transition={{
-                                            duration: 0.3,
-                                            ease: "easeInOut",
-                                        }}
+                                        transition={{ duration: 0.2 }}
                                     >
                                         <ChevronDown className="h-5 w-5" />
                                     </motion.div>
                                 </div>
                             </CollapsibleTrigger>
-                            <CollapsibleContent forceMount>
-                                <motion.div
-                                    initial={false}
-                                    animate={{
-                                        height: isInfoOpen ? "auto" : 0,
-                                        opacity: isInfoOpen ? 1 : 0,
-                                    }}
-                                    transition={{
-                                        height: {
-                                            duration: 0.3,
-                                            ease: "easeInOut",
-                                        },
-                                        opacity: {
-                                            duration: 0.2,
-                                            delay: isInfoOpen ? 0.1 : 0,
-                                        },
-                                    }}
-                                    className="overflow-hidden"
-                                >
-                                    <div className="pt-4 space-y-2">
-                                        <p className="text-sm">
-                                            {video.description}
-                                        </p>
-                                        <div className="flex flex-wrap gap-2">
-                                            {video.tags.map((tag) => (
-                                                <Badge
-                                                    key={tag}
-                                                    variant="secondary"
-                                                >
-                                                    {tag}
-                                                </Badge>
-                                            ))}
-                                        </div>
+                            <CollapsibleContent>
+                                <div className="pt-4 space-y-2">
+                                    <p className="text-sm">
+                                        {video.description}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {video.tags.map((tag) => (
+                                            <Badge
+                                                key={tag}
+                                                variant="secondary"
+                                            >
+                                                {tag}
+                                            </Badge>
+                                        ))}
                                     </div>
-                                </motion.div>
+                                </div>
                             </CollapsibleContent>
                         </Collapsible>
                     </div>

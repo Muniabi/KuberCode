@@ -7,6 +7,7 @@ const nextConfig = {
             "cdn.jsdelivr.net",
             "raw.githubusercontent.com",
             "cdn.iconscout.com",
+            "storage.yandexcloud.net",
         ],
         remotePatterns: [
             {
@@ -23,6 +24,11 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "cdn.jsdelivr.net",
                 pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "storage.yandexcloud.net",
+                pathname: "/kuber-code/**",
             },
         ],
     },
