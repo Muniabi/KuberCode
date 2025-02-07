@@ -20,16 +20,6 @@ type VideoPlayerProps = {
     video: (typeof videos)[0];
 };
 
-const formatViews = (views: number): string => {
-    if (views >= 1000000) {
-        return `${(views / 1000000).toFixed(1)}M`;
-    }
-    if (views >= 1000) {
-        return `${(views / 1000).toFixed(1)}K`;
-    }
-    return views.toString();
-};
-
 export const VideoPlayer = ({ video }: VideoPlayerProps) => {
     const router = useRouter();
     const [isInfoOpen, setIsInfoOpen] = useState(false);
@@ -247,9 +237,7 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                                     {relatedVideo.author.name}
                                                 </p>
                                                 <p className="text-sm text-gray-500">
-                                                    {formatViews(
-                                                        relatedVideo.views
-                                                    )}{" "}
+                                                    {relatedVideo.views}{" "}
                                                     просмотров
                                                 </p>
                                             </div>
