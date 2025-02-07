@@ -62,7 +62,26 @@ export const videos = [
         description:
             "Советы и трюки по оптимизации производительности приложений на React.",
         thumbnail: "/course-school-bg.svg",
-        videoUrl: "/IMG_3434.MP4",
+        videoUrl: "/Toxi GENSYXA  Игры_1080.mp4",
+        duration: "16:45",
+        views: 2000,
+        likes: 600,
+        comments: 45,
+        author: {
+            name: "Иван Кузнецов",
+            avatar: "/avatar2.png",
+            subscribers: "12.1K",
+        },
+        tags: ["React", "Performance", "JavaScript"],
+        uploadDate: "2024-03-10",
+    },
+    {
+        id: 5,
+        title: "Оптимизация производительности в React",
+        description:
+            "Советы и трюки по оптимизации производительности приложений на React.",
+        thumbnail: "/course-school-bg.svg",
+        videoUrl: "/Макс Корж  Малыи повзрослел official video_1080p.mp4",
         duration: "16:45",
         views: 2000,
         likes: 600,
