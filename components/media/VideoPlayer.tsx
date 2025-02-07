@@ -11,7 +11,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { videos } from "@/lib/data/videos";
@@ -69,18 +69,22 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
 
             <div className="flex flex-col lg:flex-row">
                 <div className="flex-1">
-                    <div className="relative w-full aspect-video bg-black">
+                    <div className="relative aspect-video bg-black">
                         <Video
                             src={video.videoUrl}
                             poster={video.thumbnail}
                             controls
+                            preload="metadata"
                             autoPlay
                             playsInline
-                            preload="metadata"
                             className="absolute inset-0 w-full h-full object-cover"
                             style={{
                                 backgroundColor: "black",
                                 "--video-brand-color": "var(--primary)",
+                                width: "100%",
+                                height: "100%",
+                                maxHeight: "100vh",
+                                objectFit: "contain",
                             }}
                             onError={handleError}
                             onLoadStart={handleLoadStart}
@@ -147,28 +151,61 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                         animate={{
                                             rotate: isInfoOpen ? 180 : 0,
                                         }}
-                                        transition={{ duration: 0.2 }}
+                                        transition={{
+                                            duration: 0.3,
+                                            ease: "easeInOut",
+                                        }}
                                     >
                                         <ChevronDown className="h-5 w-5" />
                                     </motion.div>
                                 </div>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
-                                <div className="pt-4 space-y-2">
-                                    <p className="text-sm">
-                                        {video.description}
-                                    </p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {video.tags.map((tag) => (
-                                            <Badge
-                                                key={tag}
-                                                variant="secondary"
-                                            >
-                                                {tag}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                </div>
+                                <AnimatePresence initial={false}>
+                                    {isInfoOpen && (
+                                        <motion.div
+                                            key="content"
+                                            initial="collapsed"
+                                            animate="open"
+                                            exit="collapsed"
+                                            variants={{
+                                                open: {
+                                                    height: "auto",
+                                                    opacity: 1,
+                                                    transition: {
+                                                        duration: 0.3,
+                                                        ease: [0.4, 0, 0.2, 1],
+                                                    },
+                                                },
+                                                collapsed: {
+                                                    height: 0,
+                                                    opacity: 0,
+                                                    transition: {
+                                                        duration: 0.3,
+                                                        ease: [0.4, 0, 0.2, 1],
+                                                    },
+                                                },
+                                            }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="pt-4 space-y-2">
+                                                <p className="text-sm">
+                                                    {video.description}
+                                                </p>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {video.tags.map((tag) => (
+                                                        <Badge
+                                                            key={tag}
+                                                            variant="secondary"
+                                                        >
+                                                            {tag}
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </CollapsibleContent>
                         </Collapsible>
                     </div>

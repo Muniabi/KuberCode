@@ -24,8 +24,7 @@ export const videos = [
         description:
             "Подробный разбор основ React и работы с хуками. Изучим useState, useEffect и другие важные концепции.",
         thumbnail: "/course-school-bg.svg",
-        videoUrl:
-            "https://storage.yandexcloud.net/kuber-code/Akrapovic%20BMW%20M5%20Stingray.mp4",
+        videoUrl: "Akrapovic BMW M5 Stingray.mp4",
         duration: "12:30",
         views: 1234,
         likes: 423,
