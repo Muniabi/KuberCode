@@ -35,12 +35,13 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
     const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-background">
-            <div className="flex items-center p-4 border-b">
+        <div className="min-h-screen bg-background touch-manipulation">
+            <div className="flex items-center p-4 border-b touch-manipulation">
                 <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => router.back()}
+                    className="touch-manipulation"
                 >
                     <ChevronLeft className="h-6 w-6" />
                 </Button>
@@ -51,15 +52,26 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
 
             <div className="flex flex-col lg:flex-row">
                 <div className="flex-1">
-                    <div className="relative aspect-video bg-black">
+                    <div
+                        className="relative aspect-video bg-black touch-manipulation select-none"
+                        style={{
+                            WebkitUserSelect: "none",
+                            WebkitTouchCallout: "none",
+                        }}
+                    >
                         <Video
                             src={video.videoUrl}
                             poster={video.thumbnail}
                             controls
-                            className="w-full h-full"
+                            className="w-full h-full touch-manipulation"
                             style={{
                                 backgroundColor: "black",
                                 color: "white",
+                                maxWidth: "100%",
+                                height: "auto",
+                                WebkitUserSelect: "none",
+                                WebkitTouchCallout: "none",
+                                touchAction: "manipulation",
                             }}
                         />
                     </div>
