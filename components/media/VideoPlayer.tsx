@@ -131,7 +131,7 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                             <h3 className="font-medium">
                                                 {video.author.name}
                                             </h3>
-                                            <p className="text-sm text-muted-foreground">
+                                            <p className="text-sm text-gray-500">
                                                 {video.author.subscribers}{" "}
                                                 подписчиков
                                             </p>
@@ -150,52 +150,41 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                     </motion.div>
                                 </div>
                             </CollapsibleTrigger>
-                            <CollapsibleContent>
-                                <AnimatePresence initial={false}>
-                                    {isInfoOpen && (
-                                        <motion.div
-                                            key="content"
-                                            initial="collapsed"
-                                            animate="open"
-                                            exit="collapsed"
-                                            variants={{
-                                                open: {
-                                                    height: "auto",
-                                                    opacity: 1,
-                                                    transition: {
-                                                        duration: 0.3,
-                                                        ease: [0.4, 0, 0.2, 1],
-                                                    },
-                                                },
-                                                collapsed: {
-                                                    height: 0,
-                                                    opacity: 0,
-                                                    transition: {
-                                                        duration: 0.3,
-                                                        ease: [0.4, 0, 0.2, 1],
-                                                    },
-                                                },
-                                            }}
-                                            className="overflow-hidden"
-                                        >
-                                            <div className="pt-4 space-y-2">
-                                                <p className="text-sm">
-                                                    {video.description}
-                                                </p>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {video.tags.map((tag) => (
-                                                        <Badge
-                                                            key={tag}
-                                                            variant="secondary"
-                                                        >
-                                                            {tag}
-                                                        </Badge>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                            <CollapsibleContent forceMount>
+                                <motion.div
+                                    initial={false}
+                                    animate={{
+                                        height: isInfoOpen ? "auto" : 0,
+                                        opacity: isInfoOpen ? 1 : 0,
+                                    }}
+                                    transition={{
+                                        height: {
+                                            duration: 0.3,
+                                            ease: "easeInOut",
+                                        },
+                                        opacity: {
+                                            duration: 0.2,
+                                            delay: isInfoOpen ? 0.1 : 0,
+                                        },
+                                    }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="pt-4 space-y-2">
+                                        <p className="text-sm">
+                                            {video.description}
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {video.tags.map((tag) => (
+                                                <Badge
+                                                    key={tag}
+                                                    variant="secondary"
+                                                >
+                                                    {tag}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
                             </CollapsibleContent>
                         </Collapsible>
                     </div>
