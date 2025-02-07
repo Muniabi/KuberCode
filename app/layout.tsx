@@ -3,7 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/shared/providers";
 import ClientLayout from "./ClientLayout"; // Импорт клиентского компонента
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({
     subsets: ["cyrillic"],

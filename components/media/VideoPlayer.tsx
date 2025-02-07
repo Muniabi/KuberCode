@@ -6,13 +6,14 @@ import Video from "next-video";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronDown, Share2 } from "lucide-react";
 import Image from "next/image";
 import { videos } from "@/lib/data/videos";
 
@@ -42,19 +43,39 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
         setIsLoading(false);
     }, []);
 
+    const handleShare = useCallback(async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            toast.success("Ссылка скопирована");
+        } catch (error) {
+            console.error("Ошибка:", error);
+            toast.error("Не удалось скопировать ссылку");
+        }
+    }, []);
+
     return (
         <div className="min-h-screen bg-background">
-            <div className="flex items-center p-4 border-b">
+            <div className="flex items-center justify-between p-4 border-b">
+                <div className="flex items-center">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => router.back()}
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </Button>
+                    <h2 className="ml-4 font-semibold line-clamp-1">
+                        {video.title}
+                    </h2>
+                </div>
                 <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => router.back()}
+                    onClick={handleShare}
+                    title="Поделиться"
                 >
-                    <ChevronLeft className="h-6 w-6" />
+                    <Share2 className="h-5 w-5" />
                 </Button>
-                <h2 className="ml-4 font-semibold line-clamp-1">
-                    {video.title}
-                </h2>
             </div>
 
             <div className="flex flex-col lg:flex-row">
@@ -67,19 +88,29 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                             preload="metadata"
                             autoPlay
                             playsInline
-                            className="absolute inset-0 w-full h-full object-cover"
+                            className="absolute inset-0 w-full h-full object-contain"
                             style={{
                                 backgroundColor: "black",
                                 "--video-brand-color": "var(--primary)",
-                                width: "100%",
-                                height: "100%",
-                                maxHeight: "100vh",
-                                objectFit: "contain",
                             }}
                             onError={handleError}
                             onLoadStart={handleLoadStart}
                             onLoadedData={handleLoadedData}
                         />
+                        <style jsx global>{`
+                            video::-webkit-media-controls-fullscreen-button {
+                                display: block;
+                            }
+
+                            video:fullscreen,
+                            video:-webkit-full-screen,
+                            video:-moz-full-screen {
+                                width: 100vw !important;
+                                height: 100vh !important;
+                                object-fit: contain !important;
+                                background: black;
+                            }
+                        `}</style>
 
                         {/* Индикатор загрузки */}
                         {isLoading && !error && (

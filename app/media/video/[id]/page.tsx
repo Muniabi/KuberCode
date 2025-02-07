@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { VideoPlayer } from "@/components/media/VideoPlayer";
 import { videos } from "@/lib/data/videos";
+import ClientVideoPage from "./ClientVideoPage";
 
 type Props = {
     params: {
@@ -18,11 +18,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function VideoPage({ params }: Props) {
-    const video = videos.find((v) => v.id.toString() === params.id);
-
-    if (!video) {
-        return <div>Видео не найдено</div>;
-    }
-
-    return <VideoPlayer video={video} />;
+    return <ClientVideoPage videoId={params.id} />;
 }
