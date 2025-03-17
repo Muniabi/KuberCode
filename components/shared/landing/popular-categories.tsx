@@ -99,7 +99,7 @@ const PopularCategories: React.FC = () => {
             <div className="flex flex-col items-center text-center md:text-left md:items-start">
                 <h2
                     className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold 
-                             bg-gradient-to-r from-primary via-primary/80 to-primary/60 
+                             bg-gradient-to-r from-primary via-primary/70 to-primary/90
                              bg-clip-text text-transparent mb-12"
                 >
                     Популярные направления
@@ -139,7 +139,7 @@ const PopularCategories: React.FC = () => {
                         <p>Загрузка категорий...</p>
                         <Button
                             onClick={() => setIsLoading(false)}
-                            className="mt-2 text-primary hover:underline"
+                            className="mt-2 text-primary hover:underline text-white"
                         >
                             Показать категории без анимации
                         </Button>

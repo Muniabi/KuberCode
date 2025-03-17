@@ -36,7 +36,7 @@ export default function Home() {
                 </ContainerScroll>
             </div> */}
             <PopularCourses />
-            <Integrations />
+            {/* <Integrations /> */}
             <PopularCategories />
             <BestAuthors />
             <AlumniStories />

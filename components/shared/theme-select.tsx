@@ -15,21 +15,30 @@ interface Props {
 
 export const ThemeSelect: React.FC<Props> = ({ className }) => {
     const { theme, setTheme } = useTheme();
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        // Получаем сохраненную тему из localStorage или устанавливаем светлую по умолчанию
-        const savedTheme = localStorage.getItem("theme") || "light";
-        setTheme(savedTheme);
-        setIsDarkMode(savedTheme === "dark");
+        const savedTheme = localStorage.getItem("theme");
+
+        if (!savedTheme) {
+            setTheme("dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            setTheme(savedTheme);
+        }
+
+        setMounted(true);
     }, [setTheme]);
+
+    if (!mounted) return null;
+
+    const isDarkMode = theme === "dark";
 
     const onClick = () => {
         const newTheme = isDarkMode ? "light" : "dark";
         setTheme(newTheme);
-        setIsDarkMode(!isDarkMode);
-        localStorage.setItem("theme", newTheme);
     };
+
     return (
         <TooltipProvider>
             <Tooltip>

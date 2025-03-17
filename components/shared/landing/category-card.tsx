@@ -88,7 +88,7 @@ const CategoryCard: React.FC<CategoryData> = ({
                                 "dark:border-primary/40"
                             )}
                         >
-                            <Icon className="size-6 text-white" />
+                            <Icon className="size-6 dark:text-white text-black" />
                         </div>
                         <div>
                             <h3 className="text-lg font-semibold text-foreground">

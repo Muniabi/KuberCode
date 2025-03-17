@@ -54,33 +54,51 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-background">
-            <div className="flex items-center justify-between p-4 border-b">
-                <div className="flex items-center">
+        <div className="min-h-screen bg-[#000000] dark:bg-[#000000] bg-white">
+            {/* Верхняя навигация */}
+            <div className="flex items-center justify-between p-4">
+                <div className="flex items-center gap-4">
                     <Button
                         variant="ghost"
                         size="icon"
+                        className="text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
                         onClick={() => router.back()}
                     >
                         <ChevronLeft className="h-6 w-6" />
                     </Button>
-                    <h2 className="ml-4 font-semibold line-clamp-1">
-                        {video.title}
-                    </h2>
+                    <div className="flex items-center gap-2">
+                        <Image
+                            src={video.author.avatar}
+                            alt={video.author.name}
+                            width={32}
+                            height={32}
+                            className="rounded-full"
+                        />
+                        <div>
+                            <h2 className="text-black dark:text-white font-medium">
+                                {video.title}
+                            </h2>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                {video.author.name}
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 <Button
                     variant="ghost"
                     size="icon"
+                    className="text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
                     onClick={handleShare}
-                    title="Поделиться"
                 >
                     <Share2 className="h-5 w-5" />
                 </Button>
             </div>
 
+            {/* Основной контент */}
             <div className="flex flex-col lg:flex-row">
                 <div className="flex-1">
-                    <div className="relative aspect-video bg-black">
+                    {/* Видеоплеер */}
+                    <div className="relative aspect-video bg-[#f5f5f5] dark:bg-[#111111]">
                         <Video
                             src={video.videoUrl}
                             poster={video.thumbnail}
@@ -90,8 +108,8 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                             playsInline
                             className="absolute inset-0 w-full h-full object-contain"
                             style={{
-                                backgroundColor: "black",
-                                "--video-brand-color": "var(--primary)",
+                                backgroundColor: "#111111",
+                                "--video-brand-color": "#FF4500",
                             }}
                             onError={handleError}
                             onLoadStart={handleLoadStart}
@@ -146,74 +164,48 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                         )}
                     </div>
 
-                    <div className="p-4">
+                    {/* Информация о видео */}
+                    <div className="p-6 bg-[#f5f5f5] dark:bg-[#111111] rounded-lg m-4">
                         <Collapsible onOpenChange={setIsInfoOpen}>
                             <CollapsibleTrigger asChild>
-                                <div className="flex items-center justify-between cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <Image
-                                            src={video.author.avatar}
-                                            alt={video.author.name}
-                                            width={48}
-                                            height={48}
-                                            className="rounded-full w-12 h-12 object-cover"
-                                        />
-                                        <div>
-                                            <h3 className="font-medium">
-                                                {video.author.name}
-                                            </h3>
-                                            <p className="text-sm text-gray-500">
-                                                {video.author.subscribers}{" "}
-                                                подписчиков
-                                            </p>
-                                        </div>
+                                <div className="flex items-center justify-between cursor-pointer text-black dark:text-white">
+                                    <div>
+                                        <h3 className="text-xl font-semibold mb-2">
+                                            {video.title}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-400">
+                                            {video.views} просмотров
+                                        </p>
                                     </div>
                                     <motion.div
                                         animate={{
                                             rotate: isInfoOpen ? 180 : 0,
-                                        }}
-                                        transition={{
-                                            duration: 0.3,
-                                            ease: "easeInOut",
                                         }}
                                     >
                                         <ChevronDown className="h-5 w-5" />
                                     </motion.div>
                                 </div>
                             </CollapsibleTrigger>
-                            <CollapsibleContent forceMount>
+                            <CollapsibleContent>
                                 <motion.div
                                     initial={false}
                                     animate={{
                                         height: isInfoOpen ? "auto" : 0,
                                         opacity: isInfoOpen ? 1 : 0,
                                     }}
-                                    transition={{
-                                        height: {
-                                            duration: 0.3,
-                                            ease: "easeInOut",
-                                        },
-                                        opacity: {
-                                            duration: 0.2,
-                                            delay: isInfoOpen ? 0.1 : 0,
-                                        },
-                                    }}
-                                    className="overflow-hidden"
+                                    className="mt-4 text-gray-700 dark:text-gray-300"
                                 >
-                                    <div className="pt-4 space-y-2">
-                                        <p className="text-sm">
-                                            {video.description}
-                                        </p>
-                                        <div className="flex flex-wrap gap-2">
-                                            {video.tags.map((tag) => (
-                                                <Badge
-                                                    key={tag}
-                                                    variant="secondary"
-                                                >
-                                                    {tag}
-                                                </Badge>
-                                            ))}
-                                        </div>
+                                    <p>{video.description}</p>
+                                    <div className="flex flex-wrap gap-2 mt-4">
+                                        {video.tags.map((tag) => (
+                                            <Badge
+                                                key={tag}
+                                                variant="secondary"
+                                                className="bg-black/10 dark:bg-white/10 text-black dark:text-white hover:bg-black/20 dark:hover:bg-white/20"
+                                            >
+                                                {tag}
+                                            </Badge>
+                                        ))}
                                     </div>
                                 </motion.div>
                             </CollapsibleContent>
@@ -221,17 +213,20 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                     </div>
                 </div>
 
-                <div className="lg:w-[400px] border-t lg:border-t-0 lg:border-l">
+                {/* Боковая панель с похожими видео */}
+                <div className="lg:w-[400px] bg-[#f5f5f5] dark:bg-[#111111]">
                     <ScrollArea className="h-[calc(100vh-64px)]">
                         <div className="p-4">
-                            <h3 className="font-medium mb-4">Похожие видео</h3>
+                            <h3 className="text-black dark:text-white font-medium mb-4">
+                                Похожие видео
+                            </h3>
                             <div className="space-y-4">
                                 {videos
                                     .filter((v) => v.id !== video.id)
                                     .map((relatedVideo) => (
                                         <div
                                             key={relatedVideo.id}
-                                            className="flex gap-3 cursor-pointer"
+                                            className="flex gap-3 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg"
                                             onClick={() =>
                                                 router.push(
                                                     `/media/video/${relatedVideo.id}`
@@ -245,18 +240,18 @@ export const VideoPlayer = ({ video }: VideoPlayerProps) => {
                                                     fill
                                                     className="object-cover"
                                                 />
-                                                <div className="absolute bottom-1 right-1 px-1 py-0.5 bg-black/80 text-white text-xs rounded">
+                                                <div className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/80 text-white text-xs rounded">
                                                     {relatedVideo.duration}
                                                 </div>
                                             </div>
                                             <div className="flex-1">
-                                                <h4 className="font-medium line-clamp-2">
+                                                <h4 className="text-black dark:text-white font-medium line-clamp-2">
                                                     {relatedVideo.title}
                                                 </h4>
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
                                                     {relatedVideo.author.name}
                                                 </p>
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm">
                                                     {relatedVideo.views}{" "}
                                                     просмотров
                                                 </p>
