@@ -7,6 +7,7 @@ import BestAuthors from "@/components/shared/landing/best-authors";
 import Integrations from "@/components/shared/landing/Integrations";
 import Image from "next/image";
 import AlumniStories from "@/components/shared/landing/alumni-stories";
+import { CookieConsent } from "@/components/shared/CookieConsent";
 
 export default function Home() {
     return (
@@ -40,6 +41,7 @@ export default function Home() {
             <PopularCategories />
             <BestAuthors />
             <AlumniStories />
+            <CookieConsent />
         </main>
     );
 }
