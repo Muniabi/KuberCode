@@ -65,7 +65,7 @@ const MediaContent = () => {
 
     return (
         <main className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-zinc-900 dark:to-black">
-            <MediaHero />
+            {/* <MediaHero /> */}
 
             <Container className="py-8 mx-4">
                 <Tabs
