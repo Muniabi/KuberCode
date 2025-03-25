@@ -1,6 +1,6 @@
 "use client"; // Обязательно добавьте это в начало файла
 
-import { Header } from "@/components/shared/index";
+import { Header, Footer } from "@/components/shared/index";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Loader } from "@/components/shared/loader";
@@ -30,6 +30,7 @@ export default function ClientLayout({
         <>
             {!isAccountPage && <Header />}
             {children}
+            <Footer />
         </>
     );
 }
