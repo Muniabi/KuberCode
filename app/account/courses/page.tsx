@@ -38,9 +38,7 @@ const CoursesPage = () => {
                 </div>
                 <div className="min-h-[calc(100vh-64px)] max-w-md flex-none rounded-xl bg-stone-100/50 md:min-h-min dark:bg-stone-800/50 sticky top-0">
                     {/* Содержимое блока */}
-                    <div className="p-4">
-                        gfgsdfggdgdsdfgdsfg
-                    </div>
+                    <div className="p-4">gfgsdfggdgdsdfgdsfg</div>
                 </div>
             </div>
         </SidebarInset>

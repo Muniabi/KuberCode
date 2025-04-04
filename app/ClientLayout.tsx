@@ -30,7 +30,7 @@ export default function ClientLayout({
         <>
             {!isAccountPage && <Header />}
             {children}
-            <Footer />
+            {!isAccountPage && <Footer />}
         </>
     );
 }
