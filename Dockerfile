@@ -1,4 +1,4 @@
-FROM node:22.9.0-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
@@ -7,31 +7,30 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install --frozen-lockfile
+RUN npm ci
 
-# Копируем весь проект, включая папку public
+# Копируем весь проект
 COPY . .
 
 # Билдим проект
 RUN npm run build
 
 # Второй этап — запуск контейнера
-FROM node:22.9.0-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Копируем собранные файлы и зависимости
+# Копируем только необходимые файлы
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-
-# Копируем папку public целиком
 COPY --from=builder /app/public ./public
 
-# Указываем переменную среды для production
+# Указываем переменные среды
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_URL=http://localhost:8080
 
-# Открываем порт для контейнера
+# Открываем порт
 EXPOSE 3000
 
-# Запускаем Next.js приложение
+# Запускаем приложение
 CMD ["npm", "run", "start"]

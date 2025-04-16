@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import axios from "axios";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import VkProvider from "next-auth/providers/vk";
@@ -34,8 +35,10 @@ const authOptions: AuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                debugger;
-                if (!credentials) return null;
+                if (!credentials) {
+                    console.error("No credentials provided");
+                    return null;
+                }
 
                 try {
                     formSchema.parse({
@@ -43,38 +46,53 @@ const authOptions: AuthOptions = {
                         password: credentials.password,
                     });
 
-                    const response = await fetch(
-                        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
+                    console.log("Attempting to authenticate with:", {
+                        email: credentials.email,
+                        apiUrl: "http://host.docker.internal:8080",
+                    });
+
+                    const response = await axios.post(
+                        `http://host.docker.internal:8080/api/v1/auth/login`,
                         {
-                            method: "POST",
+                            email: credentials.email,
+                            password: credentials.password,
+                        },
+                        {
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                email: credentials.email,
-                                password: credentials.password,
-                            }),
                         }
                     );
 
-                    const data = await response.json();
+                    const data = response.data;
+                    console.log(
+                        "Authentication successful. Raw response:",
+                        JSON.stringify(data)
+                    );
+                    console.log("User data:", JSON.stringify(data.user));
 
-                    if (!response.ok) {
-                        return null;
-                    }
-
-                    return {
-                        id: credentials.email,
-                        email: data.email,
-                        name: data.email,
-                        image: data.avatar || "",
-                        avatar: data.avatar || "",
-                        isMentor: data.isMentor,
-                        premium: data.premium || false,
-                        accessToken: data.token,
-                        refreshToken: data.token,
+                    const user = {
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.email,
+                        image: data.user.avatar || "",
+                        avatar: data.user.avatar || "",
+                        isMentor: data.user.isMentor,
+                        premium: data.user.premium || false,
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token,
                     };
+
+                    console.log("Processed user data:", JSON.stringify(user));
+                    return user;
                 } catch (e) {
                     console.error("Authorization error:", e);
-                    return null;
+                    if (axios.isAxiosError(e)) {
+                        console.error("Axios error details:", {
+                            status: e.response?.status,
+                            data: e.response?.data,
+                            message: e.message,
+                        });
+                    }
+                    throw new Error("Неверный email или пароль");
                 }
             },
         }),
