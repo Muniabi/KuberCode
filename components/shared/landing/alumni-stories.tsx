@@ -4,7 +4,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
@@ -17,7 +16,6 @@ const stories = [
         image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6",
         salary: "от 180 000 ₽",
         category: "Machine Learning",
-        gradient: "from-blue-600 to-purple-600",
     },
     {
         name: "Анна Соколова",
@@ -27,7 +25,6 @@ const stories = [
         image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
         salary: "от 230 000 ₽",
         category: "Data Science",
-        gradient: "from-emerald-600 to-teal-600",
     },
     {
         name: "Дмитрий Волков",
@@ -37,7 +34,6 @@ const stories = [
         image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
         salary: "от 200 000 ₽",
         category: "Artificial Intelligence",
-        gradient: "from-orange-600 to-red-600",
     },
     {
         name: "Екатерина Морозова",
@@ -47,7 +43,6 @@ const stories = [
         image: "https://images.unsplash.com/photo-1580489944761-15a19d654956",
         salary: "от 190 000 ₽",
         category: "Natural Language Processing",
-        gradient: "from-pink-600 to-rose-600",
     },
 ];
 
@@ -62,7 +57,7 @@ const AlumniStories = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.7 }}
                     >
                         <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
                             Истории успеха
@@ -75,69 +70,52 @@ const AlumniStories = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stories.map((story, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="group relative"
-                        >
-                            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
-                                {/* Фоновый градиент */}
-                                <div
-                                    className={cn(
-                                        "absolute inset-0 bg-gradient-to-br opacity-90 transition-opacity duration-300 group-hover:opacity-100",
-                                        story.gradient
-                                    )}
-                                />
+                        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+                            {/* Изображение */}
+                            <Image
+                                src={story.image}
+                                alt={story.name}
+                                fill
+                                className="object-cover mix-blend-overlay transition-transform duration-500 group-hover:scale-110"
+                                quality={90}
+                            />
 
-                                {/* Изображение */}
-                                <Image
-                                    src={story.image}
-                                    alt={story.name}
-                                    fill
-                                    className="object-cover mix-blend-overlay transition-transform duration-500 group-hover:scale-110"
-                                    quality={90}
-                                />
-
-                                {/* Контентная часть */}
-                                <div className="absolute inset-0 p-6 flex flex-col justify-between bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-                                    <div>
-                                        <Badge
-                                            className="bg-white/10 backdrop-blur-sm text-white border-none 
+                            {/* Контентная часть */}
+                            <div className="absolute inset-0 p-6 flex flex-col justify-between bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                                <div>
+                                    <Badge
+                                        className="bg-white/10 backdrop-blur-sm text-white border-none 
                                                      hover:bg-white/20 transition-colors duration-300"
-                                        >
-                                            {story.salary}
-                                        </Badge>
-                                    </div>
+                                    >
+                                        {story.salary}
+                                    </Badge>
+                                </div>
 
-                                    <div className="space-y-3 transform translate-y-4 opacity-90 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                                        <div className="space-y-1">
-                                            <h3 className="text-xl font-bold text-white">
-                                                {story.name}
-                                            </h3>
-                                            <p className="text-sm text-white/90 font-medium">
-                                                {story.role}
-                                            </p>
-                                        </div>
-                                        <p className="text-sm text-white/80">
-                                            {story.description}
+                                <div className="space-y-3 transform translate-y-4 opacity-90 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                                    <div className="space-y-1">
+                                        <h3 className="text-xl font-bold text-white">
+                                            {story.name}
+                                        </h3>
+                                        <p className="text-sm text-white/90 font-medium">
+                                            {story.role}
                                         </p>
-
-                                        <Button
-                                            variant="ghost"
-                                            className="text-white hover:text-white/90 p-0 h-auto font-normal group/button"
-                                        >
-                                            <span className="mr-2">
-                                                История успеха
-                                            </span>
-                                            <ArrowRight className="w-4 h-4 transition-transform group-hover/button:translate-x-1" />
-                                        </Button>
                                     </div>
+                                    <p className="text-sm text-white/80">
+                                        {story.description}
+                                    </p>
+
+                                    <Button
+                                        variant="ghost"
+                                        className="text-white hover:text-white/90 p-0 h-auto font-normal group/button"
+                                    >
+                                        <span className="mr-2">
+                                            История успеха
+                                        </span>
+                                        <ArrowRight className="w-4 h-4 transition-transform group-hover/button:translate-x-1" />
+                                    </Button>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>

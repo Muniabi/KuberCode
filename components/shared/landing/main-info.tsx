@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container } from "../container";
 import { Input } from "@/components/ui";
 import { Badge } from "@/components/ui/badge";
-import { Search, Star, Sparkles, Users, BookOpen, Trophy } from "lucide-react";
+import { Search, Sparkles, Users, BookOpen, Trophy } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -15,7 +15,6 @@ interface Props {
 }
 
 export const MainInfoBlock: React.FC<Props> = ({ className }) => {
-    const [rating, setRating] = useState<string | null>(null);
     const [search, setSearch] = useState<string>("");
 
     const features = [
@@ -47,12 +46,6 @@ export const MainInfoBlock: React.FC<Props> = ({ className }) => {
             toast.success(`Выполнен поиск с запросом ${search}`);
         }
     };
-
-    useEffect(() => {
-        localStorage.setItem("rating", "5.0");
-        const storedRating = localStorage.getItem("rating");
-        setRating(storedRating);
-    }, []);
 
     return (
         <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20">
@@ -157,26 +150,6 @@ export const MainInfoBlock: React.FC<Props> = ({ className }) => {
                             <div className="relative z-10 w-full h-full">
                                 <Hero3D />
                             </div>
-
-                            {/* Floating rating card */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5, duration: 0.6 }}
-                                className="absolute -bottom-6 -right-6 flex items-center gap-3 px-5 py-3 bg-white dark:bg-zinc-800 rounded-xl shadow-xl z-50"
-                            >
-                                <div className="p-2 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg">
-                                    <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400" />
-                                </div>
-                                <div>
-                                    <div className="text-xl font-bold text-gray-900 dark:text-white">
-                                        {rating}
-                                    </div>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                        Рейтинг школы
-                                    </div>
-                                </div>
-                            </motion.div>
                         </motion.div>
                     </div>
                 </div>

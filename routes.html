@@ -1201,7 +1201,7 @@
         </div> -->
 
         <script>
-            const API_URL = "http://localhost:8080";
+            const API_URL = "http://";
 
             function openPopup(isEditing = false) {
                 // Очищаем форму
@@ -1591,7 +1591,6 @@ ${requestData.responseFields
             };
 
             document.addEventListener("DOMContentLoaded", loadSavedRequests);
-
             async function sendRequest(
                 endpoint,
                 method,
@@ -1624,11 +1623,20 @@ ${requestData.responseFields
                           }`;
 
                     const response = await fetch(url, options);
-                    const result = await response.json();
-
                     const notification =
                         document.getElementById(notificationId);
                     notification.style.display = "block";
+
+                    // Сначала проверяем тип контента
+                    const contentType = response.headers.get("content-type");
+                    if (
+                        !contentType ||
+                        !contentType.includes("application/json")
+                    ) {
+                        throw new Error("Сервер вернул неверный формат ответа");
+                    }
+
+                    const result = await response.json();
 
                     if (response.ok) {
                         notification.className = "notification success";
@@ -1639,20 +1647,28 @@ ${requestData.responseFields
                             `form[data-endpoint="${endpoint}"]`
                         );
                         if (form) form.reset();
+
+                        return result;
                     } else {
                         notification.className = "notification error";
                         notification.textContent = `Ошибка: ${
-                            result.message || "Что-то пошло не так"
+                            result.error ||
+                            result.message ||
+                            "Что-то пошло не так"
                         }`;
+                        throw new Error(
+                            result.error ||
+                                result.message ||
+                                "Что-то пошло не так"
+                        );
                     }
-
-                    return result;
                 } catch (error) {
                     const notification =
                         document.getElementById(notificationId);
                     notification.style.display = "block";
                     notification.className = "notification error";
                     notification.textContent = `Ошибка: ${error.message}`;
+                    throw error;
                 }
             }
 

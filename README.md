@@ -128,7 +128,7 @@ const { data: session } = useSession();
 // Доступ к данным
 console.log(session?.user?.email);
 console.log(session?.user?.accessToken);
-console.log(session?.user?.isTeacher);
+console.log(session?.user?.isMentor);
 ```
 
 ### Доступные методы авторизации:
@@ -146,7 +146,7 @@ interface User {
     email: string;
     name: string;
     accessToken: string;
-    isTeacher: boolean;
+    isMentor: boolean;
 }
 ```
 

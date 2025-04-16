@@ -24,7 +24,7 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-custom), sans-serif;
 }
 
 .react-flow {
@@ -81,12 +81,13 @@ body {
 @layer base {
     :root {
         --bg-color-light: #fafafa;
+        --lime: #ceff1a;
         --bg-color-dark: #101011;
         --button-bg: #8948ff;
         --purple: #8948ff;
         --yellow: #ffb870;
         --bg-gray: #434343;
-        --lime: #ceff1a;
+
         --shadowBefore: -8px -8px 12px hsla(0, 0%, 100%, 0.8),
             8px 8px 12px rgba(0, 0, 0, 0.05),
             inset -2px -2px 4px hsla(0, 0%, 100%, 0),

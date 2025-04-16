@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "@/components/shared/providers";
 import ClientLayout from "./ClientLayout"; // Импорт клиентского компонента
 import { Toaster } from "@/components/ui/sonner";
+
+// Кастомный шрифт
+const BlobSpongey = localFont({
+    src: [
+        {
+            path: "./fonts/BlobSpongeyLowercase.woff2",
+            weight: "400",
+            style: "normal",
+        },
+    ],
+    variable: "--font-custom",
+});
 
 const montserrat = Montserrat({
     subsets: ["cyrillic"],
@@ -23,7 +36,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="ru" className="!scroll-smooth">
-            <body className={`${montserrat.className} overflow-x-hidden`}>
+            <body
+                className={`${montserrat.variable} ${BlobSpongey.variable} overflow-x-hidden`}
+            >
                 <main className="min-h-screen">
                     <Providers>
                         <ClientLayout>{children}</ClientLayout>

@@ -1,6 +1,6 @@
 export const sendVerificationEmail = async (
     email: string,
-    isTeacher: string
+    isMentor: string
 ) => {
     try {
         // Генерируем новый код
@@ -17,7 +17,7 @@ export const sendVerificationEmail = async (
             body: JSON.stringify({
                 email,
                 code,
-                isTeacher: isTeacher === "true",
+                isMentor: isMentor === "true",
             }),
         });
 
