@@ -34,6 +34,7 @@ const authOptions: AuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
+                debugger;
                 if (!credentials) return null;
 
                 try {
@@ -43,7 +44,7 @@ const authOptions: AuthOptions = {
                     });
 
                     const response = await fetch(
-                        `${process.env.NEXT_PUBLIC_API_URL}/login`,
+                        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
                         {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -66,7 +67,7 @@ const authOptions: AuthOptions = {
                         name: data.email,
                         image: data.avatar || "",
                         avatar: data.avatar || "",
-                        isTeacher: data.isTeacher,
+                        isMentor: data.isMentor,
                         premium: data.premium || false,
                         accessToken: data.token,
                         refreshToken: data.token,
@@ -83,7 +84,7 @@ const authOptions: AuthOptions = {
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;
-                token.isTeacher = user.isTeacher;
+                token.isMentor = user.isMentor;
             }
             return token;
         },
@@ -91,7 +92,7 @@ const authOptions: AuthOptions = {
             if (session.user) {
                 session.user.accessToken = token.accessToken as string;
                 session.user.refreshToken = token.refreshToken as string;
-                session.user.isTeacher = token.isTeacher as boolean;
+                session.user.isMentor = token.isMentor as boolean;
             }
             return session;
         },

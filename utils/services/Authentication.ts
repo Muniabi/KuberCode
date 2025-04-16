@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { signIn, signOut } from "next-auth/react";
+import { toast } from "sonner";
 
 export const IP = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,7 +12,7 @@ interface AuthResponse {
         email: string;
         name: string;
         avatar?: string;
-        isTeacher: boolean;
+        isMentor: boolean;
         premium?: boolean;
     };
 }
@@ -30,25 +31,19 @@ interface ResetPasswordResponse {
 export const register = async (
     email: string,
     password: string,
-    isTeacher: boolean
+    isMentor: boolean
 ): Promise<void> => {
     try {
-        const response = await fetch(`${IP}/register`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-                isTeacher,
-            }),
+        const url = `${IP}/api/v1/auth/signup`;
+
+        const response = await axios.post(url, {
+            email,
+            password,
+            isMentor,
+            deviceToken: "test",
         });
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || "Ошибка при регистрации");
-        }
+        console.log("Успешный ответ:", response.data);
 
         await signIn("credentials", {
             email,
@@ -56,6 +51,16 @@ export const register = async (
             redirect: false,
         });
     } catch (error) {
+        if (axios.isAxiosError(error)) {
+            if (error.response?.status === 409) {
+                toast.error("Пользователь с таким email уже существует");
+                throw new Error("Пользователь с таким email уже существует");
+            }
+            console.error("Ошибка при регистрации:", error.response?.data);
+            throw new Error(
+                error.response?.data?.message || "Ошибка при регистрации"
+            );
+        }
         console.error("Ошибка при регистрации:", error);
         throw error;
     }
@@ -88,11 +93,11 @@ export const login = async (email: string, password: string) => {
 // Выход
 export const logout = async () => {
     try {
-        const session = await fetch("/api/auth/session");
-        const sessionData = await session.json();
+        const session = await axios.post("/api/auth/session");
+        const sessionData = session.data;
 
         if (sessionData?.accessToken) {
-            await api.post("/logout", {
+            await api.post("/api/v1/auth/logout", {
                 accessToken: sessionData.accessToken,
             });
         }
@@ -110,34 +115,18 @@ export const refreshTokens = async (
     refreshToken: string
 ): Promise<TokenResponse> => {
     try {
-        const response = await fetch(`${IP}/updateToken`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ refreshToken }),
+        const response = await api.post(`${IP}/updateToken`, {
+            refreshToken,
         });
 
-        if (!response.ok) {
-            throw new Error("Не удалось обновить токен");
-        }
-
-        const data = await response.json();
-
-        await fetch("/api/auth/session", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-            }),
+        await api.post("/api/auth/session", {
+            accessToken: response.data.accessToken,
+            refreshToken: response.data.refreshToken,
         });
 
         return {
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
+            accessToken: response.data.accessToken,
+            refreshToken: response.data.refreshToken,
         };
     } catch (error) {
         console.error("Ошибка обновления токена:", error);
@@ -185,8 +174,8 @@ export const api = axios.create({
 api.interceptors.request.use(
     async (config) => {
         // Получаем текущую сессию
-        const session = await fetch("/api/auth/session");
-        const sessionData = await session.json();
+        const session = await api.get("/api/auth/session");
+        const sessionData = session.data;
 
         if (sessionData?.accessToken) {
             config.headers.Authorization = `Bearer ${sessionData.accessToken}`;
@@ -210,8 +199,8 @@ api.interceptors.response.use(
             originalRequest.url !== "/updateToken"
         ) {
             try {
-                const session = await fetch("/api/auth/session");
-                const sessionData = await session.json();
+                const session = await api.get("/api/auth/session");
+                const sessionData = session.data;
 
                 if (!sessionData?.refreshToken) {
                     throw new Error("Нет refresh токена");
