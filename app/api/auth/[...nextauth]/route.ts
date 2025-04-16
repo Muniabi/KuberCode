@@ -48,11 +48,11 @@ const authOptions: AuthOptions = {
 
                     console.log("Attempting to authenticate with:", {
                         email: credentials.email,
-                        apiUrl: "http://localhost:8080",
+                        apiUrl: "http://kubercode-compose_app_network.docker.internal:8080",
                     });
 
                     const response = await axios.post(
-                        `http://localhost:8080/api/v1/auth/login`,
+                        `http://kubercode-compose_app_network.docker.internal:8080/api/v1/auth/login`,
                         {
                             email: credentials.email,
                             password: credentials.password,
