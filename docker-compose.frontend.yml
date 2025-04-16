@@ -9,7 +9,7 @@ services:
         ports:
             - "3000:3000"
         environment:
-            - NEXT_PUBLIC_API_URL=http://host.docker.internal:8080
+            - NEXT_PUBLIC_API_URL=http://localhost:8080
             - NEXTAUTH_URL=http://localhost:3000
             - NEXTAUTH_SECRET=58aeddb0d583a
         networks:
