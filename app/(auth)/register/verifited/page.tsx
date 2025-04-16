@@ -78,10 +78,10 @@ export default function Verified() {
             setResendDisabled(true);
             setCountdown(60);
 
-            const isTeacher = localStorage.getItem("pendingIsTeacher");
+            const isMentor = localStorage.getItem("pendingIsTeacher");
             const response = await sendVerificationEmail(
                 email,
-                isTeacher || "false"
+                isMentor || "false"
             );
 
             if (response?.verificationCode) {
@@ -160,7 +160,7 @@ export default function Verified() {
 
                 const email = localStorage.getItem("pendingEmail");
                 const password = localStorage.getItem("pendingPassword");
-                const isTeacher =
+                const isMentor =
                     localStorage.getItem("pendingIsTeacher") === "true";
 
                 if (!email || !password) {
@@ -168,7 +168,7 @@ export default function Verified() {
                 }
 
                 await simulateRegistrationProcess();
-                await register(email, password, isTeacher);
+                await register(email, password, isMentor);
 
                 localStorage.removeItem("verificationCode");
                 localStorage.removeItem("pendingEmail");

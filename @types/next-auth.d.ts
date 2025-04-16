@@ -11,7 +11,7 @@ declare module "next-auth" {
             avatar?: string;
             accessToken: string;
             refreshToken: string;
-            isTeacher: boolean;
+            isMentor: boolean;
             premium?: boolean;
             error?: string;
         };
@@ -25,7 +25,7 @@ declare module "next-auth" {
         avatar?: string;
         accessToken: string;
         refreshToken: string;
-        isTeacher: boolean;
+        isMentor: boolean;
         premium?: boolean;
         error?: string;
     }

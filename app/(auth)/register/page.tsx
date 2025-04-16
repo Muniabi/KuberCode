@@ -22,7 +22,7 @@ import { sendVerificationEmail } from "@/utils/services/emailService";
 import Link from "next/link";
 
 const formSchema = z.object({
-    isTeacher: z.boolean({
+    isMentor: z.boolean({
         required_error: "Тип пользователя обязателен",
     }),
     email: z
@@ -41,7 +41,7 @@ export default function RegisterPage() {
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            isTeacher: false,
+            isMentor: false,
             email: "",
             password: "",
         },
@@ -52,7 +52,7 @@ export default function RegisterPage() {
 
         const email = data.email;
         const password = data.password;
-        const isTeacher = data.isTeacher;
+        const isMentor = data.isMentor;
 
         try {
             // Генерируем 6-значный код
@@ -64,7 +64,7 @@ export default function RegisterPage() {
             localStorage.setItem("verificationCode", verificationCode);
             localStorage.setItem("pendingEmail", email);
             localStorage.setItem("pendingPassword", password);
-            localStorage.setItem("pendingIsTeacher", String(isTeacher));
+            localStorage.setItem("pendingIsTeacher", String(isMentor));
 
             // Отправляем код на почту
             await sendVerificationEmail(email, verificationCode);
@@ -81,13 +81,13 @@ export default function RegisterPage() {
             <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger
                     value="student"
-                    onClick={() => form.setValue("isTeacher", false)}
+                    onClick={() => form.setValue("isMentor", false)}
                 >
                     Студент
                 </TabsTrigger>
                 <TabsTrigger
                     value="author"
-                    onClick={() => form.setValue("isTeacher", true)}
+                    onClick={() => form.setValue("isMentor", true)}
                 >
                     Автор
                 </TabsTrigger>
