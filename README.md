@@ -4,6 +4,7 @@
 
 -   [Техническое задание](./docs/TZ.md)
 -   [UseCase](./docs/UseCases.md)
+-   [Полная документация проекта](./docs/ProjectDocumentation.md)
 
 ## _на React и Next.js_
 
