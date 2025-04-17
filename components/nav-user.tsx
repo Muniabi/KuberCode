@@ -26,6 +26,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { ProSubscriptionInfo } from "./shared/subscription/subscription";
 import { Badge } from "./ui/badge";
+import { SettingsDialog } from "./shared/settings/settings-dialog";
 
 // Функция для получения аватара из localStorage
 function getAvatarFromLocalStorage(userId: string | undefined): string | null {
@@ -127,24 +128,25 @@ export function NavUser({
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
-                                <BadgeCheck />
-                                Account
+                                <BadgeCheck className="mr-2 h-4 w-4" />
+                                <span>Профиль</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                <CreditCard />
-                                Billing
+                                <CreditCard className="mr-2 h-4 w-4" />
+                                <span>Платежи</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                <Bell />
-                                Notifications
+                                <Bell className="mr-2 h-4 w-4" />
+                                <span>Уведомления</span>
                             </DropdownMenuItem>
+                            <SettingsDialog user={user} />
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             onClick={() => signOut({ callbackUrl: "/" })}
                         >
-                            <LogOut />
-                            Выйти
+                            <LogOut className="mr-2 h-4 w-4" />
+                            <span>Выйти</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
