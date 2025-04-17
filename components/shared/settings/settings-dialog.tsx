@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import {
     Settings,
@@ -30,20 +31,95 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import useAuthStore from "@/store/useAuthStore";
 
-interface SettingsDialogProps {
+// Компонент формы смены пароля
+const ChangePasswordForm = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        // Здесь будет логика смены пароля
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setIsLoading(false);
+        toast.success("Пароль успешно изменен");
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="current-password">Текущий пароль</Label>
+                <Input type="password" id="current-password" required />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="new-password">Новый пароль</Label>
+                <Input type="password" id="new-password" required />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="confirm-password">Подтвердите пароль</Label>
+                <Input type="password" id="confirm-password" required />
+            </div>
+            <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Сохранение..." : "Сменить пароль"}
+            </Button>
+        </form>
+    );
+};
+
+// Компонент формы смены email
+const ChangeEmailForm = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        // Здесь будет логика смены email
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setIsLoading(false);
+        toast.success("Email успешно изменен");
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="new-email">Новый email</Label>
+                <Input type="email" id="new-email" required />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="password">Подтвердите пароль</Label>
+                <Input type="password" id="password" required />
+            </div>
+            <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Сохранение..." : "Сменить email"}
+            </Button>
+        </form>
+    );
+};
+
+export function SettingsDialog({
+    user,
+}: {
     user: {
+        id: string;
         name: string;
         email: string;
         avatar: string;
     };
-}
+}) {
+    const { updateProfile, updateAvatar, updateEmail, updatePassword } =
+        useAuthStore();
 
-export function SettingsDialog({ user }: SettingsDialogProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState(true);
-    const [darkMode, setDarkMode] = useState(false);
     const [language, setLanguage] = useState("ru");
+    const [showPasswordForm, setShowPasswordForm] = useState(false);
+    const [showEmailForm, setShowEmailForm] = useState(false);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const [name, setName] = useState(user?.name || "");
+    const [hasChanges, setHasChanges] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const menuItems = [
         { id: "profile", label: "Профиль", icon: User },
@@ -53,28 +129,136 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
         { id: "privacy", label: "Приватность", icon: Key },
     ];
 
+    // Функция для проверки изменений
+    const checkChanges = () => {
+        const changes =
+            name !== user?.name ||
+            notifications !== true ||
+            language !== "ru" ||
+            previewImage !== null;
+        setHasChanges(changes);
+    };
+
+    // Отслеживаем изменения
+    useEffect(() => {
+        checkChanges();
+    }, [name, notifications, language, previewImage]);
+
+    const handleSave = async () => {
+        toast.success("Изменения успешно сохранены");
+        setHasChanges(false);
+    };
+
+    // Обработчики изменений для каждого раздела
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    };
+
+    const handleNotificationsChange = (checked: boolean) => {
+        setNotifications(checked);
+    };
+
+    const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setLanguage(e.target.value);
+    };
+
+    const handleFileUpload = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                toast.error("Файл слишком большой. Максимальный размер: 5MB");
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                toast.error("Пожалуйста, загрузите изображение");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result as string);
+                // Сохраняем в localStorage
+                if (user?.id) {
+                    localStorage.setItem(
+                        `avatar-${user.id}`,
+                        reader.result as string
+                    );
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleUploadClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleRemovePhoto = async () => {
+        setPreviewImage(null);
+        if (user?.id) {
+            localStorage.removeItem(`avatar-${user.id}`);
+        }
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
+    const handleEmailChange = async (newEmail: string, password: string) => {
+        try {
+            await updateEmail(newEmail, password);
+            setShowEmailForm(false);
+        } catch (error) {
+            console.error("Error updating email:", error);
+        }
+    };
+
+    const handlePasswordChange = async (
+        currentPassword: string,
+        newPassword: string
+    ) => {
+        try {
+            await updatePassword(currentPassword, newPassword);
+            setShowPasswordForm(false);
+        } catch (error) {
+            console.error("Error updating password:", error);
+        }
+    };
+
+    if (!user) {
+        return null;
+    }
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <DropdownMenuItem
-                    className="w-full"
-                    onSelect={(e) => e.preventDefault()}
+                <Button
+                    variant="ghost"
+                    className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground w-full justify-start"
                 >
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Настройки</span>
-                </DropdownMenuItem>
+                </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl w-[90vw] h-[85vh] p-0">
+                <DialogHeader className="sr-only">
+                    <DialogTitle>Настройки профиля</DialogTitle>
+                    <DialogDescription>
+                        Управление настройками вашего профиля, уведомлениями и
+                        внешним видом приложения
+                    </DialogDescription>
+                </DialogHeader>
                 <Tabs defaultValue="profile" className="flex h-full">
-                    {/* Боковая панель с вкладками */}
-                    <div className="hidden sm:flex h-full w-[240px] flex-col border-r">
+                    <TabsList className="hidden sm:flex h-full w-[240px] flex-col border-r bg-muted/40 p-2 space-y-1">
                         <div className="flex items-center gap-2 p-4 border-b">
                             <Avatar className="h-10 w-10">
                                 <AvatarImage
-                                    src={user.avatar}
+                                    src={previewImage || user.avatar}
                                     alt={user.name}
                                 />
-                                <AvatarFallback>
+                                <AvatarFallback className="bg-primary/10">
                                     {user.name.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
@@ -87,61 +271,23 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                 </span>
                             </div>
                         </div>
-                        <TabsList className="flex flex-col h-full w-full rounded-none border-none bg-transparent p-2 space-y-1">
-                            {menuItems.map((item) => (
-                                <TabsTrigger
-                                    key={item.id}
-                                    value={item.id}
-                                    className="justify-start w-full gap-2 px-3 py-2 text-sm font-medium"
-                                >
-                                    <item.icon className="h-4 w-4" />
-                                    {item.label}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
-                    </div>
+                        {menuItems.map((item) => (
+                            <TabsTrigger
+                                key={item.id}
+                                value={item.id}
+                                className="justify-start w-full gap-2 px-3 py-2 text-sm font-medium data-[state=active]:bg-primary/10 data-[state=active]:text-primary"
+                            >
+                                <item.icon className="h-4 w-4" />
+                                {item.label}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
 
-                    {/* Мобильная навигация */}
-                    <div className="sm:hidden w-full border-b px-4 py-3">
-                        <div className="flex items-center gap-4 mb-4">
-                            <Avatar className="h-10 w-10">
-                                <AvatarImage
-                                    src={user.avatar}
-                                    alt={user.name}
-                                />
-                                <AvatarFallback>
-                                    {user.name.charAt(0)}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col">
-                                <span className="text-sm font-medium">
-                                    {user.name}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                    {user.email}
-                                </span>
-                            </div>
-                        </div>
-                        <TabsList className="w-full justify-start overflow-x-auto flex-nowrap h-12 space-x-2">
-                            {menuItems.map((item) => (
-                                <TabsTrigger
-                                    key={item.id}
-                                    value={item.id}
-                                    className="gap-2 px-3 py-2"
-                                >
-                                    <item.icon className="h-4 w-4" />
-                                    <span>{item.label}</span>
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
-                    </div>
-
-                    {/* Основной контент */}
                     <div className="flex-1 overflow-y-auto">
                         <div className="h-full px-6 py-6">
                             <TabsContent
                                 value="profile"
-                                className="mt-0 border-0 h-full"
+                                className="mt-0 border-0"
                             >
                                 <div className="space-y-6">
                                     <div>
@@ -158,18 +304,31 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                             <div className="flex flex-col items-center space-y-4">
                                                 <Avatar className="h-28 w-28">
                                                     <AvatarImage
-                                                        src={user.avatar}
+                                                        src={
+                                                            previewImage ||
+                                                            user.avatar
+                                                        }
                                                         alt={user.name}
                                                     />
-                                                    <AvatarFallback className="text-3xl">
+                                                    <AvatarFallback className="bg-primary/10 text-3xl">
                                                         {user.name.charAt(0)}
                                                     </AvatarFallback>
                                                 </Avatar>
+                                                <input
+                                                    type="file"
+                                                    ref={fileInputRef}
+                                                    className="hidden"
+                                                    accept="image/*"
+                                                    onChange={handleFileUpload}
+                                                />
                                                 <div className="flex gap-2">
                                                     <Button
                                                         size="sm"
                                                         variant="outline"
                                                         className="flex gap-2"
+                                                        onClick={
+                                                            handleUploadClick
+                                                        }
                                                     >
                                                         <Upload className="h-4 w-4" />
                                                         Загрузить
@@ -178,6 +337,13 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                                         size="sm"
                                                         variant="outline"
                                                         className="flex gap-2"
+                                                        onClick={
+                                                            handleRemovePhoto
+                                                        }
+                                                        disabled={
+                                                            !previewImage &&
+                                                            !user.avatar
+                                                        }
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                         Удалить
@@ -185,26 +351,20 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                                 </div>
                                             </div>
                                             <div className="space-y-4 flex-1">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="name">
-                                                        Имя
-                                                    </Label>
-                                                    <Input
-                                                        id="name"
-                                                        defaultValue={user.name}
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="email">
-                                                        Email
-                                                    </Label>
-                                                    <Input
-                                                        id="email"
-                                                        defaultValue={
-                                                            user.email
-                                                        }
-                                                        disabled
-                                                    />
+                                                <div className="space-y-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="name">
+                                                            Имя
+                                                        </Label>
+                                                        <Input
+                                                            id="name"
+                                                            value={name}
+                                                            onChange={
+                                                                handleNameChange
+                                                            }
+                                                            className="bg-background"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -227,7 +387,7 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                         </p>
                                     </div>
                                     <div className="space-y-4">
-                                        <div className="flex items-center justify-between pb-4 border-b">
+                                        <div className="flex items-center justify-between p-4 rounded-lg border bg-card">
                                             <div className="space-y-0.5">
                                                 <div className="flex items-center gap-2">
                                                     <Mail className="h-4 w-4" />
@@ -243,27 +403,7 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                             <Switch
                                                 checked={notifications}
                                                 onCheckedChange={
-                                                    setNotifications
-                                                }
-                                            />
-                                        </div>
-                                        <div className="flex items-center justify-between pb-4 border-b">
-                                            <div className="space-y-0.5">
-                                                <div className="flex items-center gap-2">
-                                                    <Smartphone className="h-4 w-4" />
-                                                    <Label>
-                                                        Push-уведомления
-                                                    </Label>
-                                                </div>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Получать уведомления в
-                                                    браузере
-                                                </p>
-                                            </div>
-                                            <Switch
-                                                checked={notifications}
-                                                onCheckedChange={
-                                                    setNotifications
+                                                    handleNotificationsChange
                                                 }
                                             />
                                         </div>
@@ -285,26 +425,7 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                         </p>
                                     </div>
                                     <div className="space-y-4">
-                                        <div className="flex items-center justify-between pb-4 border-b">
-                                            <div className="space-y-0.5">
-                                                <div className="flex items-center gap-2">
-                                                    {darkMode ? (
-                                                        <Moon className="h-4 w-4" />
-                                                    ) : (
-                                                        <Sun className="h-4 w-4" />
-                                                    )}
-                                                    <Label>Темная тема</Label>
-                                                </div>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Переключить тему оформления
-                                                </p>
-                                            </div>
-                                            <Switch
-                                                checked={darkMode}
-                                                onCheckedChange={setDarkMode}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
+                                        <div className="space-y-2 p-4 rounded-lg border bg-card">
                                             <div className="flex items-center gap-2">
                                                 <Globe className="h-4 w-4" />
                                                 <Label htmlFor="language">
@@ -315,9 +436,7 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                                 id="language"
                                                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                                 value={language}
-                                                onChange={(e) =>
-                                                    setLanguage(e.target.value)
-                                                }
+                                                onChange={handleLanguageChange}
                                             >
                                                 <option value="ru">
                                                     Русский
@@ -330,84 +449,19 @@ export function SettingsDialog({ user }: SettingsDialogProps) {
                                     </div>
                                 </div>
                             </TabsContent>
-
-                            <TabsContent
-                                value="security"
-                                className="mt-0 border-0"
-                            >
-                                <div className="space-y-6">
-                                    <div>
-                                        <h2 className="text-2xl font-semibold tracking-tight">
-                                            Безопасность
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            Настройте параметры безопасности
-                                            вашего аккаунта
-                                        </p>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <Button
-                                            variant="outline"
-                                            className="w-full justify-start"
-                                        >
-                                            Изменить пароль
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full justify-start"
-                                        >
-                                            Двухфакторная аутентификация
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full justify-start"
-                                        >
-                                            История входов
-                                        </Button>
-                                    </div>
-                                </div>
-                            </TabsContent>
-
-                            <TabsContent
-                                value="privacy"
-                                className="mt-0 border-0"
-                            >
-                                <div className="space-y-6">
-                                    <div>
-                                        <h2 className="text-2xl font-semibold tracking-tight">
-                                            Приватность
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            Управление настройками приватности
-                                        </p>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between pb-4 border-b">
-                                            <div className="space-y-0.5">
-                                                <Label>Публичный профиль</Label>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Разрешить другим
-                                                    пользователям видеть ваш
-                                                    профиль
-                                                </p>
-                                            </div>
-                                            <Switch defaultChecked />
-                                        </div>
-                                        <div className="flex items-center justify-between pb-4 border-b">
-                                            <div className="space-y-0.5">
-                                                <Label>Показывать статус</Label>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Показывать ваш онлайн статус
-                                                </p>
-                                            </div>
-                                            <Switch defaultChecked />
-                                        </div>
-                                    </div>
-                                </div>
-                            </TabsContent>
                         </div>
                     </div>
                 </Tabs>
+                {hasChanges && (
+                    <div className="flex justify-end p-4 border-t bg-muted/40">
+                        <Button
+                            onClick={handleSave}
+                            className="bg-primary hover:bg-primary/90"
+                        >
+                            Сохранить изменения
+                        </Button>
+                    </div>
+                )}
             </DialogContent>
         </Dialog>
     );
