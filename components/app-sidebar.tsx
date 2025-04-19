@@ -140,6 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     // Проверяем, загружены ли данные пользователя
     const user = {
+        id: session?.user?.id ?? "", // Добавляем id пользователя
         name: session?.user?.name ?? "Гость", // Значение по умолчанию, если name отсутствует
         email: session?.user?.email ?? "", // Пустая строка, если email отсутствует
         avatar: session?.user?.image ?? "", // Пустая строка, если avatar отсутствует
