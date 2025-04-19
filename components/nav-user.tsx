@@ -38,6 +38,7 @@ export function NavUser({
     user,
 }: {
     user: {
+        id: string;
         name: string;
         email: string;
         avatar: string;
