@@ -22,11 +22,68 @@ const montserrat = Montserrat({
     subsets: ["cyrillic"],
     variable: "--font-montserrat",
     weight: ["400", "500", "600", "700", "800", "900"],
+    display: "swap", // Оптимизация отображения шрифта
 });
 
 // Определяем метаданные для сервера
 export const metadata: Metadata = {
-    title: "KuberCode | Главная", // Общие метаданные
+    metadataBase: new URL("https://kubercode.ru"),
+    title: {
+        default: "KuberCode | Онлайн-обучение IT профессиям",
+        template: "%s | KuberCode",
+    },
+    description:
+        "Начни карьеру в IT вместе с нами. Мы поможем вам освоить востребованные навыки и найти работу мечты в технологической сфере. Более 5000 курсов от ведущих экспертов.",
+    keywords: [
+        "обучение IT",
+        "программирование",
+        "курсы разработки",
+        "онлайн образование",
+        "IT профессии",
+        "обучение программированию",
+        "курсы программирования",
+        "курсы разработки",
+        "курсы онлайн",
+        "курсы для начинающих",
+        "курсы для детей",
+        "курсы для взрослых",
+        "it курсы",
+    ],
+    authors: [{ name: "KuberCode Team" }],
+    creator: "KuberCode",
+    publisher: "KuberCode",
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+    openGraph: {
+        title: "KuberCode | Онлайн-обучение IT профессиям",
+        description:
+            "Начни карьеру в IT вместе с нами. Более 5000 курсов от ведущих экспертов.",
+        url: "https://kubercode.ru",
+        siteName: "KuberCode",
+        locale: "ru_RU",
+        type: "website",
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+        },
+    },
+    verification: {
+        google: "google-site-verification-code", // Добавьте ваш код верификации
+        yandex: "yandex-verification-code", // Добавьте ваш код верификации
+    },
+    alternates: {
+        canonical: "https://kubercode.ru",
+    },
 };
 
 export default function RootLayout({
@@ -36,6 +93,18 @@ export default function RootLayout({
 }) {
     return (
         <html lang="ru" className="!scroll-smooth">
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link
+                    rel="preconnect"
+                    href="https://fonts.gstatic.com"
+                    crossOrigin="anonymous"
+                />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1, maximum-scale=5"
+                />
+            </head>
             <body
                 className={`${montserrat.variable} ${BlobSpongey.variable} overflow-x-hidden`}
             >
