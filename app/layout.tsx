@@ -78,8 +78,11 @@ export const metadata: Metadata = {
         },
     },
     verification: {
-        google: "google-site-verification=5neX398Z9s0tAO-HC0fgl60kisf6gyTnwP9BlpivPmw", // Добавьте ваш код верификации
-        yandex: "yandex-verification-code", // Добавьте ваш код верификации
+        google: "google-site-verification=5neX398Z9s0tAO-HC0fgl60kisf6gyTnwP9BlpivPmw",
+        yandex: "9fa408ddedb1f6cf",
+        other: {
+            "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION || "", // Для Bing (если понадобится)
+        },
     },
     alternates: {
         canonical: "https://kubercode.ru",
