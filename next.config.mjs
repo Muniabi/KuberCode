@@ -1,14 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: [
-            "images.unsplash.com",
-            "plus.unsplash.com",
-            "cdn.jsdelivr.net",
-            "raw.githubusercontent.com",
-            "cdn.iconscout.com",
-            "storage.yandexcloud.net",
-        ],
         remotePatterns: [
             {
                 protocol: "https",
@@ -27,8 +19,13 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "storage.yandexcloud.net",
-                pathname: "/kuber-code/**",
+                hostname: "images.unsplash.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "plus.unsplash.com",
+                pathname: "/**",
             },
         ],
         formats: ["image/avif", "image/webp"],
@@ -43,14 +40,7 @@ const nextConfig = {
     compiler: {
         removeConsole: process.env.NODE_ENV === "production",
     },
-    experimental: {
-        optimizeCss: true,
-        optimizePackageImports: [
-            "@mui/icons-material",
-            "@mui/material",
-            "framer-motion",
-        ],
-    },
+    optimizeFonts: true,
     webpack: (config) => {
         // Оптимизация медиафайлов
         config.module.rules.push({
