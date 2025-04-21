@@ -115,7 +115,7 @@ export const refreshTokens = async (
     refreshToken: string
 ): Promise<TokenResponse> => {
     try {
-        const response = await api.post(`${IP}/updateToken`, {
+        const response = await api.post(`${IP}/api/v1/auth/refresh`, {
             refreshToken,
         });
 
@@ -199,7 +199,7 @@ api.interceptors.response.use(
             originalRequest.url !== "/updateToken"
         ) {
             try {
-                const session = await api.get("/api/auth/session");
+                const session = await axios.post("/api/auth/session");
                 const sessionData = session.data;
 
                 if (!sessionData?.refreshToken) {
