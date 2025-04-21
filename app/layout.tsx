@@ -78,7 +78,7 @@ export const metadata: Metadata = {
         },
     },
     verification: {
-        google: "google-site-verification-code", // Добавьте ваш код верификации
+        google: "google-site-verification=5neX398Z9s0tAO-HC0fgl60kisf6gyTnwP9BlpivPmw", // Добавьте ваш код верификации
         yandex: "yandex-verification-code", // Добавьте ваш код верификации
     },
     alternates: {
