@@ -108,8 +108,7 @@ export function SettingsDialog({
         avatar: string;
     };
 }) {
-    const { updateProfile, updateAvatar, updateEmail, updatePassword } =
-        useAuthStore();
+    const { updateEmail, updatePassword } = useAuthStore();
 
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState(true);
