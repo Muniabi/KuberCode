@@ -5,6 +5,7 @@ import {
     InputOTP,
     InputOTPGroup,
     InputOTPSlot,
+    InputOTPSeparator,
 } from "@/components/ui/input-otp";
 import { register } from "@/utils/services/Authentication";
 import { toast } from "sonner";
@@ -40,6 +41,7 @@ export default function Verified() {
             delay: number;
         }>
     >([]);
+    const [demoCode, setDemoCode] = useState<string | null>(null);
 
     // Массив шагов регистрации
     const registrationSteps = [
@@ -65,6 +67,11 @@ export default function Verified() {
                 setMaskedEmail(storedEmail);
             }
         }
+    }, []);
+
+    // Эффект для получения демо-кода из localStorage (только на клиенте)
+    useEffect(() => {
+        setDemoCode(localStorage.getItem("verificationCode"));
     }, []);
 
     // Функция для повторной отправки кода подтверждения
@@ -268,23 +275,30 @@ export default function Verified() {
                                 className="gap-2"
                             >
                                 <InputOTPGroup>
-                                    {Array.from({ length: 6 }).map((_, i) => (
-                                        <InputOTPSlot
-                                            key={i}
-                                            index={i}
-                                            className={cn(
-                                                "transition-all duration-300 transform hover:scale-110",
-                                                "w-12 h-14 sm:w-14 sm:h-16 text-lg rounded-xl border-2",
-                                                isError &&
-                                                    "animate-shake border-red-500 bg-red-50/10",
-                                                isSuccess &&
-                                                    "border-green-500 bg-green-50/10",
-                                                isVerifying && "opacity-50"
-                                            )}
-                                        />
-                                    ))}
+                                    <InputOTPSlot index={0} />
+                                    <InputOTPSlot index={1} />
+                                    <InputOTPSlot index={2} />
+                                </InputOTPGroup>
+                                <InputOTPSeparator />
+                                <InputOTPGroup>
+                                    <InputOTPSlot index={3} />
+                                    <InputOTPSlot index={4} />
+                                    <InputOTPSlot index={5} />
                                 </InputOTPGroup>
                             </InputOTP>
+                        </div>
+
+                        {/* Добавляем отображение кода для демонстрации */}
+                        <div className="text-center mt-4">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                                Код для демонстрации:
+                                <Badge
+                                    variant="outline"
+                                    className="ml-2 font-mono font-bold text-base py-1 px-2"
+                                >
+                                    {demoCode || "Загрузка..."}
+                                </Badge>
+                            </p>
                         </div>
 
                         <div className="text-center space-y-4">
