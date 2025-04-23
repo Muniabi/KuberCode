@@ -133,7 +133,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                 />
                             </svg>
                         </div>
-                        <span className="text-xl font-semibold text-stone-900 dark:text-white">
+                        <span className="text-3xl font-semibold text-stone-900 dark:text-white font-neopixel">
                             Kuber Code
                         </span>
                     </Link>

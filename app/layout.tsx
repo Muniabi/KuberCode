@@ -1,28 +1,40 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Roboto } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "@/components/shared/providers";
 import ClientLayout from "./ClientLayout"; // Импорт клиентского компонента
 import { Toaster } from "@/components/ui/sonner";
 
-// Кастомный шрифт
-const BlobSpongey = localFont({
+// Кастомный шрифт (закомментировано)
+// const BlobSpongey = localFont({
+//     src: [
+//         {
+//             path: "./fonts/BlobSpongeyLowercase.woff2",
+//             weight: "400",
+//             style: "normal",
+//         },
+//     ],
+//     variable: "--font-custom",
+// });
+
+// Подключаем шрифт Neopixel
+const neopixel = localFont({
     src: [
         {
-            path: "./fonts/BlobSpongeyLowercase.woff2",
+            path: "./fonts/Neopixel - Templatica.pro.woff2",
             weight: "400",
             style: "normal",
         },
     ],
-    variable: "--font-custom",
+    variable: "--font-neopixel",
 });
 
-const montserrat = Montserrat({
-    subsets: ["cyrillic"],
-    variable: "--font-montserrat",
-    weight: ["400", "500", "600", "700", "800", "900"],
-    display: "swap", // Оптимизация отображения шрифта
+// Заменяем Montserrat на Roboto
+const roboto = Roboto({
+    subsets: ["cyrillic", "latin"],
+    variable: "--font-roboto",
+    weight: ["400", "500", "700", "900"],
 });
 
 // Определяем метаданные для сервера
@@ -109,7 +121,7 @@ export default function RootLayout({
                 />
             </head>
             <body
-                className={`${montserrat.variable} ${BlobSpongey.variable} overflow-x-hidden`}
+                className={`${roboto.variable} ${neopixel.variable} overflow-x-hidden`}
             >
                 <main className="min-h-screen">
                     <Providers>
