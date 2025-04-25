@@ -18,7 +18,7 @@ const authorsData = [
         name: "Виктор Рак",
         position:
             "Дизайнер главного офиса MasterCard, сотрудничал с компанией Google",
-        image: "/best-authors/vitya.jpg",
+        image: "/best-authors/vitya.avif",
         courses: "12",
         followers: "15K",
     },
