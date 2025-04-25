@@ -172,7 +172,7 @@ const { data: session, status } = useSession({
 curl https://api.yookassa.ru/v3/payments \
   -X POST \
   -u "1078686:test_sOrAwhfzGmwKpTrpu79wOYwnP6qzQCAAvNMETMGg87E" \
-  -H "Idempotence-Key: 25.04.25:12:18" \
+  -H "Idempotence-Key: 25.04.25:15:05" \
   -H "Content-Type: application/json" \
   -d '{
         "amount": {
@@ -184,5 +184,21 @@ curl https://api.yookassa.ru/v3/payments \
           "type": "redirect",
           "return_url": "http://147.45.68.254:3000"
         },
-        "description": "Задонать в танк"
+        "description": "Задонать в танк",
+        "receipt": {
+          "customer": {
+            "email": "infotkahn@yandex.ru"
+          },
+          "items": [
+            {
+              "description": "Донат в танк",
+              "quantity": "1",
+              "amount": {
+                "value": "1489.00",
+                "currency": "RUB"
+              },
+              "vat_code": 1
+            }
+          ]
+        }
       }'

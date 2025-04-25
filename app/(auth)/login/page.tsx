@@ -277,23 +277,6 @@ export default function LoginPage() {
                     </Form>
                 </CardContent>
             </Card>
-            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-white">
-                Нажимая кнопку входа, вы соглашаетесь с нашими{" "}
-                <Link
-                    href="/terms"
-                    className="underline underline-offset-4 hover:text-primary"
-                >
-                    Условиями использования
-                </Link>{" "}
-                и{" "}
-                <Link
-                    href="/privacy"
-                    className="underline underline-offset-4 hover:text-primary"
-                >
-                    Политикой конфиденциальности
-                </Link>
-                .
-            </div>
         </div>
     );
 }

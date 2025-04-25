@@ -4,6 +4,21 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
+                hostname: "media2.dev.to",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "dev-to-uploads.s3.amazonaws.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "res.cloudinary.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
                 hostname: "cdn.iconscout.com",
                 pathname: "/icon/**",
             },
@@ -25,6 +40,26 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "plus.unsplash.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "habrastorage.org",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "hsto.org",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "habr.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "www.ixbt.com",
                 pathname: "/**",
             },
         ],

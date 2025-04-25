@@ -44,7 +44,7 @@ const PopularCourses = () => {
                         <div className="space-y-4 sm:space-y-6">
                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
                                 Создаем уникальные программы совместно с лучшими
-                                авторами
+                                менторами
                             </h2>
                             <p className="text-base sm:text-lg text-gray-600 dark:text-white/60">
                                 Наши курсы разработаны в сотрудничестве с

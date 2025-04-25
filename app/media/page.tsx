@@ -3,14 +3,14 @@ import MediaContent from "./media-content";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-    title: "Kuber Code | Медиа",
-    description: "Блог, подкасты и видео об IT и программировании",
+    title: "Kuber Code | Медиа-центр",
+    description: "Актуальные новости и статьи из мира IT",
 };
 
 export default function MediaPage({
     searchParams,
 }: {
-    searchParams: { tab?: string };
+    searchParams: { section?: string };
 }) {
     return (
         <Suspense>

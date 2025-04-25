@@ -147,7 +147,7 @@ export function CourseCard({ course }: CourseCardProps) {
                                 {course.author.name}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                Автор курса
+                                Ментор курса
                             </p>
                         </div>
                     </div>

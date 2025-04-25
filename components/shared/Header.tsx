@@ -198,7 +198,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white">
-                                        Авторы
+                                        Менторы
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -289,10 +289,10 @@ export const Header: React.FC<Props> = ({ className }) => {
                                             </div>
                                         </div>
 
-                                        {/* Авторы */}
+                                        {/* Менторы */}
                                         <div className="space-y-4">
                                             <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
-                                                Авторы
+                                                Менторы
                                             </p>
                                             <div className="pl-2 space-y-3">
                                                 {communitys.map((community) => (

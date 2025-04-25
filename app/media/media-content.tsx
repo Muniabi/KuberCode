@@ -1,39 +1,23 @@
 "use client";
 
 import { Container } from "@/components/shared";
-import { MediaHero } from "@/components/media/MediaHero";
 import { BlogSection } from "@/components/media/BlogSection";
-import { PodcastSection } from "@/components/media/PodcastSection";
-import { VideoSection } from "@/components/media/VideoSection";
 import { DigestSection } from "@/components/media/DigestSection";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { BookText, Podcast, PlayCircle, Newspaper } from "lucide-react";
+import { BookText, Newspaper, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ComponentPropsWithoutRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
-const tabs = [
+const sections = [
     {
         value: "blog",
         label: "Блог",
         icon: BookText,
         color: "from-purple-500 to-pink-500",
         shadowColor: "shadow-purple-500/25",
-    },
-    {
-        value: "podcast",
-        label: "Подкасты",
-        icon: Podcast,
-        color: "from-blue-500 to-cyan-500",
-        shadowColor: "shadow-blue-500/25",
-    },
-    {
-        value: "video",
-        label: "Видео",
-        icon: PlayCircle,
-        color: "from-red-500 to-orange-500",
-        shadowColor: "shadow-red-500/25",
     },
     {
         value: "digest",
@@ -44,102 +28,164 @@ const tabs = [
     },
 ];
 
-// Определяем тип для пропсов TabsTrigger
-type CustomTabsTriggerProps = ComponentPropsWithoutRef<typeof TabsTrigger> & {
-    children: (props: { selected: boolean }) => React.ReactNode;
-};
-
 const MediaContent = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const defaultTab = searchParams.get("tab") || "blog";
-    const videoId = searchParams.get("videoId");
+    const defaultSection = searchParams.get("section") || "blog";
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isSearching, setIsSearching] = useState(false);
 
-    const handleTabChange = (value: string) => {
+    const handleSectionChange = (value: string) => {
         const params = new URLSearchParams(searchParams);
-        params.set("tab", value);
-        // Удаляем videoId при смене таба
-        params.delete("videoId");
+        params.set("section", value);
+        router.push(`/media?${params.toString()}`, { scroll: false });
+    };
+
+    const handleSearch = () => {
+        setIsSearching(true);
+        const params = new URLSearchParams(searchParams);
+        if (searchQuery) {
+            params.set("search", searchQuery);
+        } else {
+            params.delete("search");
+        }
         router.push(`/media?${params.toString()}`, { scroll: false });
     };
 
     return (
-        <main className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-zinc-900 dark:to-black">
-            {/* <MediaHero /> */}
+        <main className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-purple-50 dark:from-zinc-900 dark:via-black dark:to-zinc-900">
+            <Container className="py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col items-center gap-4 sm:gap-8">
+                    {/* Заголовок */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-center px-4"
+                    >
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            Медиа-центр
+                        </h1>
+                        <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                            Актуальные новости и статьи из мира IT
+                        </p>
+                    </motion.div>
 
-            <Container className="py-8 mx-4">
-                <Tabs
-                    defaultValue={defaultTab}
-                    className="w-full"
-                    onValueChange={handleTabChange}
-                >
-                    <div className="flex justify-center w-full mb-8">
-                        <TabsList className="w-full max-w-2xl bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-2 rounded-2xl">
-                            <div className="flex justify-center gap-2 w-full">
-                                {tabs.map((tab) => (
-                                    <TabsTrigger
-                                        key={tab.value}
-                                        value={tab.value}
-                                        className="group relative"
-                                    >
-                                        <motion.div
-                                            className={cn(
-                                                "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer",
-                                                "transition-all duration-300",
-                                                "[data-state=active]&:bg-gradient-to-r [data-state=active]&:shadow-lg " +
-                                                    tab.color +
-                                                    " " +
-                                                    tab.shadowColor,
-                                                "[data-state=inactive]&:hover:bg-white dark:[data-state=inactive]&:hover:bg-zinc-700"
-                                            )}
-                                            initial={false}
-                                            animate={{
-                                                scale:
-                                                    defaultTab === tab.value
-                                                        ? 1.05
-                                                        : 1,
-                                            }}
-                                            transition={{
-                                                type: "spring",
-                                                bounce: 0.3,
-                                            }}
-                                        >
-                                            <tab.icon
-                                                className={cn(
-                                                    "w-4 h-4",
-                                                    "[data-state=active]&:text-white",
-                                                    "[data-state=inactive]&:text-gray-600 dark:[data-state=inactive]&:text-gray-400"
-                                                )}
-                                            />
-                                            <span
-                                                className={cn(
-                                                    "hidden sm:block text-sm font-medium",
-                                                    "[data-state=active]&:text-white",
-                                                    "[data-state=inactive]&:text-gray-600 dark:[data-state=inactive]&:text-gray-400"
-                                                )}
-                                            >
-                                                {tab.label}
-                                            </span>
-                                        </motion.div>
-                                    </TabsTrigger>
-                                ))}
+                    {/* Поиск */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="w-full max-w-xl px-4"
+                    >
+                        <div className="relative flex gap-2">
+                            <div className="relative flex-1">
+                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                                <Input
+                                    type="text"
+                                    placeholder="Поиск статей..."
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                    onKeyDown={(e) =>
+                                        e.key === "Enter" && handleSearch()
+                                    }
+                                    className="pl-10 pr-4 py-6 text-lg rounded-full shadow-lg border-gray-200 dark:border-zinc-700 focus:border-purple-500 dark:focus:border-purple-500"
+                                />
                             </div>
-                        </TabsList>
-                    </div>
+                            <Button
+                                onClick={handleSearch}
+                                className="px-6 py-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg"
+                            >
+                                <Search className="h-5 w-5" />
+                            </Button>
+                        </div>
+                    </motion.div>
 
-                    <TabsContent value="video">
-                        <VideoSection initialVideoId={videoId} />
-                    </TabsContent>
-                    <TabsContent value="podcast">
-                        <PodcastSection />
-                    </TabsContent>
-                    <TabsContent value="blog">
-                        <BlogSection />
-                    </TabsContent>
-                    <TabsContent value="digest">
-                        <DigestSection />
-                    </TabsContent>
-                </Tabs>
+                    {/* Переключатель разделов */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="flex justify-center w-full px-4"
+                    >
+                        <div className="inline-flex p-1 bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-700">
+                            {sections.map((section) => (
+                                <Button
+                                    key={section.value}
+                                    variant="ghost"
+                                    className={cn(
+                                        "relative group px-4 sm:px-6 py-2 rounded-xl",
+                                        "transition-all duration-300",
+                                        "hover:bg-gray-100 dark:hover:bg-zinc-700",
+                                        defaultSection === section.value &&
+                                            "bg-gradient-to-r " + section.color
+                                    )}
+                                    onClick={() =>
+                                        handleSectionChange(section.value)
+                                    }
+                                >
+                                    <motion.div
+                                        className="flex items-center gap-2"
+                                        initial={false}
+                                        animate={{
+                                            scale:
+                                                defaultSection === section.value
+                                                    ? 1.05
+                                                    : 1,
+                                        }}
+                                        transition={{
+                                            type: "spring",
+                                            bounce: 0.3,
+                                        }}
+                                    >
+                                        <section.icon
+                                            className={cn(
+                                                "w-4 h-4 sm:w-5 sm:h-5",
+                                                defaultSection === section.value
+                                                    ? "text-white"
+                                                    : "text-gray-600 dark:text-gray-400"
+                                            )}
+                                        />
+                                        <span
+                                            className={cn(
+                                                "text-sm font-medium whitespace-nowrap",
+                                                defaultSection === section.value
+                                                    ? "text-white"
+                                                    : "text-gray-600 dark:text-gray-400"
+                                            )}
+                                        >
+                                            {section.label}
+                                        </span>
+                                    </motion.div>
+                                </Button>
+                            ))}
+                        </div>
+                    </motion.div>
+
+                    {/* Контент */}
+                    <motion.div
+                        key={defaultSection}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full max-w-7xl mx-auto"
+                    >
+                        {defaultSection === "blog" ? (
+                            <BlogSection
+                                searchQuery={searchQuery}
+                                isSearching={isSearching}
+                            />
+                        ) : (
+                            <DigestSection
+                                searchQuery={searchQuery}
+                                isSearching={isSearching}
+                            />
+                        )}
+                    </motion.div>
+                </div>
             </Container>
         </main>
     );
