@@ -77,241 +77,275 @@ export default function RegisterPage() {
     };
 
     return (
-        <Tabs defaultValue="student" className="w-[400px] mx-auto my-12">
-            <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger
-                    value="student"
-                    onClick={() => form.setValue("isMentor", false)}
-                >
-                    Студент
-                </TabsTrigger>
-                <TabsTrigger
-                    value="author"
-                    onClick={() => form.setValue("isMentor", true)}
-                >
-                    Автор
-                </TabsTrigger>
-            </TabsList>
+        <div className={`flex flex-col gap-6 w-[400px] mx-auto mt-16 `}>
+            <Tabs defaultValue="student" className="w-[400px] mx-auto my-12">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger
+                        value="student"
+                        onClick={() => form.setValue("isMentor", false)}
+                    >
+                        Студент
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="author"
+                        onClick={() => form.setValue("isMentor", true)}
+                    >
+                        Ментор
+                    </TabsTrigger>
+                </TabsList>
 
-            <TabsContent value="student">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-center mb-2">
-                            Студент
-                        </CardTitle>
-                        <CardDescription>
-                            Зарегистрируйтесь как студент, чтобы получить доступ
-                            к курсам, интерактивным занятиям и возможностям
-                            заработка бонусов за успехи в обучении.
-                        </CardDescription>
-                        <div className="mx-auto">
-                            <p className="py-2">Регистрация с помощью</p>
-                            <div className="flex items-center justify-evenly">
-                                <button
-                                    onClick={() =>
-                                        signIn("github", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="/github.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        signIn("vk", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar className="rounded-none">
-                                        <AvatarImage
-                                            src="/vk.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        signIn("google", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="/google.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
+                <TabsContent value="student">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-center mb-2">
+                                Студент
+                            </CardTitle>
+                            <CardDescription>
+                                Зарегистрируйтесь как студент, чтобы получить
+                                доступ к курсам, интерактивным занятиям и
+                                возможностям заработка бонусов за успехи в
+                                обучении.
+                            </CardDescription>
+                            <div className="mx-auto">
+                                <p className="py-2">Регистрация с помощью</p>
+                                <div className="flex items-center justify-evenly">
+                                    <button
+                                        onClick={() =>
+                                            signIn("github", {
+                                                callbackUrl: "/",
+                                                redirect: true,
+                                            })
+                                        }
+                                    >
+                                        <Avatar>
+                                            <AvatarImage
+                                                src="/github.png"
+                                                alt="@shadcn"
+                                            />
+                                        </Avatar>
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            signIn("vk", {
+                                                callbackUrl: "/",
+                                                redirect: true,
+                                            })
+                                        }
+                                    >
+                                        <Avatar className="rounded-none">
+                                            <AvatarImage
+                                                src="/vk.png"
+                                                alt="@shadcn"
+                                            />
+                                        </Avatar>
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            signIn("google", {
+                                                callbackUrl: "/",
+                                                redirect: true,
+                                            })
+                                        }
+                                    >
+                                        <Avatar>
+                                            <AvatarImage
+                                                src="/google.png"
+                                                alt="@shadcn"
+                                            />
+                                        </Avatar>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-2"
-                        >
-                            <div className="space-y-1">
-                                <Label htmlFor="email">Почта</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="Email"
-                                    {...form.register("email")}
-                                />
-                                {form.formState.errors.email && (
-                                    <p className="text-red-500">
-                                        {form.formState.errors.email.message}
-                                    </p>
-                                )}
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="password">Пароль</Label>
-                                <PasswordInput
-                                    id="password"
-                                    placeholder="Пароль"
-                                    {...form.register("password")}
-                                />
-                                {form.formState.errors.password && (
-                                    <p className="text-red-500">
-                                        {form.formState.errors.password.message}
-                                    </p>
-                                )}
-                            </div>
-                            <Button className="mx-auto">
-                                Зарегистрироваться
-                            </Button>
-                        </form>
-                        <div className="text-center text-sm">
-                            Уже есть аккаунт?{" "}
-                            <Link
-                                href="/login"
-                                className="underline underline-offset-4"
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <form
+                                onSubmit={form.handleSubmit(onSubmit)}
+                                className="space-y-2"
                             >
-                                Войти
-                            </Link>
-                        </div>
-                    </CardContent>
-                </Card>
-            </TabsContent>
+                                <div className="space-y-1">
+                                    <Label htmlFor="email">Почта</Label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        placeholder="Email"
+                                        {...form.register("email")}
+                                    />
+                                    {form.formState.errors.email && (
+                                        <p className="text-red-500">
+                                            {
+                                                form.formState.errors.email
+                                                    .message
+                                            }
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="password">Пароль</Label>
+                                    <PasswordInput
+                                        id="password"
+                                        placeholder="Пароль"
+                                        {...form.register("password")}
+                                    />
+                                    {form.formState.errors.password && (
+                                        <p className="text-red-500">
+                                            {
+                                                form.formState.errors.password
+                                                    .message
+                                            }
+                                        </p>
+                                    )}
+                                </div>
+                                <Button className="mx-auto">
+                                    Зарегистрироваться
+                                </Button>
+                            </form>
+                            <div className="text-center text-sm">
+                                Уже есть аккаунт?{" "}
+                                <Link
+                                    href="/login"
+                                    className="underline underline-offset-4"
+                                >
+                                    Войти
+                                </Link>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
 
-            <TabsContent value="author">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-center mb-2">
-                            Автор
-                        </CardTitle>
-                        <CardDescription>
-                            Зарегистрируйтесь как автор, чтобы делиться курсами,
-                            получать обратную связь и создавать интерактивные
-                            занятия для студентов.
-                        </CardDescription>
-                        <div className="mx-auto">
-                            <p className="py-2">Регистрация с помощью</p>
-                            <div className="flex items-center justify-evenly">
-                                <button
-                                    onClick={() =>
-                                        signIn("github", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="/github.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        signIn("vk", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar className="rounded-none">
-                                        <AvatarImage
-                                            src="/vk.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        signIn("google", {
-                                            callbackUrl: "/",
-                                            redirect: true,
-                                        })
-                                    }
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="/google.png"
-                                            alt="@shadcn"
-                                        />
-                                    </Avatar>
-                                </button>
+                <TabsContent value="author">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-center mb-2">
+                                Ментор
+                            </CardTitle>
+                            <CardDescription>
+                                Зарегистрируйтесь как Ментор, чтобы делиться
+                                курсами, получать обратную связь и создавать
+                                интерактивные занятия для студентов.
+                            </CardDescription>
+                            <div className="mx-auto">
+                                <p className="py-2">Регистрация с помощью</p>
+                                <div className="flex items-center justify-evenly">
+                                    <button
+                                        onClick={() =>
+                                            signIn("github", {
+                                                callbackUrl: "/",
+                                                redirect: true,
+                                            })
+                                        }
+                                    >
+                                        <Avatar>
+                                            <AvatarImage
+                                                src="/github.png"
+                                                alt="@shadcn"
+                                            />
+                                        </Avatar>
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            signIn("vk", {
+                                                callbackUrl: "/",
+                                                redirect: true,
+                                            })
+                                        }
+                                    >
+                                        <Avatar className="rounded-none">
+                                            <AvatarImage
+                                                src="/vk.png"
+                                                alt="@shadcn"
+                                            />
+                                        </Avatar>
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            signIn("google", {
+                                                callbackUrl: "/",
+                                                redirect: true,
+                                            })
+                                        }
+                                    >
+                                        <Avatar>
+                                            <AvatarImage
+                                                src="/google.png"
+                                                alt="@shadcn"
+                                            />
+                                        </Avatar>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-2"
-                        >
-                            <div className="space-y-1">
-                                <Label htmlFor="email">Почта</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="Email"
-                                    {...form.register("email")}
-                                />
-                                {form.formState.errors.email && (
-                                    <p className="text-red-500">
-                                        {form.formState.errors.email.message}
-                                    </p>
-                                )}
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="password">Пароль</Label>
-                                <PasswordInput
-                                    id="password"
-                                    placeholder="Пароль"
-                                    {...form.register("password")}
-                                />
-                                {form.formState.errors.password && (
-                                    <p className="text-red-500">
-                                        {form.formState.errors.password.message}
-                                    </p>
-                                )}
-                            </div>
-                            <Button type="submit">Зарегистрироваться</Button>
-                        </form>
-                        <div className="text-center text-sm">
-                            Уже есть аккаунт?{" "}
-                            <Link
-                                href="/login"
-                                className="underline underline-offset-4"
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <form
+                                onSubmit={form.handleSubmit(onSubmit)}
+                                className="space-y-2"
                             >
-                                Войти
-                            </Link>
-                        </div>
-                    </CardContent>
-                </Card>
-            </TabsContent>
-        </Tabs>
+                                <div className="space-y-1">
+                                    <Label htmlFor="email">Почта</Label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        placeholder="Email"
+                                        {...form.register("email")}
+                                    />
+                                    {form.formState.errors.email && (
+                                        <p className="text-red-500">
+                                            {
+                                                form.formState.errors.email
+                                                    .message
+                                            }
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="password">Пароль</Label>
+                                    <PasswordInput
+                                        id="password"
+                                        placeholder="Пароль"
+                                        {...form.register("password")}
+                                    />
+                                    {form.formState.errors.password && (
+                                        <p className="text-red-500">
+                                            {
+                                                form.formState.errors.password
+                                                    .message
+                                            }
+                                        </p>
+                                    )}
+                                </div>
+                                <Button type="submit">
+                                    Зарегистрироваться
+                                </Button>
+                            </form>
+                            <div className="text-center text-sm">
+                                Уже есть аккаунт?{" "}
+                                <Link
+                                    href="/login"
+                                    className="underline underline-offset-4"
+                                >
+                                    Войти
+                                </Link>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-white">
+                Нажимая кнопку входа, вы соглашаетесь с нашими{" "}
+                <Link
+                    href="/terms"
+                    className="underline underline-offset-4 hover:text-primary"
+                >
+                    Условиями использования
+                </Link>{" "}
+                и{" "}
+                <Link
+                    href="/privacy"
+                    className="underline underline-offset-4 hover:text-primary"
+                >
+                    Политикой конфиденциальности
+                </Link>
+                .
+            </div>
+        </div>
     );
 }
