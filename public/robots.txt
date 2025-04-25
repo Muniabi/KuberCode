@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /account/
+Disallow: /create/
+
+Sitemap: https://kubercode.ru/sitemap.xml 
