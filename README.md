@@ -165,3 +165,24 @@ const { data: session, status } = useSession({
 ```
 
 [//]: # "These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax"
+
+
+
+
+curl https://api.yookassa.ru/v3/payments \
+  -X POST \
+  -u "1078686:test_sOrAwhfzGmwKpTrpu79wOYwnP6qzQCAAvNMETMGg87E" \
+  -H "Idempotence-Key: 25.04.25:12:18" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "amount": {
+          "value": "1488.00",
+          "currency": "RUB"
+        },
+        "capture": true,
+        "confirmation": {
+          "type": "redirect",
+          "return_url": "http://147.45.68.254:3000"
+        },
+        "description": "Задонать в танк"
+      }'

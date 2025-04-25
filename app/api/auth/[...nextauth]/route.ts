@@ -48,11 +48,11 @@ const authOptions: AuthOptions = {
 
                     console.log("Attempting to authenticate with:", {
                         email: credentials.email,
-                        apiUrl: "http://147.45.68.254:8080",
+                        apiUrl: process.env.NEXT_PUBLIC_API_URL,
                     });
 
                     const response = await axios.post(
-                        `http://147.45.68.254:8080/api/v1/auth/login`,
+                        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
                         {
                             email: credentials.email,
                             password: credentials.password,
