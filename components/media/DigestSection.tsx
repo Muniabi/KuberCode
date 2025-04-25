@@ -68,16 +68,26 @@ const events = [
     // Добавьте больше событий...
 ];
 
-export const DigestSection = () => {
+interface DigestSectionProps {
+    searchQuery?: string;
+    isSearching?: boolean;
+}
+
+export function DigestSection({
+    searchQuery = "",
+    isSearching = false,
+}: DigestSectionProps) {
     const [selectedCategory, setSelectedCategory] = useState("all");
-    const [searchQuery, setSearchQuery] = useState("");
+    const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
 
     const filteredNews = news.filter((item) => {
         const matchesCategory =
             selectedCategory === "all" || item.category === selectedCategory;
         const matchesSearch =
-            item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.description.toLowerCase().includes(searchQuery.toLowerCase());
+            item.title.toLowerCase().includes(localSearchQuery.toLowerCase()) ||
+            item.description
+                .toLowerCase()
+                .includes(localSearchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 
@@ -95,8 +105,8 @@ export const DigestSection = () => {
                     <Input
                         placeholder="Поиск новостей..."
                         className="pl-10"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={localSearchQuery}
+                        onChange={(e) => setLocalSearchQuery(e.target.value)}
                     />
                 </div>
                 <Button variant="outline" className="gap-2">
@@ -237,4 +247,4 @@ export const DigestSection = () => {
             </div>
         </motion.div>
     );
-};
+}

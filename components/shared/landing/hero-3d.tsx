@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export const Hero3D = () => {
+const Hero3D = () => {
     return (
         <div className="relative w-full h-full">
             <motion.div
@@ -81,3 +81,5 @@ export const Hero3D = () => {
         </div>
     );
 };
+
+export default Hero3D;

@@ -13,9 +13,7 @@ interface Props {
     className?: string;
 }
 
-const Hero3D = lazy(() =>
-    import("./hero-3d").then((mod) => ({ default: mod.Hero3D }))
-);
+const Hero3D = lazy(() => import("./hero-3d"));
 
 export const MainInfoBlock: React.FC<Props> = ({ className }) => {
     const [search, setSearch] = useState<string>("");
