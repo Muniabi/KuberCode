@@ -6,7 +6,7 @@ import { Container, AccountButton } from "./index";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 
 import {
     NavigationMenu,
@@ -60,6 +60,8 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [eventsOpen, setEventsOpen] = useState(false);
+    const [mentorsOpen, setMentorsOpen] = useState(false);
 
     return (
         <header className={cn("w-full bg-white dark:bg-black", className)}>
@@ -138,16 +140,16 @@ export const Header: React.FC<Props> = ({ className }) => {
                         </span>
                     </Link>
 
-                    {/* Десктопное меню */}
-                    <div className="hidden lg:block">
+                    {/* Центрированное меню */}
+                    <div className="hidden lg:flex flex-1 justify-center">
                         <NavigationMenu>
                             <NavigationMenuList className="gap-1">
                                 <NavigationMenuItem>
                                     <Link
                                         className={cn(
                                             navigationMenuTriggerStyle(),
-                                            "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
-                                            "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
+                                            "bg-stone-100/80 text-stone-900 hover:bg-[#A559DD]/20 hover:text-[#A559DD] border-b-2 border-transparent hover:border-[#A559DD]",
+                                            "dark:bg-white/10 dark:text-white dark:hover:bg-[#A559DD]/20 dark:hover:text-[#A559DD] dark:border-b-2 dark:border-transparent dark:hover:border-[#A559DD]"
                                         )}
                                         href="/courses"
                                     >
@@ -155,7 +157,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                     </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white">
+                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-[#A559DD]/20 hover:text-[#A559DD] border-b-2 border-transparent hover:border-[#A559DD] dark:bg-white/10 dark:text-white dark:hover:bg-[#A559DD]/20 dark:hover:text-[#A559DD] dark:border-b-2 dark:border-transparent dark:hover:border-[#A559DD]">
                                         Мероприятия
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
@@ -167,7 +169,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                                     passHref
                                                 >
                                                     <NavigationMenuLink asChild>
-                                                        <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-[url('/hackaton.webp')] bg-cover from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
+                                                        <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-[url('/hackaton.webp')] bg-cover from-[#A559DD]/70 to-[#591F9C]/80 p-6 no-underline outline-none focus:shadow-md">
                                                             <div className="mb-2 mt-4 text-white text-lg font-medium">
                                                                 Хакатоны
                                                             </div>
@@ -189,6 +191,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                                     key={event.title}
                                                     title={event.title}
                                                     href={event.href}
+                                                    className="hover:bg-[#A559DD]/10 hover:text-[#A559DD] dark:hover:bg-[#A559DD]/10 dark:hover:text-[#A559DD]"
                                                 >
                                                     {event.description}
                                                 </ListItem>
@@ -197,7 +200,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white">
+                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-[#A559DD]/20 hover:text-[#A559DD] border-b-2 border-transparent hover:border-[#A559DD] dark:bg-white/10 dark:text-white dark:hover:bg-[#A559DD]/20 dark:hover:text-[#A559DD] dark:border-b-2 dark:border-transparent dark:hover:border-[#A559DD]">
                                         Менторы
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
@@ -207,6 +210,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                                     key={community.title}
                                                     title={community.title}
                                                     href={community.href}
+                                                    className="hover:bg-[#A559DD]/10 hover:text-[#A559DD] dark:hover:bg-[#A559DD]/10 dark:hover:text-[#A559DD]"
                                                 >
                                                     {community.description}
                                                 </ListItem>
@@ -218,8 +222,8 @@ export const Header: React.FC<Props> = ({ className }) => {
                                     <Link
                                         className={cn(
                                             navigationMenuTriggerStyle(),
-                                            "bg-stone-100/80 text-stone-900 hover:bg-stone-200/80 hover:text-stone-900",
-                                            "dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
+                                            "bg-stone-100/80 text-stone-900 hover:bg-[#A559DD]/20 hover:text-[#A559DD] border-b-2 border-transparent hover:border-[#A559DD]",
+                                            "dark:bg-white/10 dark:text-white dark:hover:bg-[#A559DD]/20 dark:hover:text-[#A559DD] dark:border-b-2 dark:border-transparent dark:hover:border-[#A559DD]"
                                         )}
                                         href="/media"
                                     >
@@ -253,66 +257,108 @@ export const Header: React.FC<Props> = ({ className }) => {
                                     <div className="flex flex-col space-y-6 pt-6">
                                         <Link
                                             href="/courses"
-                                            className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                            className="text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] font-semibold text-lg transition-colors"
                                             onClick={() => setIsOpen(false)}
                                         >
                                             Курсы
                                         </Link>
 
                                         {/* Мероприятия */}
-                                        <div className="space-y-4">
-                                            <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
-                                                Мероприятия
-                                            </p>
-                                            <div className="pl-2 space-y-3">
-                                                <Link
-                                                    href="/"
-                                                    className="block text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
-                                                    onClick={() =>
-                                                        setIsOpen(false)
-                                                    }
-                                                >
-                                                    Хакатоны
-                                                </Link>
-                                                {events.map((event) => (
+                                        <div>
+                                            <button
+                                                className="flex items-center w-full font-semibold text-[#A559DD] dark:text-[#A559DD] py-2 text-lg focus:outline-none"
+                                                onClick={() =>
+                                                    setEventsOpen(!eventsOpen)
+                                                }
+                                            >
+                                                <span className="mr-2">
+                                                    Мероприятия
+                                                </span>
+                                                <ChevronDown
+                                                    className={`transition-transform ${
+                                                        eventsOpen
+                                                            ? "rotate-180"
+                                                            : ""
+                                                    }`}
+                                                />
+                                            </button>
+                                            {eventsOpen && (
+                                                <div className="pl-4 border-l-2 border-[#A559DD]/30 ml-2 flex flex-col space-y-2 mt-2">
                                                     <Link
-                                                        key={event.title}
-                                                        href={event.href}
-                                                        className="block text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                                        href="/"
+                                                        className="block text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] text-base transition-colors"
                                                         onClick={() =>
                                                             setIsOpen(false)
                                                         }
                                                     >
-                                                        {event.title}
+                                                        Хакатоны
                                                     </Link>
-                                                ))}
-                                            </div>
+                                                    {events.map((event) => (
+                                                        <Link
+                                                            key={event.title}
+                                                            href={event.href}
+                                                            className="block text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] text-base transition-colors pl-2 border-l border-[#A559DD]/10"
+                                                            onClick={() =>
+                                                                setIsOpen(false)
+                                                            }
+                                                        >
+                                                            {event.title}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
 
                                         {/* Менторы */}
-                                        <div className="space-y-4">
-                                            <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
-                                                Менторы
-                                            </p>
-                                            <div className="pl-2 space-y-3">
-                                                {communitys.map((community) => (
-                                                    <Link
-                                                        key={community.title}
-                                                        href={community.href}
-                                                        className="block text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
-                                                        onClick={() =>
-                                                            setIsOpen(false)
-                                                        }
-                                                    >
-                                                        {community.title}
-                                                    </Link>
-                                                ))}
-                                            </div>
+                                        <div>
+                                            <button
+                                                className="flex items-center w-full font-semibold text-[#A559DD] dark:text-[#A559DD] py-2 text-lg focus:outline-none"
+                                                onClick={() =>
+                                                    setMentorsOpen(!mentorsOpen)
+                                                }
+                                            >
+                                                <span className="mr-2">
+                                                    Менторы
+                                                </span>
+                                                <ChevronDown
+                                                    className={`transition-transform ${
+                                                        mentorsOpen
+                                                            ? "rotate-180"
+                                                            : ""
+                                                    }`}
+                                                />
+                                            </button>
+                                            {mentorsOpen && (
+                                                <div className="pl-4 border-l-2 border-[#A559DD]/30 ml-2 flex flex-col space-y-2 mt-2">
+                                                    {communitys.map(
+                                                        (community) => (
+                                                            <Link
+                                                                key={
+                                                                    community.title
+                                                                }
+                                                                href={
+                                                                    community.href
+                                                                }
+                                                                className="block text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] text-base transition-colors pl-2 border-l border-[#A559DD]/10"
+                                                                onClick={() =>
+                                                                    setIsOpen(
+                                                                        false
+                                                                    )
+                                                                }
+                                                            >
+                                                                {
+                                                                    community.title
+                                                                }
+                                                            </Link>
+                                                        )
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <Link
                                             href="/media"
-                                            className="text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white transition-colors"
+                                            className="text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] font-semibold text-lg transition-colors"
                                             onClick={() => setIsOpen(false)}
                                         >
                                             Медиа
