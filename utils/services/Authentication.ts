@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import { signIn, signOut } from "next-auth/react";
-import { toast } from "sonner";
 
 export const IP = process.env.NEXT_PUBLIC_API_URL;
 
@@ -53,7 +52,6 @@ export const register = async (
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 409) {
-                toast.error("Пользователь с таким email уже существует");
                 throw new Error("Пользователь с таким email уже существует");
             }
             console.error("Ошибка при регистрации:", error.response?.data);

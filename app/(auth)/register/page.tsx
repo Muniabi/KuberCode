@@ -20,6 +20,9 @@ import { register } from "@/utils/services/Authentication";
 import PasswordInput from "@/components/ui/password-input";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import Link from "next/link";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     isMentor: z.boolean({
@@ -37,6 +40,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function RegisterPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -48,31 +52,25 @@ export default function RegisterPage() {
     });
 
     const onSubmit = async (data: FormData) => {
-        console.log(data);
-
-        const email = data.email;
-        const password = data.password;
-        const isMentor = data.isMentor;
-
+        setIsLoading(true);
         try {
-            // Генерируем 6-значный код
-            const verificationCode = Math.floor(
-                100000 + Math.random() * 900000
-            ).toString();
+            // Сначала регистрируем пользователя
+            await register(data.email, data.password, data.isMentor);
 
-            // Сохраняем код, email и данные для регистрации в localStorage
-            localStorage.setItem("verificationCode", verificationCode);
-            localStorage.setItem("pendingEmail", email);
-            localStorage.setItem("pendingPassword", password);
-            localStorage.setItem("pendingIsTeacher", String(isMentor));
-
-            // Отправляем код на почту
-            await sendVerificationEmail(email, verificationCode);
+            // После успешной регистрации отправляем код подтверждения
+            await sendVerificationEmail(data.email, String(data.isMentor));
 
             // Перенаправляем на страницу верификации
             router.push("/register/verifited");
         } catch (error) {
-            console.error("Ошибка при отправке кода:", error);
+            console.error("Ошибка при регистрации:", error);
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : "Ошибка при регистрации"
+            );
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -160,7 +158,7 @@ export default function RegisterPage() {
                         <CardContent className="space-y-2">
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
-                                className="space-y-2"
+                                className="space-y-4"
                             >
                                 <div className="space-y-1">
                                     <Label htmlFor="email">Почта</Label>
@@ -195,9 +193,22 @@ export default function RegisterPage() {
                                         </p>
                                     )}
                                 </div>
-                                <Button className="mx-auto">
-                                    Зарегистрироваться
-                                </Button>
+                                <div className="flex justify-center">
+                                    <Button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="w-full"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Регистрация...
+                                            </>
+                                        ) : (
+                                            "Зарегистрироваться"
+                                        )}
+                                    </Button>
+                                </div>
                             </form>
                             <div className="text-center text-sm">
                                 Уже есть аккаунт?{" "}
@@ -277,7 +288,7 @@ export default function RegisterPage() {
                         <CardContent className="space-y-2">
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
-                                className="space-y-2"
+                                className="space-y-4"
                             >
                                 <div className="space-y-1">
                                     <Label htmlFor="email">Почта</Label>
@@ -312,9 +323,22 @@ export default function RegisterPage() {
                                         </p>
                                     )}
                                 </div>
-                                <Button type="submit">
-                                    Зарегистрироваться
-                                </Button>
+                                <div className="flex justify-center">
+                                    <Button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="w-full"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Регистрация...
+                                            </>
+                                        ) : (
+                                            "Зарегистрироваться"
+                                        )}
+                                    </Button>
+                                </div>
                             </form>
                             <div className="text-center text-sm">
                                 Уже есть аккаунт?{" "}

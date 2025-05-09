@@ -3,11 +3,10 @@ export const sendVerificationEmail = async (
     isMentor: string
 ) => {
     try {
-        // Генерируем новый код
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Сохраняем новый код
-        localStorage.setItem("verificationCode", code);
+        // Генерируем 6-значный код подтверждения
+        const verificationCode = Math.floor(
+            100000 + Math.random() * 900000
+        ).toString();
 
         const response = await fetch("/api/email/send", {
             method: "POST",
@@ -16,8 +15,8 @@ export const sendVerificationEmail = async (
             },
             body: JSON.stringify({
                 email,
-                code,
                 isMentor: isMentor === "true",
+                code: verificationCode,
             }),
         });
 
@@ -27,8 +26,7 @@ export const sendVerificationEmail = async (
             throw new Error(data.error || "Ошибка при отправке email");
         }
 
-        console.log("Preview URL:", data.previewUrl);
-        return { verificationCode: code };
+        return data;
     } catch (error) {
         console.error("Ошибка при отправке email:", error);
         throw error;

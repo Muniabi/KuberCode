@@ -7,7 +7,6 @@ import {
     InputOTPSlot,
     InputOTPSeparator,
 } from "@/components/ui/input-otp";
-import { register } from "@/utils/services/Authentication";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -39,40 +38,41 @@ export default function Verified() {
             size: number;
             color: string;
             delay: number;
+            duration: number;
+            path: string;
         }>
     >([]);
-    const [demoCode, setDemoCode] = useState<string | null>(null);
 
     // Массив шагов регистрации
     const registrationSteps = [
-        { text: "Создание аккаунта...", icon: "✨", done: false },
+        { text: "Подтверждение email...", icon: "✨", done: false },
         { text: "Настройка профиля...", icon: "👤", done: false },
         { text: "Подготовка личного кабинета...", icon: "🎨", done: false },
         { text: "Завершение регистрации...", icon: "🚀", done: false },
     ];
 
-    // Эффект для получения сохраненного email из localStorage
+    // Эффект для получения email из сессии
     useEffect(() => {
-        const storedEmail = localStorage.getItem("pendingEmail");
-        setEmail(storedEmail);
-
-        if (storedEmail) {
-            const [name, domain] = storedEmail.split("@");
-            if (name && domain) {
-                // показ только первых 3 символов почты (не работает), возможно сделаем в будущем
-                // const maskedName =
-                //     name.slice(0, 3) + "*".repeat(name.length - 3);
-                setMaskedEmail(`${name}@${domain}`); // Маскируем email
-            } else {
-                setMaskedEmail(storedEmail);
+        const getEmail = async () => {
+            try {
+                const response = await fetch("/api/auth/session");
+                const session = await response.json();
+                if (session?.user?.email) {
+                    setEmail(session.user.email);
+                    const [name, domain] = session.user.email.split("@");
+                    if (name && domain) {
+                        setMaskedEmail(`${name}@${domain}`);
+                    } else {
+                        setMaskedEmail(session.user.email);
+                    }
+                }
+            } catch (error) {
+                console.error("Ошибка при получении email:", error);
+                router.push("/register");
             }
-        }
-    }, []);
-
-    // Эффект для получения демо-кода из localStorage (только на клиенте)
-    useEffect(() => {
-        setDemoCode(localStorage.getItem("verificationCode"));
-    }, []);
+        };
+        getEmail();
+    }, [router]);
 
     // Функция для повторной отправки кода подтверждения
     const handleResendCode = async () => {
@@ -85,17 +85,9 @@ export default function Verified() {
             setResendDisabled(true);
             setCountdown(60);
 
-            const isMentor = localStorage.getItem("pendingIsTeacher");
-            const response = await sendVerificationEmail(
-                email,
-                isMentor || "false"
-            );
+            const response = await sendVerificationEmail(email, "false");
 
-            if (response?.verificationCode) {
-                localStorage.setItem(
-                    "verificationCode",
-                    response.verificationCode
-                );
+            if (response) {
                 toast.success("Код подтверждения отправлен повторно");
             } else {
                 throw new Error("Не удалось получить код подтверждения");
@@ -120,39 +112,62 @@ export default function Verified() {
         return () => clearInterval(timer);
     }, [countdown]);
 
-    // Функция для имитации процесса регистрации
-    const simulateRegistrationProcess = async () => {
+    // Обновляем функцию simulateVerificationProcess
+    const simulateVerificationProcess = async () => {
         setShowLoadingScreen(true);
+        createParticles();
+
+        // Добавляем начальную задержку для плавного появления
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         for (let i = 0; i < registrationSteps.length; i++) {
             setCurrentStep(i);
             const startProgress = (i / registrationSteps.length) * 100;
             const endProgress = ((i + 1) / registrationSteps.length) * 100;
 
+            // Делаем прогресс более плавным
             for (let p = startProgress; p <= endProgress; p++) {
                 setProgress(p);
-                await new Promise((resolve) => setTimeout(resolve, 30));
+                // Используем нелинейную анимацию для более естественного движения
+                await new Promise((resolve) =>
+                    setTimeout(resolve, 20 + Math.sin((p / 100) * Math.PI) * 10)
+                );
             }
 
-            await new Promise((resolve) => setTimeout(resolve, 500));
+            // Добавляем небольшую паузу между шагами
+            await new Promise((resolve) => setTimeout(resolve, 800));
         }
+
+        // Добавляем финальную задержку перед редиректом
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        router.push("/account");
     };
 
     // Обновляем функцию createParticles
     const createParticles = () => {
-        const newParticles = Array.from({ length: 50 }).map((_, index) => ({
+        const colors = [
+            "#FFD700", // золотой
+            "#FF6B6B", // коралловый
+            "#4ECDC4", // бирюзовый
+            "#45B7D1", // голубой
+            "#A78BFA", // фиолетовый
+            "#F472B6", // розовый
+            "#34D399", // изумрудный
+        ];
+
+        const newParticles = Array.from({ length: 100 }).map((_, index) => ({
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
-            size: Math.random() * 8 + 4,
-            color: ["#FFD700", "#FF6B6B", "#4ECDC4", "#45B7D1"][
-                Math.floor(Math.random() * 4)
-            ],
-            delay: index * 0.02, // Добавляем задержку для каждой частицы
+            size: Math.random() * 6 + 2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            delay: index * 0.01,
+            duration: 2 + Math.random() * 2,
+            path: Math.random() > 0.5 ? "up" : "down",
         }));
         setParticles(newParticles);
     };
 
-    // Обновите функцию verifyCode
+    // Обновляем функцию verifyCode
     const verifyCode = async (inputCode: string) => {
         setIsVerifying(true);
         setError(null);
@@ -160,40 +175,34 @@ export default function Verified() {
         setIsSuccess(false);
 
         try {
-            const savedCode = localStorage.getItem("verificationCode");
-            if (inputCode === savedCode) {
+            const response = await fetch("/api/auth/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    code: inputCode,
+                    email: email,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
                 setIsSuccess(true);
-                createParticles(); // Добавляем эффект при успехе
-
-                const email = localStorage.getItem("pendingEmail");
-                const password = localStorage.getItem("pendingPassword");
-                const isMentor =
-                    localStorage.getItem("pendingIsTeacher") === "true";
-
-                if (!email || !password) {
-                    throw new Error("Данные для регистрации не найдены");
-                }
-
-                await simulateRegistrationProcess();
-                await register(email, password, isMentor);
-
-                localStorage.removeItem("verificationCode");
-                localStorage.removeItem("pendingEmail");
-                localStorage.removeItem("pendingPassword");
-                localStorage.removeItem("pendingIsTeacher");
-
-                router.push("/account");
+                createParticles();
+                await simulateVerificationProcess();
             } else {
                 setIsError(true);
-                setError("Неверный код подтверждения");
+                setError(data.message || "Неверный код подтверждения");
                 setTimeout(() => {
                     setValue("");
                     setIsError(false);
                 }, 1000);
             }
         } catch (error) {
-            console.error("Ошибка при регистрации:", error);
-            setError("Произошла ошибка при регистрации");
+            console.error("Ошибка при верификации:", error);
+            setError("Произошла ошибка при верификации");
             setIsError(true);
         } finally {
             setIsVerifying(false);
@@ -211,33 +220,50 @@ export default function Verified() {
     return (
         <>
             <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-background to-background/80">
-                {/* Добавим плавающие частицы на фон */}
+                {/* Улучшенные частицы */}
                 {particles.map((particle, i) => (
                     <motion.div
                         key={i}
-                        initial={{ y: particle.y, x: particle.x, opacity: 0 }}
+                        initial={{
+                            y: particle.y,
+                            x: particle.x,
+                            opacity: 0,
+                            scale: 0,
+                        }}
                         animate={{
-                            y: [particle.y, particle.y - 200],
+                            y:
+                                particle.path === "up"
+                                    ? [particle.y, particle.y - 300]
+                                    : [particle.y, particle.y + 300],
                             x: [
                                 particle.x,
-                                particle.x + (Math.random() - 0.5) * 200,
+                                particle.x + (Math.random() - 0.5) * 300,
                             ],
-                            opacity: [0, 1, 0],
+                            opacity: [0, 0.8, 0],
+                            scale: [0, 1, 0],
+                            rotate: [0, 360],
                         }}
                         transition={{
-                            duration: 2,
+                            duration: particle.duration,
                             ease: "easeOut",
-                            delay: particle.delay, // Используем задержку
+                            delay: particle.delay,
                             opacity: {
-                                duration: 1.8,
+                                duration: particle.duration * 0.8,
                                 times: [0, 0.2, 1],
                             },
+                            scale: {
+                                duration: particle.duration * 0.3,
+                                times: [0, 0.5, 1],
+                            },
                         }}
-                        className="absolute rounded-full"
+                        className="absolute rounded-full blur-[1px]"
                         style={{
                             width: particle.size,
                             height: particle.size,
                             backgroundColor: particle.color,
+                            boxShadow: `0 0 ${particle.size * 2}px ${
+                                particle.color
+                            }`,
                         }}
                     />
                 ))}
@@ -288,19 +314,6 @@ export default function Verified() {
                             </InputOTP>
                         </div>
 
-                        {/* Добавляем отображение кода для демонстрации */}
-                        <div className="text-center mt-4">
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                                Код для демонстрации:
-                                <Badge
-                                    variant="outline"
-                                    className="ml-2 font-mono font-bold text-base py-1 px-2"
-                                >
-                                    {demoCode || "Загрузка..."}
-                                </Badge>
-                            </p>
-                        </div>
-
                         <div className="text-center space-y-4">
                             <AnimatePresence>
                                 {error && (
@@ -339,61 +352,101 @@ export default function Verified() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
                         className="fixed inset-0 bg-background/95 backdrop-blur-md z-50 flex items-center justify-center"
                     >
-                        <div className="w-full max-w-md p-8">
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="w-full max-w-md p-8"
+                        >
                             <motion.div className="text-center space-y-8">
-                                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                                <motion.h2
+                                    initial={{ y: -20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.3 }}
+                                    className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary/60"
+                                >
                                     Создаём ваш аккаунт
-                                </h2>
+                                </motion.h2>
 
-                                <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+                                <motion.div
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.4 }}
+                                    className="relative h-2 bg-muted rounded-full overflow-hidden"
+                                >
                                     <motion.div
-                                        className="absolute left-0 top-0 h-full bg-primary"
+                                        className="absolute left-0 top-0 h-full bg-gradient-to-r from-primary via-primary/80 to-primary/60"
                                         style={{ width: `${progress}%` }}
                                         initial={{ width: 0 }}
                                         animate={{ width: `${progress}%` }}
                                         transition={{ duration: 0.3 }}
                                     />
-                                </div>
+                                </motion.div>
 
-                                <div className="space-y-3">
+                                <div className="space-y-4">
                                     {registrationSteps.map((step, index) => (
                                         <motion.div
                                             key={index}
-                                            initial={{ opacity: 0, y: 10 }}
+                                            initial={{ opacity: 0, x: -20 }}
                                             animate={{
                                                 opacity:
                                                     index <= currentStep
                                                         ? 1
                                                         : 0.5,
-                                                y: 0,
+                                                x: 0,
                                             }}
-                                            className="flex items-center justify-center space-x-2"
+                                            transition={{
+                                                duration: 0.5,
+                                                delay: 0.5 + index * 0.1,
+                                            }}
+                                            className="flex items-center justify-center space-x-3"
                                         >
                                             {index < currentStep ? (
-                                                <svg
-                                                    className="w-5 h-5 text-green-500"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
+                                                <motion.div
+                                                    initial={{ scale: 0 }}
+                                                    animate={{ scale: 1 }}
+                                                    transition={{
+                                                        type: "spring",
+                                                        stiffness: 200,
+                                                        damping: 10,
+                                                    }}
                                                 >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M5 13l4 4L19 7"
-                                                    />
-                                                </svg>
+                                                    <svg
+                                                        className="w-6 h-6 text-green-500"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <motion.path
+                                                            initial={{
+                                                                pathLength: 0,
+                                                            }}
+                                                            animate={{
+                                                                pathLength: 1,
+                                                            }}
+                                                            transition={{
+                                                                duration: 0.5,
+                                                            }}
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M5 13l4 4L19 7"
+                                                        />
+                                                    </svg>
+                                                </motion.div>
                                             ) : (
-                                                <div className="w-5 h-5" />
+                                                <div className="w-6 h-6" />
                                             )}
                                             <span
-                                                className={
+                                                className={cn(
+                                                    "text-base transition-colors duration-300",
                                                     index <= currentStep
                                                         ? "text-foreground"
                                                         : "text-muted-foreground"
-                                                }
+                                                )}
                                             >
                                                 {step.text}
                                             </span>
@@ -401,7 +454,7 @@ export default function Verified() {
                                     ))}
                                 </div>
                             </motion.div>
-                        </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </div>
