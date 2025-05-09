@@ -27,7 +27,7 @@ COPY --from=builder /app/public ./public
 
 # Указываем переменные среды
 ENV NODE_ENV=production
-ENV NEXT_PUBLIC_API_URL=http://localhost:8080
+ENV NEXT_PUBLIC_API_URL=http://kubercode-nginx:8080
 ENV NEXTAUTH_SECRET=58aeddb0d583a
 ENV NEXTAUTH_URL=http://147.45.68.254:3000
 

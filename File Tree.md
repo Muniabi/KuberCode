@@ -4,46 +4,22 @@ KuberCode/
 │ └─ frontend.yml
 ├─ .next/
 │ ├─ cache/
-│ │ ├─ images/
-│ │ │ ├─ 3gtteBBS0vRIEwq1yzPzz+WiOwALRhFpvUGiKqutRjg=/
-│ │ │ │ └─ 31536000.1778180061007.NzPux7t2N08T3FRvialDNx19uz7z+EA+k8yedlAcd9c=.avif
-│ │ │ ├─ 8TpHT5NKBtki0ogj9DrubexSi9pDwaWVo9130tyxCBQ=/
-│ │ │ │ └─ 31536000.1778180054298.PgC1VXrpkka+ZqwZi-PDWJUFIYh1Vmv3bev0gwoiSxw=.avif
-│ │ │ ├─ bmkmICU30aj1MrXcJt13LrFn30EugrN0WQzVPAipRUw=/
-│ │ │ │ └─ 31536000.1778180052515.kWTEL5IEW5mqpXK99aBMmPwCatc0HzqkKqSvmHqTm78=.avif
-│ │ │ ├─ CqJk9sZ0Y3r0Qp7Su8+sEiwTyQdpNBW+piektDmQvNQ=/
-│ │ │ │ └─ 31536000.1778180055936.kDxg5uwtDIyxUaWGQJBU4ORae2q4qkSPFk7qPHU5oTQ=.avif
-│ │ │ ├─ DSEArlVDXpZEc22yHyxLVNSPHn0WBPHG8zHXJzQWHmE=/
-│ │ │ │ └─ 60.1746644157096.JXvNwh2HM2FZfYjMgdTCYCD7eOIMP6IOQ0-wyciXU6s=.avif
-│ │ │ ├─ eSJI0bMpJG+pCZkwIvb73CFaTh89EwEsFk-FWtxSSGo=/
-│ │ │ │ └─ 31536000.1778180058729.VmcUpb3pCuwgJsyidD4XylTMuXv5W4O4RHO7o2lzIRU=.avif
-│ │ │ ├─ etGIK7OJOGKcLmMa6GdwQw5AobvSXfYUQmklgs4mGXY=/
-│ │ │ │ └─ 60.1746644157106.3QtiO6tvmh5REy2JtcJTh3hxEvi1yMEs+4MXtfCzKhg=.avif
-│ │ │ ├─ HmXqTAA+xRYNZviNuot6T9gwJO4xnqIPge1qAD5DqNg=/
-│ │ │ │ └─ 31536000.1778180056020.9w5-eCj8HL9bXw3SvRVPzGObY+LFi18DrUul0bjbz1I=.avif
-│ │ │ ├─ pG13bNUEV9bwVIgdc49gdhfeZbeiLZ1F2fAT4hZOF-Q=/
-│ │ │ │ └─ 31536000.1778180060671.Yz2TzP4gviu3L3HsfQurGZDP2WR2iW+iR2PMEoMXYI4=.avif
-│ │ │ ├─ PxBqP6lbPsg+9PiobsY-FCuqKSgzVh7Vsz33Zqqvbqo=/
-│ │ │ │ └─ 31536000.1778180053038.T5KCdfXbX1X4Y0AziKmFU3XrXGaROQy8J4H8TY1Oq7c=.avif
-│ │ │ ├─ TRTDO6-0HzNJApn3Ty2+SIZK4R1rL2B5lL887ek9x1s=/
-│ │ │ │ └─ 31536000.1778180058502.LGdQp8BvZ0TwkeooC5NtOfCsaRtDY2380B5iVzVTJM8=.avif
-│ │ │ ├─ ZdRiiAxLaysDumDLYZmazQAfPlTZAL6dljM7hoAcUIA=/
-│ │ │ │ └─ 60.1746644157105.PKoKdv3cwGcIhpHfOLlfNqEP9QthYwnMJhmFSvdwIkA=.avif
-│ │ │ └─ zogmO6XxNBov4NSngCAhRsAG35d+RDQRgim9qVp+Gdo=/
-│ │ │ └─ 31536000.1778180053978.xksEOFMKwJLx5djhhaA9kp+ozevcRcccRJTqQ13SqAE=.avif
 │ │ ├─ swc/
 │ │ │ └─ plugins/
-│ │ │ └─ v7*windows_x86_64_0.106.15/
+│ │ │ └─ v7_windows_x86_64_0.106.15/
 │ │ ├─ webpack/
 │ │ │ ├─ client-development/
 │ │ │ │ ├─ 0.pack.gz
 │ │ │ │ ├─ 1.pack.gz
-│ │ │ │ ├─ 2.pack.gz
-│ │ │ │ ├─ 3.pack.gz
-│ │ │ │ └─ index.pack.gz
+│ │ │ │ ├─ index.pack.gz
+│ │ │ │ └─ index.pack.gz.old
 │ │ │ ├─ client-production/
 │ │ │ │ ├─ 0.pack
-│ │ │ │ └─ index.pack
+│ │ │ │ ├─ 1.pack
+│ │ │ │ ├─ 2.pack
+│ │ │ │ ├─ 3.pack
+│ │ │ │ ├─ index.pack
+│ │ │ │ └─ index.pack.old
 │ │ │ ├─ edge-server-production/
 │ │ │ │ ├─ 0.pack
 │ │ │ │ └─ index.pack
@@ -51,108 +27,240 @@ KuberCode/
 │ │ │ │ ├─ 0.pack.gz
 │ │ │ │ ├─ 1.pack.gz
 │ │ │ │ ├─ 2.pack.gz
-│ │ │ │ └─ index.pack.gz
+│ │ │ │ ├─ 3.pack.gz
+│ │ │ │ ├─ 4.pack.gz
+│ │ │ │ ├─ 5.pack.gz
+│ │ │ │ ├─ index.pack.gz
+│ │ │ │ └─ index.pack.gz.old
 │ │ │ └─ server-production/
 │ │ │ ├─ 0.pack
-│ │ │ └─ index.pack
+│ │ │ ├─ 1.pack
+│ │ │ ├─ 2.pack
+│ │ │ ├─ 3.pack
+│ │ │ ├─ 4.pack
+│ │ │ ├─ index.pack
+│ │ │ └─ index.pack.old
 │ │ └─ .tsbuildinfo
 │ ├─ server/
 │ │ ├─ app/
 │ │ │ ├─ \_not-found/
 │ │ │ │ ├─ page_client-reference-manifest.js
-│ │ │ │ └─ page.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
 │ │ │ ├─ (auth)/
 │ │ │ │ ├─ login/
 │ │ │ │ │ ├─ page_client-reference-manifest.js
-│ │ │ │ │ └─ page.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
 │ │ │ │ └─ register/
+│ │ │ │ ├─ verifited/
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
 │ │ │ │ ├─ page_client-reference-manifest.js
-│ │ │ │ └─ page.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ account/
+│ │ │ │ ├─ courses/
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ homeworks/
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ schedule/
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ courses.html
+│ │ │ │ ├─ courses.meta
+│ │ │ │ ├─ courses.rsc
+│ │ │ │ ├─ homeworks.html
+│ │ │ │ ├─ homeworks.meta
+│ │ │ │ ├─ homeworks.rsc
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ ├─ page.js.nft.json
+│ │ │ │ ├─ schedule.html
+│ │ │ │ ├─ schedule.meta
+│ │ │ │ └─ schedule.rsc
 │ │ │ ├─ api/
-│ │ │ │ └─ auth/
-│ │ │ │ └─ [...nextauth]/
-│ │ │ │ └─ route.js
+│ │ │ │ ├─ auth/
+│ │ │ │ │ ├─ [...nextauth]/
+│ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ └─ verify/
+│ │ │ │ │ ├─ route.js
+│ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ ├─ courses/
+│ │ │ │ │ └─ [courseId]/
+│ │ │ │ │ ├─ achievements/
+│ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ └─ reviews/
+│ │ │ │ │ ├─ route.js
+│ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ ├─ devto/
+│ │ │ │ │ ├─ route.js
+│ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ ├─ email/
+│ │ │ │ │ └─ send/
+│ │ │ │ │ ├─ route.js
+│ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ └─ news/
+│ │ │ │ ├─ route.js
+│ │ │ │ └─ route.js.nft.json
+│ │ │ ├─ contact/
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ courses/
+│ │ │ │ ├─ [courseId]/
+│ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ create/
+│ │ │ │ ├─ dashboard/
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ dashboard.html
+│ │ │ │ ├─ dashboard.meta
+│ │ │ │ ├─ dashboard.rsc
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ faq/
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ favicon.ico/
+│ │ │ │ ├─ route.js
+│ │ │ │ └─ route.js.nft.json
+│ │ │ ├─ media/
+│ │ │ │ ├─ video/
+│ │ │ │ │ └─ [id]/
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ videos/
+│ │ │ │ │ ├─ [videoId]/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ privacy/
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ register/
+│ │ │ │ ├─ verifited.html
+│ │ │ │ ├─ verifited.meta
+│ │ │ │ └─ verifited.rsc
+│ │ │ ├─ support/
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ terms/
+│ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ ├─ page.js
+│ │ │ │ └─ page.js.nft.json
+│ │ │ ├─ \_not-found.html
+│ │ │ ├─ \_not-found.meta
+│ │ │ ├─ \_not-found.rsc
+│ │ │ ├─ account.html
+│ │ │ ├─ account.meta
+│ │ │ ├─ account.rsc
+│ │ │ ├─ contact.html
+│ │ │ ├─ contact.meta
+│ │ │ ├─ contact.rsc
+│ │ │ ├─ courses.html
+│ │ │ ├─ courses.meta
+│ │ │ ├─ courses.rsc
+│ │ │ ├─ create.html
+│ │ │ ├─ create.meta
+│ │ │ ├─ create.rsc
+│ │ │ ├─ faq.html
+│ │ │ ├─ faq.meta
+│ │ │ ├─ faq.rsc
+│ │ │ ├─ favicon.ico.body
+│ │ │ ├─ favicon.ico.meta
+│ │ │ ├─ index.html
+│ │ │ ├─ index.meta
+│ │ │ ├─ index.rsc
+│ │ │ ├─ login.html
+│ │ │ ├─ login.meta
+│ │ │ ├─ login.rsc
+│ │ │ ├─ media.html
+│ │ │ ├─ media.meta
+│ │ │ ├─ media.rsc
 │ │ │ ├─ page_client-reference-manifest.js
-│ │ │ └─ page.js
-│ │ ├─ vendor-chunks/
-│ │ │ ├─ @babel.js
-│ │ │ ├─ @floating-ui.js
-│ │ │ ├─ @hookform.js
-│ │ │ ├─ @panva.js
-│ │ │ ├─ @radix-ui.js
-│ │ │ ├─ @swc.js
-│ │ │ ├─ aria-hidden.js
-│ │ │ ├─ asynckit.js
-│ │ │ ├─ axios.js
-│ │ │ ├─ call-bind-apply-helpers.js
-│ │ │ ├─ class-variance-authority.js
-│ │ │ ├─ clsx.js
-│ │ │ ├─ combined-stream.js
-│ │ │ ├─ cookie.js
-│ │ │ ├─ debug.js
-│ │ │ ├─ delayed-stream.js
-│ │ │ ├─ dunder-proto.js
-│ │ │ ├─ embla-carousel-react.js
-│ │ │ ├─ embla-carousel-reactive-utils.js
-│ │ │ ├─ embla-carousel.js
-│ │ │ ├─ es-define-property.js
-│ │ │ ├─ es-errors.js
-│ │ │ ├─ es-object-atoms.js
-│ │ │ ├─ es-set-tostringtag.js
-│ │ │ ├─ follow-redirects.js
-│ │ │ ├─ form-data.js
-│ │ │ ├─ framer-motion.js
-│ │ │ ├─ function-bind.js
-│ │ │ ├─ get-intrinsic.js
-│ │ │ ├─ get-nonce.js
-│ │ │ ├─ get-proto.js
-│ │ │ ├─ gopd.js
-│ │ │ ├─ has-flag.js
-│ │ │ ├─ has-symbols.js
-│ │ │ ├─ has-tostringtag.js
-│ │ │ ├─ hasown.js
-│ │ │ ├─ input-otp.js
-│ │ │ ├─ jose.js
-│ │ │ ├─ lru-cache.js
-│ │ │ ├─ lucide-react.js
-│ │ │ ├─ math-intrinsics.js
-│ │ │ ├─ mime-db.js
-│ │ │ ├─ mime-types.js
-│ │ │ ├─ motion-dom.js
-│ │ │ ├─ motion-utils.js
-│ │ │ ├─ ms.js
-│ │ │ ├─ next-auth.js
-│ │ │ ├─ next-themes.js
-│ │ │ ├─ next.js
-│ │ │ ├─ nextjs-toploader.js
-│ │ │ ├─ nprogress.js
-│ │ │ ├─ oauth.js
-│ │ │ ├─ object-assign.js
-│ │ │ ├─ object-hash.js
-│ │ │ ├─ oidc-token-hash.js
-│ │ │ ├─ openid-client.js
-│ │ │ ├─ preact-render-to-string.js
-│ │ │ ├─ preact.js
-│ │ │ ├─ prop-types.js
-│ │ │ ├─ proxy-from-env.js
-│ │ │ ├─ react-hook-form.js
-│ │ │ ├─ react-intersection-observer.js
-│ │ │ ├─ react-is.js
-│ │ │ ├─ react-remove-scroll-bar.js
-│ │ │ ├─ react-remove-scroll.js
-│ │ │ ├─ react-style-singleton.js
-│ │ │ ├─ sonner.js
-│ │ │ ├─ supports-color.js
-│ │ │ ├─ tailwind-merge.js
-│ │ │ ├─ tslib.js
-│ │ │ ├─ use-callback-ref.js
-│ │ │ ├─ use-sidecar.js
-│ │ │ ├─ uuid.js
-│ │ │ ├─ yallist.js
-│ │ │ ├─ zod.js
-│ │ │ └─ zustand.js
-│ │ ├─ \_ssr_components_shared_landing_hero-3d_tsx.js
+│ │ │ ├─ page.js
+│ │ │ ├─ page.js.nft.json
+│ │ │ ├─ privacy.html
+│ │ │ ├─ privacy.meta
+│ │ │ ├─ privacy.rsc
+│ │ │ ├─ register.html
+│ │ │ ├─ register.meta
+│ │ │ ├─ register.rsc
+│ │ │ ├─ support.html
+│ │ │ ├─ support.meta
+│ │ │ ├─ support.rsc
+│ │ │ ├─ terms.html
+│ │ │ ├─ terms.meta
+│ │ │ └─ terms.rsc
+│ │ ├─ chunks/
+│ │ │ ├─ 1311.js
+│ │ │ ├─ 1682.js
+│ │ │ ├─ 2896.js
+│ │ │ ├─ 3082.js
+│ │ │ ├─ 4099.js
+│ │ │ ├─ 4467.js
+│ │ │ ├─ 4591.js
+│ │ │ ├─ 4636.js
+│ │ │ ├─ 4827.js
+│ │ │ ├─ 5972.js
+│ │ │ ├─ 6226.js
+│ │ │ ├─ 6686.js
+│ │ │ ├─ 7095.js
+│ │ │ ├─ 7629.js
+│ │ │ ├─ 7717.js
+│ │ │ ├─ 7867.js
+│ │ │ ├─ 8333.js
+│ │ │ ├─ 86.js
+│ │ │ ├─ 8948.js
+│ │ │ ├─ 9261.js
+│ │ │ ├─ 9724.js
+│ │ │ ├─ 9898.js
+│ │ │ └─ font-manifest.json
+│ │ ├─ pages/
+│ │ │ ├─ \_app.js
+│ │ │ ├─ \_app.js.nft.json
+│ │ │ ├─ \_document.js
+│ │ │ ├─ \_document.js.nft.json
+│ │ │ ├─ \_error.js
+│ │ │ ├─ \_error.js.nft.json
+│ │ │ ├─ 404.html
+│ │ │ └─ 500.html
 │ │ ├─ app-paths-manifest.json
+│ │ ├─ font-manifest.json
+│ │ ├─ functions-config-manifest.json
 │ │ ├─ interception-route-rewrite-manifest.js
 │ │ ├─ middleware-build-manifest.js
 │ │ ├─ middleware-manifest.json
@@ -163,73 +271,452 @@ KuberCode/
 │ │ ├─ server-reference-manifest.js
 │ │ ├─ server-reference-manifest.json
 │ │ └─ webpack-runtime.js
+│ ├─ standalone/
+│ │ ├─ .next/
+│ │ │ ├─ server/
+│ │ │ │ ├─ app/
+│ │ │ │ │ ├─ \_not-found/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ (auth)/
+│ │ │ │ │ │ ├─ login/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ └─ register/
+│ │ │ │ │ │ ├─ verifited/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ account/
+│ │ │ │ │ │ ├─ courses/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ homeworks/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ schedule/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ courses.html
+│ │ │ │ │ │ ├─ courses.meta
+│ │ │ │ │ │ ├─ courses.rsc
+│ │ │ │ │ │ ├─ homeworks.html
+│ │ │ │ │ │ ├─ homeworks.meta
+│ │ │ │ │ │ ├─ homeworks.rsc
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ ├─ page.js.nft.json
+│ │ │ │ │ │ ├─ schedule.html
+│ │ │ │ │ │ ├─ schedule.meta
+│ │ │ │ │ │ └─ schedule.rsc
+│ │ │ │ │ ├─ api/
+│ │ │ │ │ │ ├─ auth/
+│ │ │ │ │ │ │ ├─ [...nextauth]/
+│ │ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ │ └─ verify/
+│ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ ├─ courses/
+│ │ │ │ │ │ │ └─ [courseId]/
+│ │ │ │ │ │ │ ├─ achievements/
+│ │ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ │ └─ reviews/
+│ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ ├─ devto/
+│ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ ├─ email/
+│ │ │ │ │ │ │ └─ send/
+│ │ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ │ └─ news/
+│ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ ├─ contact/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ courses/
+│ │ │ │ │ │ ├─ [courseId]/
+│ │ │ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ create/
+│ │ │ │ │ │ ├─ dashboard/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ dashboard.html
+│ │ │ │ │ │ ├─ dashboard.meta
+│ │ │ │ │ │ ├─ dashboard.rsc
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ faq/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ favicon.ico/
+│ │ │ │ │ │ ├─ route.js
+│ │ │ │ │ │ └─ route.js.nft.json
+│ │ │ │ │ ├─ media/
+│ │ │ │ │ │ ├─ video/
+│ │ │ │ │ │ │ └─ [id]/
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ videos/
+│ │ │ │ │ │ │ ├─ [videoId]/
+│ │ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ privacy/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ register/
+│ │ │ │ │ │ ├─ verifited.html
+│ │ │ │ │ │ ├─ verifited.meta
+│ │ │ │ │ │ └─ verifited.rsc
+│ │ │ │ │ ├─ support/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ terms/
+│ │ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ │ ├─ page.js
+│ │ │ │ │ │ └─ page.js.nft.json
+│ │ │ │ │ ├─ \_not-found.html
+│ │ │ │ │ ├─ \_not-found.meta
+│ │ │ │ │ ├─ \_not-found.rsc
+│ │ │ │ │ ├─ account.html
+│ │ │ │ │ ├─ account.meta
+│ │ │ │ │ ├─ account.rsc
+│ │ │ │ │ ├─ contact.html
+│ │ │ │ │ ├─ contact.meta
+│ │ │ │ │ ├─ contact.rsc
+│ │ │ │ │ ├─ courses.html
+│ │ │ │ │ ├─ courses.meta
+│ │ │ │ │ ├─ courses.rsc
+│ │ │ │ │ ├─ create.html
+│ │ │ │ │ ├─ create.meta
+│ │ │ │ │ ├─ create.rsc
+│ │ │ │ │ ├─ faq.html
+│ │ │ │ │ ├─ faq.meta
+│ │ │ │ │ ├─ faq.rsc
+│ │ │ │ │ ├─ favicon.ico.body
+│ │ │ │ │ ├─ favicon.ico.meta
+│ │ │ │ │ ├─ index.html
+│ │ │ │ │ ├─ index.meta
+│ │ │ │ │ ├─ index.rsc
+│ │ │ │ │ ├─ login.html
+│ │ │ │ │ ├─ login.meta
+│ │ │ │ │ ├─ login.rsc
+│ │ │ │ │ ├─ media.html
+│ │ │ │ │ ├─ media.meta
+│ │ │ │ │ ├─ media.rsc
+│ │ │ │ │ ├─ page_client-reference-manifest.js
+│ │ │ │ │ ├─ page.js
+│ │ │ │ │ ├─ page.js.nft.json
+│ │ │ │ │ ├─ privacy.html
+│ │ │ │ │ ├─ privacy.meta
+│ │ │ │ │ ├─ privacy.rsc
+│ │ │ │ │ ├─ register.html
+│ │ │ │ │ ├─ register.meta
+│ │ │ │ │ ├─ register.rsc
+│ │ │ │ │ ├─ support.html
+│ │ │ │ │ ├─ support.meta
+│ │ │ │ │ ├─ support.rsc
+│ │ │ │ │ ├─ terms.html
+│ │ │ │ │ ├─ terms.meta
+│ │ │ │ │ └─ terms.rsc
+│ │ │ │ ├─ chunks/
+│ │ │ │ │ ├─ 1311.js
+│ │ │ │ │ ├─ 1682.js
+│ │ │ │ │ ├─ 2896.js
+│ │ │ │ │ ├─ 3082.js
+│ │ │ │ │ ├─ 4099.js
+│ │ │ │ │ ├─ 4467.js
+│ │ │ │ │ ├─ 4591.js
+│ │ │ │ │ ├─ 4636.js
+│ │ │ │ │ ├─ 4827.js
+│ │ │ │ │ ├─ 5972.js
+│ │ │ │ │ ├─ 6226.js
+│ │ │ │ │ ├─ 6686.js
+│ │ │ │ │ ├─ 7095.js
+│ │ │ │ │ ├─ 7629.js
+│ │ │ │ │ ├─ 7717.js
+│ │ │ │ │ ├─ 7867.js
+│ │ │ │ │ ├─ 8333.js
+│ │ │ │ │ ├─ 86.js
+│ │ │ │ │ ├─ 8948.js
+│ │ │ │ │ ├─ 9261.js
+│ │ │ │ │ ├─ 9724.js
+│ │ │ │ │ └─ 9898.js
+│ │ │ │ ├─ pages/
+│ │ │ │ │ ├─ \_app.js
+│ │ │ │ │ ├─ \_app.js.nft.json
+│ │ │ │ │ ├─ \_document.js
+│ │ │ │ │ ├─ \_document.js.nft.json
+│ │ │ │ │ ├─ \_error.js
+│ │ │ │ │ ├─ \_error.js.nft.json
+│ │ │ │ │ ├─ 404.html
+│ │ │ │ │ └─ 500.html
+│ │ │ │ ├─ app-paths-manifest.json
+│ │ │ │ ├─ font-manifest.json
+│ │ │ │ ├─ middleware-build-manifest.js
+│ │ │ │ ├─ middleware-manifest.json
+│ │ │ │ ├─ middleware-react-loadable-manifest.js
+│ │ │ │ ├─ next-font-manifest.js
+│ │ │ │ ├─ next-font-manifest.json
+│ │ │ │ ├─ pages-manifest.json
+│ │ │ │ ├─ server-reference-manifest.js
+│ │ │ │ ├─ server-reference-manifest.json
+│ │ │ │ └─ webpack-runtime.js
+│ │ │ ├─ app-build-manifest.json
+│ │ │ ├─ app-path-routes-manifest.json
+│ │ │ ├─ BUILD_ID
+│ │ │ ├─ build-manifest.json
+│ │ │ ├─ package.json
+│ │ │ ├─ prerender-manifest.json
+│ │ │ ├─ react-loadable-manifest.json
+│ │ │ ├─ required-server-files.json
+│ │ │ └─ routes-manifest.json
+│ │ ├─ .env
+│ │ ├─ package.json
+│ │ └─ server.js
 │ ├─ static/
 │ │ ├─ chunks/
 │ │ │ ├─ app/
 │ │ │ │ ├─ \_not-found/
-│ │ │ │ │ └─ page.js
+│ │ │ │ │ └─ page-866d1c834c339f86.js
 │ │ │ │ ├─ (auth)/
 │ │ │ │ │ ├─ login/
-│ │ │ │ │ │ └─ page.js
+│ │ │ │ │ │ └─ page-49c4f5204e671233.js
 │ │ │ │ │ └─ register/
-│ │ │ │ │ └─ page.js
-│ │ │ │ ├─ layout.js
-│ │ │ │ ├─ not-found.js
-│ │ │ │ └─ page.js
-│ │ │ ├─ \_app-pages-browser_components_ForgotPasswordLink_index_tsx.js
-│ │ │ ├─ \_app-pages-browser_components_shared_landing_category-card_tsx.js
-│ │ │ ├─ \_app-pages-browser_components_shared_landing_hero-3d_tsx.js
-│ │ │ ├─ app-pages-internals.js
-│ │ │ ├─ main-app.js
-│ │ │ ├─ polyfills.js
-│ │ │ └─ webpack.js
+│ │ │ │ │ ├─ verifited/
+│ │ │ │ │ │ └─ page-f42ef13d4b45ef30.js
+│ │ │ │ │ └─ page-289c81de07df1d52.js
+│ │ │ │ ├─ account/
+│ │ │ │ │ ├─ courses/
+│ │ │ │ │ │ └─ page-4c886ea9943c4bdb.js
+│ │ │ │ │ ├─ homeworks/
+│ │ │ │ │ │ └─ page-fffcc335614b1ebb.js
+│ │ │ │ │ ├─ schedule/
+│ │ │ │ │ │ └─ page-79bc5444c078aebb.js
+│ │ │ │ │ ├─ layout-511e9f31baca70f5.js
+│ │ │ │ │ └─ page-64b3cce346e8e07a.js
+│ │ │ │ ├─ contact/
+│ │ │ │ │ └─ page-407e3c5eda3bb2e3.js
+│ │ │ │ ├─ courses/
+│ │ │ │ │ ├─ [courseId]/
+│ │ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ │ └─ page-76d95cb9313bb1c9.js
+│ │ │ │ │ │ ├─ layout-8dc5cbfa3315a5d7.js
+│ │ │ │ │ │ ├─ not-found-f017839227bf725d.js
+│ │ │ │ │ │ └─ page-fea93d48b1683d44.js
+│ │ │ │ │ └─ page-ea2729204e11c3ef.js
+│ │ │ │ ├─ create/
+│ │ │ │ │ ├─ dashboard/
+│ │ │ │ │ │ └─ page-ec1fb918ba0bfb68.js
+│ │ │ │ │ └─ page-2d7740f76800e629.js
+│ │ │ │ ├─ faq/
+│ │ │ │ │ └─ page-2ec0c3d0184732c2.js
+│ │ │ │ ├─ media/
+│ │ │ │ │ ├─ video/
+│ │ │ │ │ │ └─ [id]/
+│ │ │ │ │ │ └─ page-2e3701e40fb3ba3e.js
+│ │ │ │ │ ├─ videos/
+│ │ │ │ │ │ ├─ [videoId]/
+│ │ │ │ │ │ │ └─ page-d35abb0eb7272d9a.js
+│ │ │ │ │ │ └─ page-6ce37a0af0b5da55.js
+│ │ │ │ │ └─ page-da103b4b0a02753e.js
+│ │ │ │ ├─ privacy/
+│ │ │ │ │ └─ page-2d8872c65e0bdfdd.js
+│ │ │ │ ├─ support/
+│ │ │ │ │ └─ page-fe3efd277fa39571.js
+│ │ │ │ ├─ terms/
+│ │ │ │ │ └─ page-791bca35787044f1.js
+│ │ │ │ ├─ layout-82dc551d4f1714ce.js
+│ │ │ │ ├─ not-found-498753ba2c76b278.js
+│ │ │ │ └─ page-acea804235e0c624.js
+│ │ │ ├─ pages/
+│ │ │ │ ├─ \_app-3c9ca398d360b709.js
+│ │ │ │ └─ \_error-cf5ca766ac8f493f.js
+│ │ │ ├─ 1127-6115ff65532e21af.js
+│ │ │ ├─ 1246.4cbcbfceaf08915c.js
+│ │ │ ├─ 1312-155475c842772d72.js
+│ │ │ ├─ 2117-53d13377a59c8181.js
+│ │ │ ├─ 2460-1956caee025be6a2.js
+│ │ │ ├─ 2738.00e1eaa6bc23bf8e.js
+│ │ │ ├─ 2972-e54fd51b3a3a67d0.js
+│ │ │ ├─ 3080-0382257a9def4a5d.js
+│ │ │ ├─ 3145-61e579745b2aa12b.js
+│ │ │ ├─ 3208-9b79c088dee6631b.js
+│ │ │ ├─ 3238-d288cfdb3260c9e9.js
+│ │ │ ├─ 3250-addc932b88c86755.js
+│ │ │ ├─ 3310-f95f835356d04462.js
+│ │ │ ├─ 3464-c78465733a3b627a.js
+│ │ │ ├─ 3545-0b574ebba7732f1a.js
+│ │ │ ├─ 3645-28994d018503d12b.js
+│ │ │ ├─ 3746-72f8e2dd503a99b2.js
+│ │ │ ├─ 3780.9a00ed51efda8974.js
+│ │ │ ├─ 3832-9cbc50ba3983e180.js
+│ │ │ ├─ 3915.05c0278856e17aa1.js
+│ │ │ ├─ 4125-e2e51f343b4797b7.js
+│ │ │ ├─ 4269-7fc433adf9b2f583.js
+│ │ │ ├─ 4438-42317cf8690a7099.js
+│ │ │ ├─ 5039-77d9172d24b19405.js
+│ │ │ ├─ 521-1b1c5b7a939e494e.js
+│ │ │ ├─ 5298-4fe3cb47f9711a5c.js
+│ │ │ ├─ 5569-354cf8c209558c69.js
+│ │ │ ├─ 5867-40e28daee809ce4c.js
+│ │ │ ├─ 6434-f1ba83ef6f4d8ff1.js
+│ │ │ ├─ 6663-b8b5e05a02a8480a.js
+│ │ │ ├─ 6822-ce22ca708f8916fa.js
+│ │ │ ├─ 7007.4daacca46c11bb07.js
+│ │ │ ├─ 7678.f47e900d9d4079c3.js
+│ │ │ ├─ 810-93ab9986d7b6d998.js
+│ │ │ ├─ 9027-f9a65232b8ee0f09.js
+│ │ │ ├─ 9049-114e988afeeaf6de.js
+│ │ │ ├─ 929-63d3417740333ca9.js
+│ │ │ ├─ a4634e51.4450a76c862427e1.js
+│ │ │ ├─ c37d3baf-0ab798d45ae900a2.js
+│ │ │ ├─ f5cf3357.be0b9efce36c5cc3.js
+│ │ │ ├─ fd9d1056-6e988af9434f2a9d.js
+│ │ │ ├─ framework-8e0e0f4a6b83a956.js
+│ │ │ ├─ main-7255561d1173841a.js
+│ │ │ ├─ main-app-308f98162e7539e8.js
+│ │ │ ├─ polyfills-42372ed130431b0a.js
+│ │ │ └─ webpack-1a7718227a7482a2.js
 │ │ ├─ css/
-│ │ │ └─ app/
-│ │ │ └─ layout.css
-│ │ ├─ development/
+│ │ │ ├─ 947ef4a3d90024ab.css
+│ │ │ ├─ f3c372def3ec0bca.css
+│ │ │ └─ f59bfee53fbffbfb.css
+│ │ ├─ iBMifesyLqVeC6FDRfSrU/
 │ │ │ ├─ \_buildManifest.js
 │ │ │ └─ \_ssgManifest.js
-│ │ ├─ media/
-│ │ │ ├─ 24c15609eaa28576-s.p.woff2
-│ │ │ ├─ 2c07349e02a7b712-s.woff2
-│ │ │ ├─ 47cbc4e2adbc5db9-s.p.woff2
-│ │ │ ├─ 627d916fd739a539-s.woff2
-│ │ │ ├─ 74c003a2abab0c4f-s.woff2
-│ │ │ ├─ 84602850c8fd81c3-s.woff2
-│ │ │ ├─ 90da053edc2b7de3-s.woff2
-│ │ │ ├─ ac3b7908202f8517-s.woff2
-│ │ │ ├─ b5ee789b512e4d1b-s.woff2
-│ │ │ └─ f28e26fcbba5c33c-s.p.woff2
-│ │ └─ webpack/
-│ │ ├─ app/
-│ │ │ └─ layout.e82ddaeec767d6cb.hot-update.js
-│ │ ├─ 5b1734c77da57592.webpack.hot-update.json
-│ │ ├─ 633457081244afec.*.hot-update.json
-│ │ ├─ a91d95e20f392edf.webpack.hot-update.json
-│ │ ├─ e4dc91def98e05fe.webpack.hot-update.json
-│ │ ├─ e82ddaeec767d6cb.webpack.hot-update.json
-│ │ ├─ webpack.5b1734c77da57592.hot-update.js
-│ │ ├─ webpack.a91d95e20f392edf.hot-update.js
-│ │ ├─ webpack.e4dc91def98e05fe.hot-update.js
-│ │ └─ webpack.e82ddaeec767d6cb.hot-update.js
+│ │ └─ media/
+│ │ ├─ 24c15609eaa28576-s.p.woff2
+│ │ ├─ 2c07349e02a7b712-s.woff2
+│ │ ├─ 47cbc4e2adbc5db9-s.p.woff2
+│ │ ├─ 627d916fd739a539-s.woff2
+│ │ ├─ 74c003a2abab0c4f-s.woff2
+│ │ ├─ 84602850c8fd81c3-s.woff2
+│ │ ├─ 90da053edc2b7de3-s.woff2
+│ │ ├─ ac3b7908202f8517-s.woff2
+│ │ ├─ b5ee789b512e4d1b-s.woff2
+│ │ └─ f28e26fcbba5c33c-s.p.woff2
 │ ├─ types/
 │ │ ├─ app/
 │ │ │ ├─ (auth)/
 │ │ │ │ ├─ login/
 │ │ │ │ │ └─ page.ts
 │ │ │ │ └─ register/
+│ │ │ │ ├─ verifited/
+│ │ │ │ │ └─ page.ts
+│ │ │ │ └─ page.ts
+│ │ │ ├─ account/
+│ │ │ │ ├─ courses/
+│ │ │ │ │ └─ page.ts
+│ │ │ │ ├─ homeworks/
+│ │ │ │ │ └─ page.ts
+│ │ │ │ ├─ schedule/
+│ │ │ │ │ └─ page.ts
 │ │ │ │ └─ page.ts
 │ │ │ ├─ api/
-│ │ │ │ └─ auth/
-│ │ │ │ └─ [...nextauth]/
+│ │ │ │ ├─ auth/
+│ │ │ │ │ ├─ [...nextauth]/
+│ │ │ │ │ │ └─ route.ts
+│ │ │ │ │ └─ verify/
+│ │ │ │ │ └─ route.ts
+│ │ │ │ ├─ courses/
+│ │ │ │ │ └─ [courseId]/
+│ │ │ │ │ ├─ achievements/
+│ │ │ │ │ │ └─ route.ts
+│ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ └─ route.ts
+│ │ │ │ │ └─ reviews/
+│ │ │ │ │ └─ route.ts
+│ │ │ │ ├─ devto/
+│ │ │ │ │ └─ route.ts
+│ │ │ │ ├─ email/
+│ │ │ │ │ └─ send/
+│ │ │ │ │ └─ route.ts
+│ │ │ │ └─ news/
 │ │ │ │ └─ route.ts
-│ │ │ ├─ layout.ts
+│ │ │ ├─ contact/
+│ │ │ │ └─ page.ts
+│ │ │ ├─ courses/
+│ │ │ │ ├─ [courseId]/
+│ │ │ │ │ ├─ purchase/
+│ │ │ │ │ │ └─ page.ts
+│ │ │ │ │ ├─ layout.ts
+│ │ │ │ │ └─ page.ts
+│ │ │ │ └─ page.ts
+│ │ │ ├─ create/
+│ │ │ │ ├─ dashboard/
+│ │ │ │ │ └─ page.ts
+│ │ │ │ └─ page.ts
+│ │ │ ├─ faq/
+│ │ │ │ └─ page.ts
+│ │ │ ├─ media/
+│ │ │ │ ├─ video/
+│ │ │ │ │ └─ [id]/
+│ │ │ │ │ └─ page.ts
+│ │ │ │ ├─ videos/
+│ │ │ │ │ ├─ [videoId]/
+│ │ │ │ │ │ └─ page.ts
+│ │ │ │ │ └─ page.ts
+│ │ │ │ └─ page.ts
+│ │ │ ├─ privacy/
+│ │ │ │ └─ page.ts
+│ │ │ ├─ support/
+│ │ │ │ └─ page.ts
+│ │ │ ├─ terms/
+│ │ │ │ └─ page.ts
 │ │ │ └─ page.ts
 │ │ └─ package.json
 │ ├─ app-build-manifest.json
+│ ├─ app-path-routes-manifest.json
+│ ├─ BUILD_ID
 │ ├─ build-manifest.json
+│ ├─ export-marker.json
+│ ├─ images-manifest.json
+│ ├─ next-minimal-server.js.nft.json
+│ ├─ next-server.js.nft.json
 │ ├─ package.json
+│ ├─ prerender-manifest.json
 │ ├─ react-loadable-manifest.json
+│ ├─ required-server-files.json
+│ ├─ routes-manifest.json
 │ └─ trace
 ├─ @types/
 │ └─ next-auth.d.ts
@@ -252,7 +739,10 @@ KuberCode/
 │ │ └─ page.tsx
 │ ├─ api/
 │ │ ├─ auth/
-│ │ │ └─ [...nextauth]/
+│ │ │ ├─ [...nextauth]/
+│ │ │ │ ├─ authOptions.ts
+│ │ │ │ └─ route.ts
+│ │ │ └─ verify/
 │ │ │ └─ route.ts
 │ │ ├─ courses/
 │ │ │ └─ [courseId]/
@@ -499,6 +989,7 @@ KuberCode/
 │ ├─ google.png
 │ ├─ hackaton.webp
 │ ├─ linear.png
+│ ├─ robot.svg
 │ ├─ robots.txt
 │ ├─ vk.png
 │ └─ yandex_9fa408ddedb1f6cf.html
@@ -530,4 +1021,3 @@ KuberCode/
 ├─ routes.html
 ├─ tailwind.config.ts
 └─ tsconfig.json
-
