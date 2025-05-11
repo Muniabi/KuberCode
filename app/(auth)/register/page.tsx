@@ -20,6 +20,7 @@ import { register } from "@/utils/services/Authentication";
 import PasswordInput from "@/components/ui/password-input";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import Link from "next/link";
+import { useState } from "react";
 
 const formSchema = z.object({
     isMentor: z.boolean({
@@ -37,6 +38,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function RegisterPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -48,12 +50,7 @@ export default function RegisterPage() {
     });
 
     const onSubmit = async (data: FormData) => {
-        console.log(data);
-
-        const email = data.email;
-        const password = data.password;
-        const isMentor = data.isMentor;
-
+        setIsLoading(true);
         try {
             // Генерируем 6-значный код
             const verificationCode = Math.floor(
@@ -62,24 +59,26 @@ export default function RegisterPage() {
 
             // Сохраняем код, email и данные для регистрации в localStorage
             localStorage.setItem("verificationCode", verificationCode);
-            localStorage.setItem("pendingEmail", email);
-            localStorage.setItem("pendingPassword", password);
-            localStorage.setItem("pendingIsTeacher", String(isMentor));
+            localStorage.setItem("pendingEmail", data.email);
+            localStorage.setItem("pendingPassword", data.password);
+            localStorage.setItem("pendingIsTeacher", String(data.isMentor));
 
             // Отправляем код на почту
-            await sendVerificationEmail(email, verificationCode);
+            await sendVerificationEmail(data.email, verificationCode);
 
             // Перенаправляем на страницу верификации
             router.push("/register/verifited");
         } catch (error) {
             console.error("Ошибка при отправке кода:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className={`flex flex-col gap-6 w-[400px] mx-auto mt-16 `}>
-            <Tabs defaultValue="student" className="w-[400px] mx-auto my-12">
-                <TabsList className="grid w-full grid-cols-2">
+        <div className="container max-w-[400px] mx-auto px-4 py-8 md:py-16">
+            <Tabs defaultValue="student" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-8">
                     <TabsTrigger
                         value="student"
                         onClick={() => form.setValue("isMentor", false)}
@@ -95,20 +94,22 @@ export default function RegisterPage() {
                 </TabsList>
 
                 <TabsContent value="student">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-center mb-2">
+                    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <CardHeader className="space-y-4">
+                            <CardTitle className="text-2xl text-center font-bold">
                                 Студент
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="text-center text-base">
                                 Зарегистрируйтесь как студент, чтобы получить
                                 доступ к курсам, интерактивным занятиям и
                                 возможностям заработка бонусов за успехи в
                                 обучении.
                             </CardDescription>
-                            <div className="mx-auto">
-                                <p className="py-2">Регистрация с помощью</p>
-                                <div className="flex items-center justify-evenly">
+                            <div className="space-y-4">
+                                <p className="text-center text-sm text-muted-foreground">
+                                    Регистрация с помощью
+                                </p>
+                                <div className="flex items-center justify-center gap-6">
                                     <button
                                         onClick={() =>
                                             signIn("github", {
@@ -116,11 +117,12 @@ export default function RegisterPage() {
                                                 redirect: true,
                                             })
                                         }
+                                        className="hover:scale-110 transition-transform duration-200"
                                     >
-                                        <Avatar>
+                                        <Avatar className="h-10 w-10">
                                             <AvatarImage
                                                 src="/github.png"
-                                                alt="@shadcn"
+                                                alt="GitHub"
                                             />
                                         </Avatar>
                                     </button>
@@ -131,11 +133,12 @@ export default function RegisterPage() {
                                                 redirect: true,
                                             })
                                         }
+                                        className="hover:scale-110 transition-transform duration-200"
                                     >
-                                        <Avatar className="rounded-none">
+                                        <Avatar className="h-10 w-10 rounded-none">
                                             <AvatarImage
                                                 src="/vk.png"
-                                                alt="@shadcn"
+                                                alt="VK"
                                             />
                                         </Avatar>
                                     </button>
@@ -146,32 +149,39 @@ export default function RegisterPage() {
                                                 redirect: true,
                                             })
                                         }
+                                        className="hover:scale-110 transition-transform duration-200"
                                     >
-                                        <Avatar>
+                                        <Avatar className="h-10 w-10">
                                             <AvatarImage
                                                 src="/google.png"
-                                                alt="@shadcn"
+                                                alt="Google"
                                             />
                                         </Avatar>
                                     </button>
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-2">
+                        <CardContent className="space-y-6">
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
-                                className="space-y-2"
+                                className="space-y-4"
                             >
-                                <div className="space-y-1">
-                                    <Label htmlFor="email">Почта</Label>
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-base"
+                                    >
+                                        Почта
+                                    </Label>
                                     <Input
                                         id="email"
                                         type="email"
                                         placeholder="Email"
+                                        className="h-11"
                                         {...form.register("email")}
                                     />
                                     {form.formState.errors.email && (
-                                        <p className="text-red-500">
+                                        <p className="text-sm text-red-500">
                                             {
                                                 form.formState.errors.email
                                                     .message
@@ -179,15 +189,21 @@ export default function RegisterPage() {
                                         </p>
                                     )}
                                 </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="password">Пароль</Label>
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="password"
+                                        className="text-base"
+                                    >
+                                        Пароль
+                                    </Label>
                                     <PasswordInput
                                         id="password"
                                         placeholder="Пароль"
+                                        className="h-11"
                                         {...form.register("password")}
                                     />
                                     {form.formState.errors.password && (
-                                        <p className="text-red-500">
+                                        <p className="text-sm text-red-500">
                                             {
                                                 form.formState.errors.password
                                                     .message
@@ -195,15 +211,45 @@ export default function RegisterPage() {
                                         </p>
                                     )}
                                 </div>
-                                <Button className="mx-auto">
-                                    Зарегистрироваться
+                                <Button
+                                    type="submit"
+                                    className="w-full h-11 text-base font-medium"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <div className="flex items-center justify-center gap-2">
+                                            <svg
+                                                className="animate-spin h-5 w-5"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                />
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                />
+                                            </svg>
+                                            Регистрация...
+                                        </div>
+                                    ) : (
+                                        "Зарегистрироваться"
+                                    )}
                                 </Button>
                             </form>
-                            <div className="text-center text-sm">
+                            <div className="text-center text-sm text-muted-foreground">
                                 Уже есть аккаунт?{" "}
                                 <Link
                                     href="/login"
-                                    className="underline underline-offset-4"
+                                    className="text-primary hover:text-primary/90 underline underline-offset-4"
                                 >
                                     Войти
                                 </Link>
@@ -213,19 +259,21 @@ export default function RegisterPage() {
                 </TabsContent>
 
                 <TabsContent value="author">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-center mb-2">
+                    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <CardHeader className="space-y-4">
+                            <CardTitle className="text-2xl text-center font-bold">
                                 Ментор
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="text-center text-base">
                                 Зарегистрируйтесь как Ментор, чтобы делиться
                                 курсами, получать обратную связь и создавать
                                 интерактивные занятия для студентов.
                             </CardDescription>
-                            <div className="mx-auto">
-                                <p className="py-2">Регистрация с помощью</p>
-                                <div className="flex items-center justify-evenly">
+                            <div className="space-y-4">
+                                <p className="text-center text-sm text-muted-foreground">
+                                    Регистрация с помощью
+                                </p>
+                                <div className="flex items-center justify-center gap-6">
                                     <button
                                         onClick={() =>
                                             signIn("github", {
@@ -233,11 +281,12 @@ export default function RegisterPage() {
                                                 redirect: true,
                                             })
                                         }
+                                        className="hover:scale-110 transition-transform duration-200"
                                     >
-                                        <Avatar>
+                                        <Avatar className="h-10 w-10">
                                             <AvatarImage
                                                 src="/github.png"
-                                                alt="@shadcn"
+                                                alt="GitHub"
                                             />
                                         </Avatar>
                                     </button>
@@ -248,11 +297,12 @@ export default function RegisterPage() {
                                                 redirect: true,
                                             })
                                         }
+                                        className="hover:scale-110 transition-transform duration-200"
                                     >
-                                        <Avatar className="rounded-none">
+                                        <Avatar className="h-10 w-10 rounded-none">
                                             <AvatarImage
                                                 src="/vk.png"
-                                                alt="@shadcn"
+                                                alt="VK"
                                             />
                                         </Avatar>
                                     </button>
@@ -263,32 +313,39 @@ export default function RegisterPage() {
                                                 redirect: true,
                                             })
                                         }
+                                        className="hover:scale-110 transition-transform duration-200"
                                     >
-                                        <Avatar>
+                                        <Avatar className="h-10 w-10">
                                             <AvatarImage
                                                 src="/google.png"
-                                                alt="@shadcn"
+                                                alt="Google"
                                             />
                                         </Avatar>
                                     </button>
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-2">
+                        <CardContent className="space-y-6">
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
-                                className="space-y-2"
+                                className="space-y-4"
                             >
-                                <div className="space-y-1">
-                                    <Label htmlFor="email">Почта</Label>
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-base"
+                                    >
+                                        Почта
+                                    </Label>
                                     <Input
                                         id="email"
                                         type="email"
                                         placeholder="Email"
+                                        className="h-11"
                                         {...form.register("email")}
                                     />
                                     {form.formState.errors.email && (
-                                        <p className="text-red-500">
+                                        <p className="text-sm text-red-500">
                                             {
                                                 form.formState.errors.email
                                                     .message
@@ -296,15 +353,21 @@ export default function RegisterPage() {
                                         </p>
                                     )}
                                 </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="password">Пароль</Label>
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="password"
+                                        className="text-base"
+                                    >
+                                        Пароль
+                                    </Label>
                                     <PasswordInput
                                         id="password"
                                         placeholder="Пароль"
+                                        className="h-11"
                                         {...form.register("password")}
                                     />
                                     {form.formState.errors.password && (
-                                        <p className="text-red-500">
+                                        <p className="text-sm text-red-500">
                                             {
                                                 form.formState.errors.password
                                                     .message
@@ -312,15 +375,45 @@ export default function RegisterPage() {
                                         </p>
                                     )}
                                 </div>
-                                <Button type="submit">
-                                    Зарегистрироваться
+                                <Button
+                                    type="submit"
+                                    className="w-full h-11 text-base font-medium"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <div className="flex items-center justify-center gap-2">
+                                            <svg
+                                                className="animate-spin h-5 w-5"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                />
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                />
+                                            </svg>
+                                            Регистрация...
+                                        </div>
+                                    ) : (
+                                        "Зарегистрироваться"
+                                    )}
                                 </Button>
                             </form>
-                            <div className="text-center text-sm">
+                            <div className="text-center text-sm text-muted-foreground">
                                 Уже есть аккаунт?{" "}
                                 <Link
                                     href="/login"
-                                    className="underline underline-offset-4"
+                                    className="text-primary hover:text-primary/90 underline underline-offset-4"
                                 >
                                     Войти
                                 </Link>
@@ -329,18 +422,18 @@ export default function RegisterPage() {
                     </Card>
                 </TabsContent>
             </Tabs>
-            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-white">
+            <div className="mt-8 text-center text-sm text-muted-foreground">
                 Нажимая кнопку входа, вы соглашаетесь с нашими{" "}
                 <Link
                     href="/terms"
-                    className="underline underline-offset-4 hover:text-primary"
+                    className="text-primary hover:text-primary/90 underline underline-offset-4"
                 >
                     Условиями использования
                 </Link>{" "}
                 и{" "}
                 <Link
                     href="/privacy"
-                    className="underline underline-offset-4 hover:text-primary"
+                    className="text-primary hover:text-primary/90 underline underline-offset-4"
                 >
                     Политикой конфиденциальности
                 </Link>

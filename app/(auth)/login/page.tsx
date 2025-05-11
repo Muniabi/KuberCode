@@ -105,13 +105,13 @@ export default function LoginPage() {
     };
 
     return (
-        <div
-            className={`flex flex-col gap-6 w-[400px] mx-auto mt-16 ${formAnimation}`}
-        >
-            <Card className="hover:shadow-lg transition-shadow duration-300">
-                <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Добро пожаловать</CardTitle>
-                    <CardDescription>
+        <div className="container max-w-[400px] mx-auto px-4 py-8 md:py-16">
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader className="space-y-4">
+                    <CardTitle className="text-2xl text-center font-bold">
+                        Добро пожаловать
+                    </CardTitle>
+                    <CardDescription className="text-center text-base">
                         Войдите с помощью социальных сетей
                     </CardDescription>
                 </CardHeader>
@@ -122,7 +122,7 @@ export default function LoginPage() {
                                 <div className="flex flex-col gap-4">
                                     <Button
                                         variant="outline"
-                                        className="w-full"
+                                        className="w-full h-11 text-base font-medium"
                                         type="button"
                                         onClick={() => signIn("github")}
                                         disabled={isLoading}
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
                                     <Button
                                         variant="outline"
-                                        className="w-full"
+                                        className="w-full h-11 text-base font-medium"
                                         type="button"
                                         onClick={() => signIn("google")}
                                         disabled={isLoading}
@@ -160,7 +160,7 @@ export default function LoginPage() {
 
                                     <Button
                                         variant="outline"
-                                        className="w-full"
+                                        className="w-full h-11 text-base font-medium"
                                         type="button"
                                         onClick={() => signIn("vk")}
                                         disabled={isLoading}
@@ -190,11 +190,14 @@ export default function LoginPage() {
                                         name="email"
                                         render={({ field }) => (
                                             <FormItem className="grid gap-2">
-                                                <FormLabel>Email</FormLabel>
+                                                <FormLabel className="text-base">
+                                                    Email
+                                                </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         type="email"
                                                         placeholder="m@example.com"
+                                                        className="h-11"
                                                         autoFocus
                                                         {...field}
                                                     />
@@ -210,7 +213,7 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                             <FormItem className="grid gap-2">
                                                 <div className="flex items-center">
-                                                    <FormLabel>
+                                                    <FormLabel className="text-base">
                                                         Пароль
                                                     </FormLabel>
                                                     <div className="ml-auto">
@@ -220,6 +223,7 @@ export default function LoginPage() {
                                                 <FormControl>
                                                     <Input
                                                         type="password"
+                                                        className="h-11"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -230,7 +234,7 @@ export default function LoginPage() {
 
                                     <Button
                                         type="submit"
-                                        className="w-full relative"
+                                        className="w-full h-11 text-base font-medium"
                                         disabled={isLoading || !isOnline}
                                     >
                                         {isLoading ? (
@@ -263,11 +267,11 @@ export default function LoginPage() {
                                     </Button>
                                 </div>
 
-                                <div className="text-center text-sm">
+                                <div className="text-center text-sm text-muted-foreground">
                                     Нет аккаунта?{" "}
                                     <Link
                                         href="/register"
-                                        className="underline underline-offset-4"
+                                        className="text-primary hover:text-primary/90 underline underline-offset-4"
                                     >
                                         Зарегистрироваться
                                     </Link>
