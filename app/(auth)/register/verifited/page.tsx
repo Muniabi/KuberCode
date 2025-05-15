@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import { Badge } from "@/components/ui/badge";
+import { signIn } from "next-auth/react";
 
 // Установка динамического рендеринга
 export const dynamic = "force-dynamic";
@@ -28,6 +29,7 @@ export default function Verified() {
     const [resendDisabled, setResendDisabled] = useState(false);
     const [countdown, setCountdown] = useState(0);
     const [email, setEmail] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
     const [maskedEmail, setMaskedEmail] = useState<string>("");
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -54,7 +56,9 @@ export default function Verified() {
     // Эффект для получения сохраненного email из localStorage
     useEffect(() => {
         const storedEmail = localStorage.getItem("pendingEmail");
+        const storedPassword = localStorage.getItem("pendingPassword");
         setEmail(storedEmail);
+        setPassword(storedPassword);
 
         if (storedEmail) {
             const [name, domain] = storedEmail.split("@");
@@ -163,25 +167,19 @@ export default function Verified() {
             const savedCode = localStorage.getItem("verificationCode");
             if (inputCode === savedCode) {
                 setIsSuccess(true);
-                createParticles(); // Добавляем эффект при успехе
+                createParticles();
 
-                const email = localStorage.getItem("pendingEmail");
-                const password = localStorage.getItem("pendingPassword");
-                const isMentor =
-                    localStorage.getItem("pendingIsTeacher") === "true";
+                // После успешной верификации просто входим в систему
+                await signIn("credentials", {
+                    email: email,
+                    password: password,
+                    redirect: false,
+                });
 
-                if (!email || !password) {
-                    throw new Error("Данные для регистрации не найдены");
-                }
-
-                await simulateRegistrationProcess();
-                await register(email, password, isMentor);
-
+                // Очищаем код верификации
                 localStorage.removeItem("verificationCode");
-                localStorage.removeItem("pendingEmail");
-                localStorage.removeItem("pendingPassword");
-                localStorage.removeItem("pendingIsTeacher");
 
+                // Перенаправляем на страницу аккаунта
                 router.push("/account");
             } else {
                 setIsError(true);
@@ -192,8 +190,8 @@ export default function Verified() {
                 }, 1000);
             }
         } catch (error) {
-            console.error("Ошибка при регистрации:", error);
-            setError("Произошла ошибка при регистрации");
+            console.error("Ошибка при верификации:", error);
+            setError("Произошла ошибка при верификации");
             setIsError(true);
         } finally {
             setIsVerifying(false);

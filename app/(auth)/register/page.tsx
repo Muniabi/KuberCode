@@ -21,6 +21,7 @@ import PasswordInput from "@/components/ui/password-input";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     isMentor: z.boolean({
@@ -52,24 +53,29 @@ export default function RegisterPage() {
     const onSubmit = async (data: FormData) => {
         setIsLoading(true);
         try {
+            // Сначала отправляем запрос на регистрацию
+            await register(data.email, data.password, data.isMentor);
+
             // Генерируем 6-значный код
             const verificationCode = Math.floor(
                 100000 + Math.random() * 900000
             ).toString();
 
-            // Сохраняем код, email и данные для регистрации в localStorage
-            localStorage.setItem("verificationCode", verificationCode);
-            localStorage.setItem("pendingEmail", data.email);
-            localStorage.setItem("pendingPassword", data.password);
-            localStorage.setItem("pendingIsTeacher", String(data.isMentor));
-
             // Отправляем код на почту
             await sendVerificationEmail(data.email, verificationCode);
+
+            // Сохраняем только код верификации в localStorage
+            localStorage.setItem("verificationCode", verificationCode);
 
             // Перенаправляем на страницу верификации
             router.push("/register/verifited");
         } catch (error) {
-            console.error("Ошибка при отправке кода:", error);
+            console.error("Ошибка при регистрации:", error);
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : "Ошибка при регистрации"
+            );
         } finally {
             setIsLoading(false);
         }

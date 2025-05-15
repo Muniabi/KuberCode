@@ -32,7 +32,7 @@ export const register = async (
     email: string,
     password: string,
     isMentor: boolean
-): Promise<void> => {
+): Promise<{ email: string; password: string }> => {
     try {
         const url = `${IP}/api/v1/auth/signup`;
 
@@ -45,11 +45,8 @@ export const register = async (
 
         console.log("Успешный ответ:", response.data);
 
-        await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
+        // Возвращаем данные для последующего входа
+        return { email, password };
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 409) {
@@ -69,13 +66,18 @@ export const register = async (
 // Логин через NextAuth
 export const login = async (email: string, password: string) => {
     try {
+        console.log("Attempting login with:", { email });
+
         const result = await signIn("credentials", {
             email,
             password,
             redirect: false,
         });
 
+        console.log("Login result:", result);
+
         if (result?.error) {
+            console.error("Login error:", result.error);
             throw new Error(
                 result.error === "CredentialsSignin"
                     ? "Неверный email или пароль"
@@ -83,10 +85,18 @@ export const login = async (email: string, password: string) => {
             );
         }
 
+        if (!result?.ok) {
+            console.error("Login failed:", result);
+            throw new Error("Не удалось выполнить вход");
+        }
+
         return result;
     } catch (error) {
-        console.error("Ошибка входа:", error);
-        throw error;
+        console.error("Login error:", error);
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error("Произошла ошибка при входе");
     }
 };
 

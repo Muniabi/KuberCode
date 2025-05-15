@@ -67,7 +67,11 @@ const authOptions: AuthOptions = {
                         "Authentication successful. Raw response:",
                         JSON.stringify(data)
                     );
-                    console.log("User data:", JSON.stringify(data.user));
+
+                    if (!data.user || !data.access_token) {
+                        console.error("Invalid response structure:", data);
+                        throw new Error("Неверный формат ответа от сервера");
+                    }
 
                     const user = {
                         id: data.user.id,
@@ -90,9 +94,24 @@ const authOptions: AuthOptions = {
                             status: e.response?.status,
                             data: e.response?.data,
                             message: e.message,
+                            config: {
+                                url: e.config?.url,
+                                method: e.config?.method,
+                                headers: e.config?.headers,
+                            },
                         });
+
+                        if (e.response?.status === 401) {
+                            throw new Error("Неверный email или пароль");
+                        } else if (e.response?.status === 400) {
+                            throw new Error("Неверный формат данных");
+                        } else {
+                            throw new Error(
+                                `Ошибка сервера: ${e.response?.status}`
+                            );
+                        }
                     }
-                    throw new Error("Неверный email или пароль");
+                    throw new Error("Произошла ошибка при авторизации");
                 }
             },
         }),
