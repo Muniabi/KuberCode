@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { sendVerificationEmail } from "@/utils/services/emailService";
 import { Badge } from "@/components/ui/badge";
 import { signIn } from "next-auth/react";
+import { RegistrationAnimation } from "@/components/ui/registration-animation";
 
 // Установка динамического рендеринга
 export const dynamic = "force-dynamic";
@@ -44,6 +45,7 @@ export default function Verified() {
         }>
     >([]);
     const [demoCode, setDemoCode] = useState<string | null>(null);
+    const [showAnimation, setShowAnimation] = useState(false);
 
     // Массив шагов регистрации
     const registrationSteps = [
@@ -135,10 +137,10 @@ export default function Verified() {
 
             for (let p = startProgress; p <= endProgress; p++) {
                 setProgress(p);
-                await new Promise((resolve) => setTimeout(resolve, 30));
+                await new Promise((resolve) => setTimeout(resolve, 80));
             }
 
-            await new Promise((resolve) => setTimeout(resolve, 500));
+            await new Promise((resolve) => setTimeout(resolve, 1500));
         }
     };
 
@@ -168,19 +170,7 @@ export default function Verified() {
             if (inputCode === savedCode) {
                 setIsSuccess(true);
                 createParticles();
-
-                // После успешной верификации просто входим в систему
-                await signIn("credentials", {
-                    email: email,
-                    password: password,
-                    redirect: false,
-                });
-
-                // Очищаем код верификации
-                localStorage.removeItem("verificationCode");
-
-                // Перенаправляем на страницу аккаунта
-                router.push("/account");
+                setShowAnimation(true);
             } else {
                 setIsError(true);
                 setError("Неверный код подтверждения");
@@ -195,6 +185,27 @@ export default function Verified() {
             setIsError(true);
         } finally {
             setIsVerifying(false);
+        }
+    };
+
+    const handleAnimationComplete = async () => {
+        try {
+            const result = await signIn("credentials", {
+                email: email,
+                password: password,
+                redirect: false,
+            });
+
+            if (result?.error) {
+                toast.error("Ошибка при входе в систему");
+                return;
+            }
+
+            localStorage.removeItem("verificationCode");
+            router.push("/account");
+        } catch (error) {
+            console.error("Ошибка при входе:", error);
+            toast.error("Произошла ошибка при входе в систему");
         }
     };
 
@@ -332,75 +343,11 @@ export default function Verified() {
                     </motion.div>
                 </div>
 
-                {/* Обновленный экран загрузки */}
-                {showLoadingScreen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="fixed inset-0 bg-background/95 backdrop-blur-md z-50 flex items-center justify-center"
-                    >
-                        <div className="w-full max-w-md p-8">
-                            <motion.div className="text-center space-y-8">
-                                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-                                    Создаём ваш аккаунт
-                                </h2>
-
-                                <div className="relative h-2 bg-muted rounded-full overflow-hidden">
-                                    <motion.div
-                                        className="absolute left-0 top-0 h-full bg-primary"
-                                        style={{ width: `${progress}%` }}
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${progress}%` }}
-                                        transition={{ duration: 0.3 }}
-                                    />
-                                </div>
-
-                                <div className="space-y-3">
-                                    {registrationSteps.map((step, index) => (
-                                        <motion.div
-                                            key={index}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{
-                                                opacity:
-                                                    index <= currentStep
-                                                        ? 1
-                                                        : 0.5,
-                                                y: 0,
-                                            }}
-                                            className="flex items-center justify-center space-x-2"
-                                        >
-                                            {index < currentStep ? (
-                                                <svg
-                                                    className="w-5 h-5 text-green-500"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M5 13l4 4L19 7"
-                                                    />
-                                                </svg>
-                                            ) : (
-                                                <div className="w-5 h-5" />
-                                            )}
-                                            <span
-                                                className={
-                                                    index <= currentStep
-                                                        ? "text-foreground"
-                                                        : "text-muted-foreground"
-                                                }
-                                            >
-                                                {step.text}
-                                            </span>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </motion.div>
-                        </div>
-                    </motion.div>
+                {/* Заменяем старый экран загрузки на новый компонент */}
+                {showAnimation && (
+                    <RegistrationAnimation
+                        onComplete={handleAnimationComplete}
+                    />
                 )}
             </div>
         </>
