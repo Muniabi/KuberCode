@@ -27,7 +27,7 @@ import { LANGUAGES, Language } from "../../page";
 import Link from "next/link";
 import { useState } from "react";
 
-interface Author {
+export interface Author {
     id: string;
     name: string;
     role: string;
@@ -35,7 +35,7 @@ interface Author {
     bio: string;
 }
 
-interface Resource {
+export interface Resource {
     id: string;
     title: string;
     type: "article" | "video" | "documentation";
@@ -43,13 +43,13 @@ interface Resource {
     duration?: number;
 }
 
-interface Hint {
+export interface Hint {
     id: string;
     content: string;
     unlockAfter?: number; // minutes after starting
 }
 
-interface Exercise {
+export interface Exercise {
     id: string;
     title: string;
     description: string;
@@ -60,6 +60,7 @@ interface Exercise {
     hints: Hint[];
     resources: Resource[];
     author: Author;
+    theory: string;
 }
 
 const AUTHORS: Record<string, Author> = {
@@ -79,7 +80,7 @@ const AUTHORS: Record<string, Author> = {
     },
 };
 
-const EXERCISES: Record<string, Exercise[]> = {
+export const EXERCISES: Record<string, Exercise[]> = {
     basics: [
         {
             id: "hello-world",
@@ -119,6 +120,25 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["john-doe"],
+            theory: `# Введение в программирование
+
+Программирование начинается с простых шагов. Традиционно, первой программой, которую пишет каждый программист, является "Hello, World!".
+
+## Что такое "Hello, World!"?
+"Hello, World!" - это простая программа, которая выводит текст на экран. Она служит для:
+- Проверки работоспособности среды разработки
+- Знакомства с базовым синтаксисом языка
+- Понимания концепции вывода данных
+
+## Почему это важно?
+1. Простота: минимум кода для получения результата
+2. Универсальность: работает на всех языках программирования
+3. Традиция: объединяет программистов по всему миру
+
+## Базовые концепции
+- **Функции вывода**: команды для отображения текста
+- **Строки**: последовательности символов в кавычках
+- **Синтаксис**: правила написания кода`,
         },
         {
             id: "variables",
@@ -145,6 +165,22 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["jane-smith"],
+            theory: `# Переменные и типы данных
+
+## Что такое переменная?
+Переменная - это именованная область памяти, которая хранит данные определенного типа.
+
+## Основные типы данных
+- Числовые (int, float)
+- Строковые (string)
+- Логические (boolean)
+- И другие
+
+## Работа с переменными
+- Объявление
+- Инициализация
+- Присваивание значений
+- Использование в выражениях`,
         },
         {
             id: "operators",
@@ -172,6 +208,20 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["john-doe"],
+            theory: `# Операторы в программировании
+
+## Виды операторов
+- Арифметические (+, -, *, /)
+- Сравнения (>, <, ==, !=)
+- Логические (&&, ||, !)
+- Присваивания (=, +=, -=)
+
+## Приоритет операторов
+1. Скобки ()
+2. Умножение и деление
+3. Сложение и вычитание
+4. Операторы сравнения
+5. Логические операторы`,
         },
     ],
     algorithms: [
@@ -201,6 +251,20 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["jane-smith"],
+            theory: `# Массивы и циклы
+
+## Массивы
+- Что такое массив
+- Индексация элементов
+- Основные операции
+- Многомерные массивы
+
+## Циклы
+- for
+- while
+- do-while
+- Итерация по массивам
+- Вложенные циклы`,
         },
         {
             id: "sorting",
@@ -227,6 +291,19 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["john-doe"],
+            theory: `# Алгоритмы сортировки
+
+## Основные алгоритмы
+- Пузырьковая сортировка
+- Сортировка вставками
+- Быстрая сортировка
+- Сортировка слиянием
+
+## Сравнение алгоритмов
+- Временная сложность
+- Пространственная сложность
+- Стабильность
+- Применение`,
         },
     ],
     patterns: [
@@ -256,6 +333,19 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["jane-smith"],
+            theory: `# Основы ООП
+
+## Основные концепции
+- Классы и объекты
+- Наследование
+- Инкапсуляция
+- Полиморфизм
+
+## Практическое применение
+- Создание классов
+- Конструкторы
+- Методы и свойства
+- Модификаторы доступа`,
         },
         {
             id: "design-patterns",
@@ -281,6 +371,19 @@ const EXERCISES: Record<string, Exercise[]> = {
                 },
             ],
             author: AUTHORS["john-doe"],
+            theory: `# Паттерны проектирования
+
+## Категории паттернов
+- Порождающие паттерны
+- Структурные паттерны
+- Поведенческие паттерны
+
+## Популярные паттерны
+- Singleton
+- Factory Method
+- Observer
+- Strategy
+- Decorator`,
         },
     ],
 };
@@ -288,20 +391,33 @@ const EXERCISES: Record<string, Exercise[]> = {
 function ExerciseCard({
     exercise,
     isExpanded = false,
+    languageId,
+    conceptId,
 }: {
     exercise: Exercise;
     isExpanded?: boolean;
+    languageId: string;
+    conceptId: string;
 }) {
     const [expanded, setExpanded] = useState(isExpanded);
     const [showHints, setShowHints] = useState(false);
+    const router = useRouter();
+
+    const handleExerciseClick = () => {
+        if (exercise.status !== "locked") {
+            router.push(`/courses/${languageId}/${conceptId}/${exercise.id}`);
+        }
+    };
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Card
                 className={cn(
                     "group relative bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 transition-all duration-300",
-                    exercise.status === "locked" && "opacity-50"
+                    exercise.status === "locked" && "opacity-50",
+                    exercise.status !== "locked" && "cursor-pointer"
                 )}
+                onClick={handleExerciseClick}
             >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
 
@@ -627,6 +743,8 @@ export default function ConceptPage() {
                             key={exercise.id}
                             exercise={exercise}
                             isExpanded={index === 0}
+                            languageId={slug}
+                            conceptId={conceptId}
                         />
                     ))}
                 </div>
