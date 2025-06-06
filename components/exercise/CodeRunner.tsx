@@ -31,6 +31,21 @@ int main() {
     return 0;
 }`,
     },
+    "basics-hello-world": {
+        testCases: [{ input: [], expectedOutput: "Hello, World!" }],
+        solution: `// JavaScript
+console.log("Hello, World!");
+
+// Python
+print("Hello, World!")  
+
+// C++
+#include <iostream>
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}`,
+    },
 };
 
 export default function CodeRunner({
@@ -48,11 +63,12 @@ export default function CodeRunner({
         setStatus("running");
 
         try {
-            // В реальном приложении здесь был бы запрос к API для выполнения кода
-            // Сейчас мы просто симулируем проверку
+            console.log("Running exercise:", exerciseId); // Debug log
             const solution = SOLUTIONS[exerciseId];
             if (!solution) {
-                throw new Error("Solution not found");
+                throw new Error(
+                    `Solution not found for exercise: ${exerciseId}`
+                );
             }
 
             // Simple output check
