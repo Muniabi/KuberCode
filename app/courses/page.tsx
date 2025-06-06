@@ -32,6 +32,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface LanguageStats {
     students: number;
@@ -452,170 +453,158 @@ export default function CoursesPage() {
                             >
                                 {viewMode === "list" ? (
                                     // List View
-                                    <Card
-                                        className="group bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 transition-all duration-300 relative overflow-hidden cursor-pointer"
-                                        onClick={() =>
-                                            handleLanguageClick(lang.id)
-                                        }
+                                    <Link
+                                        href={`/courses/${lang.id}`}
+                                        className="block"
                                     >
-                                        <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 relative">
-                                            {/* Icon */}
-                                            <div
-                                                className={cn(
-                                                    "w-full sm:w-48 h-32 rounded-xl flex items-center justify-center relative group-hover:scale-105 transition-transform duration-300",
-                                                    lang.color
+                                        <Card className="group bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 transition-all duration-300 relative overflow-hidden cursor-pointer">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 relative">
+                                                {/* Icon */}
+                                                <div
+                                                    className={cn(
+                                                        "w-full sm:w-48 h-32 rounded-xl flex items-center justify-center relative group-hover:scale-105 transition-transform duration-300",
+                                                        lang.color
+                                                    )}
+                                                >
+                                                    <div className="absolute inset-0 bg-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                    <span className="text-white text-4xl font-bold relative z-10">
+                                                        {lang.icon}
+                                                    </span>
+                                                </div>
+
+                                                {/* Content */}
+                                                <div className="flex-1 min-w-0 w-full">
+                                                    <div className="flex items-start justify-between">
+                                                        <div>
+                                                            {lang.status && (
+                                                                <div className="relative inline-block">
+                                                                    <div className="absolute inset-0 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg blur opacity-50" />
+                                                                    <span className="relative inline-block px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg text-[--bg-color] text-xs font-medium mb-2">
+                                                                        {
+                                                                            lang.status
+                                                                        }
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                            <h3 className="text-xl font-semibold text-[--text-color] mb-1 group-hover:text-[--lime] transition-colors">
+                                                                {lang.name}
+                                                            </h3>
+                                                            <p className="text-sm text-[--text-secondary] mb-4 max-w-xl group-hover:text-[--text-color] transition-colors">
+                                                                {lang.desc}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Bottom row */}
+                                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {lang.tags.map(
+                                                                (tag) => (
+                                                                    <span
+                                                                        key={
+                                                                            tag
+                                                                        }
+                                                                        className="px-3 py-1 bg-black/10 dark:bg-black/30 rounded-lg text-[--text-secondary] text-sm group-hover:bg-black/20 dark:group-hover:bg-black/40 transition-colors"
+                                                                    >
+                                                                        {tag}
+                                                                    </span>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                        <Button
+                                                            className="w-full sm:w-auto bg-[--purple] hover:bg-[--button-bg] text-white"
+                                                            aria-label={`Начать обучение ${lang.name}`}
+                                                        >
+                                                            <span className="mr-2">
+                                                                Начать обучение
+                                                            </span>
+                                                            <ArrowRight className="w-5 h-5" />
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    </Link>
+                                ) : (
+                                    // Grid View
+                                    <Link
+                                        href={`/courses/${lang.id}`}
+                                        className="block"
+                                    >
+                                        <Card className="group bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 lg:p-6 transition-all duration-300 relative overflow-hidden aspect-square flex flex-col cursor-pointer">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                                            {/* Header */}
+                                            <div className="flex items-start justify-between mb-4 lg:mb-6">
+                                                <div
+                                                    className={cn(
+                                                        "w-14 h-14 lg:w-16 lg:h-16 rounded-2xl flex items-center justify-center relative",
+                                                        lang.color
+                                                    )}
+                                                >
+                                                    <span className="text-white text-xl lg:text-2xl font-bold">
+                                                        {lang.icon}
+                                                    </span>
+                                                </div>
+                                                {lang.status && (
+                                                    <span className="px-2 lg:px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg text-[--bg-color] text-xs font-medium">
+                                                        {lang.status}
+                                                    </span>
                                                 )}
-                                            >
-                                                <div className="absolute inset-0 bg-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                                                <span className="text-white text-4xl font-bold relative z-10">
-                                                    {lang.icon}
-                                                </span>
                                             </div>
 
                                             {/* Content */}
-                                            <div className="flex-1 min-w-0 w-full">
-                                                <div className="flex items-start justify-between">
-                                                    <div>
-                                                        {lang.status && (
-                                                            <div className="relative inline-block">
-                                                                <div className="absolute inset-0 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg blur opacity-50" />
-                                                                <span className="relative inline-block px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg text-[--bg-color] text-xs font-medium mb-2">
-                                                                    {
-                                                                        lang.status
-                                                                    }
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                        <h3 className="text-xl font-semibold text-[--text-color] mb-1 group-hover:text-[--lime] transition-colors">
-                                                            {lang.name}
-                                                        </h3>
-                                                        <p className="text-sm text-[--text-secondary] mb-4 max-w-xl group-hover:text-[--text-color] transition-colors">
-                                                            {lang.desc}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                {/* Bottom row */}
-                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {lang.tags.map(
-                                                            (tag) => (
-                                                                <span
-                                                                    key={tag}
-                                                                    className="px-3 py-1 bg-black/10 dark:bg-black/30 rounded-lg text-[--text-secondary] text-sm group-hover:bg-black/20 dark:group-hover:bg-black/40 transition-colors"
-                                                                >
-                                                                    {tag}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                    <Button
-                                                        className="w-full sm:w-auto bg-[--purple] hover:bg-[--button-bg] text-white"
-                                                        aria-label={`Начать обучение ${lang.name}`}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleLanguageClick(
-                                                                lang.id
-                                                            );
-                                                        }}
-                                                    >
-                                                        <span className="mr-2">
-                                                            Начать обучение
-                                                        </span>
-                                                        <ArrowRight className="w-5 h-5" />
-                                                    </Button>
-                                                </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-lg lg:text-xl font-semibold text-[--text-color] mb-2 group-hover:text-[--lime] transition-colors">
+                                                    {lang.name}
+                                                </h3>
+                                                <p className="text-xs lg:text-sm text-[--text-secondary] mb-4 line-clamp-2 group-hover:text-[--text-color] transition-colors">
+                                                    {lang.desc}
+                                                </p>
                                             </div>
-                                        </div>
-                                    </Card>
-                                ) : (
-                                    // Grid View
-                                    <Card
-                                        className="group bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 lg:p-6 transition-all duration-300 relative overflow-hidden aspect-square flex flex-col cursor-pointer"
-                                        onClick={() =>
-                                            handleLanguageClick(lang.id)
-                                        }
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                                        {/* Header */}
-                                        <div className="flex items-start justify-between mb-4 lg:mb-6">
-                                            <div
-                                                className={cn(
-                                                    "w-14 h-14 lg:w-16 lg:h-16 rounded-2xl flex items-center justify-center relative",
-                                                    lang.color
-                                                )}
-                                            >
-                                                <span className="text-white text-xl lg:text-2xl font-bold">
-                                                    {lang.icon}
-                                                </span>
-                                            </div>
-                                            {lang.status && (
-                                                <span className="px-2 lg:px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg text-[--bg-color] text-xs font-medium">
-                                                    {lang.status}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Content */}
-                                        <div className="flex-1">
-                                            <h3 className="text-lg lg:text-xl font-semibold text-[--text-color] mb-2 group-hover:text-[--lime] transition-colors">
-                                                {lang.name}
-                                            </h3>
-                                            <p className="text-xs lg:text-sm text-[--text-secondary] mb-4 line-clamp-2 group-hover:text-[--text-color] transition-colors">
-                                                {lang.desc}
-                                            </p>
-                                        </div>
-
-                                        {/* Stats */}
-                                        <div className="grid grid-cols-3 gap-2 lg:gap-4 mb-4 lg:mb-6">
-                                            <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
-                                                <Users className="w-3 h-3 lg:w-4 lg:h-4 text-[--yellow] mb-1" />
-                                                <span className="text-[10px] lg:text-xs text-[--text-secondary]">
-                                                    {lang.stats.students}
-                                                </span>
-                                            </div>
-                                            <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
-                                                <Timer className="w-3 h-3 lg:w-4 lg:h-4 text-[--lime] mb-1" />
-                                                <span className="text-[10px] lg:text-xs text-[--text-secondary]">
-                                                    {lang.stats.hours}ч
-                                                </span>
-                                            </div>
-                                            <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
-                                                <BookOpen className="w-3 h-3 lg:w-4 lg:h-4 text-[--purple] mb-1" />
-                                                <span className="text-[10px] lg:text-xs text-[--text-secondary]">
-                                                    {lang.stats.modules}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {/* Tags and Button */}
-                                        <div className="mt-auto">
-                                            <div className="flex flex-wrap gap-1 lg:gap-2 mb-3 lg:mb-4">
-                                                {lang.tags.map((tag) => (
-                                                    <span
-                                                        key={tag}
-                                                        className="px-2 py-1 bg-black/10 dark:bg-black/30 rounded-lg text-[--text-secondary] text-[10px] lg:text-xs"
-                                                    >
-                                                        {tag}
+                                            {/* Stats */}
+                                            <div className="grid grid-cols-3 gap-2 lg:gap-4 mb-4 lg:mb-6">
+                                                <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
+                                                    <Users className="w-3 h-3 lg:w-4 lg:h-4 text-[--yellow] mb-1" />
+                                                    <span className="text-[10px] lg:text-xs text-[--text-secondary]">
+                                                        {lang.stats.students}
                                                     </span>
-                                                ))}
+                                                </div>
+                                                <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
+                                                    <Timer className="w-3 h-3 lg:w-4 lg:h-4 text-[--lime] mb-1" />
+                                                    <span className="text-[10px] lg:text-xs text-[--text-secondary]">
+                                                        {lang.stats.hours}ч
+                                                    </span>
+                                                </div>
+                                                <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
+                                                    <BookOpen className="w-3 h-3 lg:w-4 lg:h-4 text-[--purple] mb-1" />
+                                                    <span className="text-[10px] lg:text-xs text-[--text-secondary]">
+                                                        {lang.stats.modules}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <Button
-                                                className="w-full bg-[--purple] hover:bg-[--button-bg] text-white text-xs lg:text-sm"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleLanguageClick(
-                                                        lang.id
-                                                    );
-                                                }}
-                                            >
-                                                Начать обучение
-                                                <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 ml-2" />
-                                            </Button>
-                                        </div>
-                                    </Card>
+
+                                            {/* Tags and Button */}
+                                            <div className="mt-auto">
+                                                <div className="flex flex-wrap gap-1 lg:gap-2 mb-3 lg:mb-4">
+                                                    {lang.tags.map((tag) => (
+                                                        <span
+                                                            key={tag}
+                                                            className="px-2 py-1 bg-black/10 dark:bg-black/30 rounded-lg text-[--text-secondary] text-[10px] lg:text-xs"
+                                                        >
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                <Button className="w-full bg-[--purple] hover:bg-[--button-bg] text-white text-xs lg:text-sm">
+                                                    Начать обучение
+                                                    <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 ml-2" />
+                                                </Button>
+                                            </div>
+                                        </Card>
+                                    </Link>
                                 )}
                             </motion.div>
                         ))}

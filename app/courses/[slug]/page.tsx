@@ -15,8 +15,10 @@ import {
     Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { LANGUAGES, Language } from "../page";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface Concept {
     id: string;
@@ -52,6 +54,7 @@ const CONCEPTS: Concept[] = [
 
 export default function LanguagePage() {
     const params = useParams();
+    const router = useRouter();
     const slug = params.slug as string;
 
     // Find the language data based on the slug
@@ -182,39 +185,45 @@ export default function LanguagePage() {
                         </h2>
                         <div className="space-y-4">
                             {CONCEPTS.map((concept, index) => (
-                                <motion.div
+                                <Link
                                     key={concept.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="group relative bg-[--card-bg]/50 hover:bg-[--card-hover] rounded-xl p-4 transition-colors"
+                                    href={`/courses/${slug}/${concept.id}`}
+                                    className="block"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity" />
-                                    <div className="relative flex items-start gap-4">
-                                        <div
-                                            className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                                                concept.difficulty ===
-                                                "beginner"
-                                                    ? "bg-[--lime-alpha] text-[--lime]"
-                                                    : concept.difficulty ===
-                                                      "intermediate"
-                                                    ? "bg-[--yellow-alpha] text-[--yellow]"
-                                                    : "bg-[--purple-alpha] text-[--purple]"
-                                            }`}
-                                        >
-                                            {concept.icon}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: index * 0.1 }}
+                                        className="group relative bg-[--card-bg]/50 hover:bg-[--card-hover] rounded-xl p-4 transition-colors cursor-pointer"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity" />
+                                        <div className="relative flex items-start gap-4">
+                                            <div
+                                                className={cn(
+                                                    "w-10 h-10 rounded-lg flex items-center justify-center",
+                                                    concept.difficulty ===
+                                                        "beginner"
+                                                        ? "bg-[--lime-alpha] text-[--lime]"
+                                                        : concept.difficulty ===
+                                                          "intermediate"
+                                                        ? "bg-[--yellow-alpha] text-[--yellow]"
+                                                        : "bg-[--purple-alpha] text-[--purple]"
+                                                )}
+                                            >
+                                                {concept.icon}
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-[--text-color] font-medium mb-1 group-hover:text-[--lime] transition-colors">
+                                                    {concept.title}
+                                                </h3>
+                                                <p className="text-sm text-[--text-secondary] group-hover:text-[--text-color] transition-colors">
+                                                    {concept.description}
+                                                </p>
+                                            </div>
+                                            <ArrowRight className="w-5 h-5 text-[--text-secondary] group-hover:text-[--text-color] transition-colors" />
                                         </div>
-                                        <div className="flex-1">
-                                            <h3 className="text-[--text-color] font-medium mb-1 group-hover:text-[--lime] transition-colors">
-                                                {concept.title}
-                                            </h3>
-                                            <p className="text-sm text-[--text-secondary] group-hover:text-[--text-color] transition-colors">
-                                                {concept.description}
-                                            </p>
-                                        </div>
-                                        <ArrowRight className="w-5 h-5 text-[--text-secondary] group-hover:text-[--text-color] transition-colors" />
-                                    </div>
-                                </motion.div>
+                                    </motion.div>
+                                </Link>
                             ))}
                         </div>
                     </div>
