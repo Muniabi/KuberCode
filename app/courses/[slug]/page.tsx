@@ -13,12 +13,17 @@ import {
     Brain,
     Target,
     Sparkles,
+    ChevronDown,
+    CheckCircle2,
+    Circle,
+    Lock,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 import { LANGUAGES, Language } from "../page";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 interface Concept {
     id: string;
@@ -26,6 +31,22 @@ interface Concept {
     description: string;
     icon: React.ReactNode;
     difficulty: "beginner" | "intermediate" | "advanced";
+}
+
+interface Section {
+    id: string;
+    title: string;
+    description: string;
+    duration: number;
+    topics: Topic[];
+}
+
+interface Topic {
+    id: string;
+    title: string;
+    description: string;
+    duration: number;
+    status: "completed" | "available" | "locked";
 }
 
 const CONCEPTS: Concept[] = [
@@ -52,6 +73,161 @@ const CONCEPTS: Concept[] = [
     },
 ];
 
+const CURRICULUM: Record<string, Section[]> = {
+    cpp: [
+        {
+            id: "intro",
+            title: "Введение в C++",
+            description: "Основы языка и базовые концепции",
+            duration: 120,
+            topics: [
+                {
+                    id: "setup",
+                    title: "Установка и настройка окружения",
+                    description: "Подготовка рабочего окружения для разработки",
+                    duration: 30,
+                    status: "completed",
+                },
+                {
+                    id: "basics",
+                    title: "Базовый синтаксис",
+                    description: "Переменные, типы данных, операторы",
+                    duration: 45,
+                    status: "available",
+                },
+                {
+                    id: "control-flow",
+                    title: "Управляющие конструкции",
+                    description: "Условные операторы и циклы",
+                    duration: 45,
+                    status: "locked",
+                },
+            ],
+        },
+        {
+            id: "oop",
+            title: "Объектно-ориентированное программирование",
+            description: "Классы, объекты и принципы ООП",
+            duration: 180,
+            topics: [
+                {
+                    id: "classes",
+                    title: "Классы и объекты",
+                    description: "Создание и использование классов",
+                    duration: 60,
+                    status: "locked",
+                },
+                {
+                    id: "inheritance",
+                    title: "Наследование",
+                    description: "Механизмы наследования и полиморфизма",
+                    duration: 60,
+                    status: "locked",
+                },
+                {
+                    id: "polymorphism",
+                    title: "Полиморфизм",
+                    description: "Виртуальные функции и абстрактные классы",
+                    duration: 60,
+                    status: "locked",
+                },
+            ],
+        },
+    ],
+};
+
+function CurriculumSection({ section }: { section: Section }) {
+    const [expanded, setExpanded] = useState(false);
+    const completedTopics = section.topics.filter(
+        (t) => t.status === "completed"
+    ).length;
+
+    return (
+        <div className="mb-4">
+            <div
+                className="bg-[--card-bg]/50 hover:bg-[--card-hover] rounded-xl p-4 cursor-pointer transition-colors"
+                onClick={() => setExpanded(!expanded)}
+            >
+                <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                        <h3 className="text-lg font-medium text-[--text-color] mb-1">
+                            {section.title}
+                        </h3>
+                        <p className="text-sm text-[--text-secondary]">
+                            {section.description}
+                        </p>
+                        <div className="flex items-center gap-4 mt-2 text-xs text-[--text-secondary]">
+                            <span className="flex items-center gap-1">
+                                <Timer className="w-4 h-4" />
+                                {section.duration} мин
+                            </span>
+                            <span className="flex items-center gap-1">
+                                <CheckCircle2 className="w-4 h-4" />
+                                {completedTopics} из {section.topics.length}
+                            </span>
+                        </div>
+                    </div>
+                    <ChevronDown
+                        className={cn(
+                            "w-5 h-5 text-[--text-secondary] transition-transform",
+                            expanded && "rotate-180"
+                        )}
+                    />
+                </div>
+            </div>
+
+            {expanded && (
+                <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-2 space-y-2 pl-4"
+                >
+                    {section.topics.map((topic) => (
+                        <div
+                            key={topic.id}
+                            className={cn(
+                                "bg-[--card-bg]/30 rounded-lg p-3 transition-colors",
+                                topic.status === "locked"
+                                    ? "opacity-50"
+                                    : "hover:bg-[--card-hover]"
+                            )}
+                        >
+                            <div className="flex items-start gap-3">
+                                <div className="mt-1">
+                                    {topic.status === "completed" && (
+                                        <CheckCircle2 className="w-4 h-4 text-[--lime]" />
+                                    )}
+                                    {topic.status === "available" && (
+                                        <Circle className="w-4 h-4 text-[--text-secondary]" />
+                                    )}
+                                    {topic.status === "locked" && (
+                                        <Lock className="w-4 h-4 text-[--text-secondary]" />
+                                    )}
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="text-sm font-medium text-[--text-color] mb-1">
+                                        {topic.title}
+                                    </h4>
+                                    <p className="text-xs text-[--text-secondary]">
+                                        {topic.description}
+                                    </p>
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <span className="text-xs text-[--text-secondary] flex items-center gap-1">
+                                            <Timer className="w-3 h-3" />
+                                            {topic.duration} мин
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </motion.div>
+            )}
+        </div>
+    );
+}
+
 export default function LanguagePage() {
     const params = useParams();
     const router = useRouter();
@@ -73,6 +249,8 @@ export default function LanguagePage() {
             </Container>
         );
     }
+
+    const curriculum = CURRICULUM[slug] || [];
 
     return (
         <div className="relative min-h-screen w-full bg-[--bg-color] overflow-x-hidden">
@@ -226,6 +404,21 @@ export default function LanguagePage() {
                                 </Link>
                             ))}
                         </div>
+                    </div>
+                </div>
+
+                {/* Curriculum Section */}
+                <div className="mt-12">
+                    <h2 className="text-2xl font-bold text-[--text-color] mb-6">
+                        Программа обучения
+                    </h2>
+                    <div className="space-y-4">
+                        {curriculum.map((section) => (
+                            <CurriculumSection
+                                key={section.id}
+                                section={section}
+                            />
+                        ))}
                     </div>
                 </div>
             </Container>
