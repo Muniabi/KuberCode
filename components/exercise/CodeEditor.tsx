@@ -37,8 +37,11 @@ export default function CodeEditor({
             setOutput(
                 "Code executed successfully!\nOutput will appear here..."
             );
-        } catch (error) {
-            setOutput("Error executing code: " + error.message);
+        } catch (error: unknown) {
+            setOutput(
+                "Error executing code: " +
+                    (error instanceof Error ? error.message : String(error))
+            );
         } finally {
             setIsRunning(false);
         }

@@ -69,6 +69,7 @@ export default function ExerciseLayout({ exercise }: ExerciseLayoutProps) {
                 <CodeEditor
                     initialCode={exercise.initialCode}
                     language={exercise.language}
+                    exerciseId={exercise.id}
                 />
             </motion.div>
         </div>

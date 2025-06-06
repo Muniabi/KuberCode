@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
-import { LANGUAGES, Language } from "../page";
+import { LANGUAGES, type Language } from "@/app/courses/data/languages";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";

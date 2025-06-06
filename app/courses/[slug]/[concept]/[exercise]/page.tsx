@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Container } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { EXERCISES } from "../../[concept]/page";
+import { EXERCISES } from "@/app/courses/data/exercises";
 import ExerciseLayout from "@/components/exercise/ExerciseLayout";
 
 export default function ExercisePage() {
