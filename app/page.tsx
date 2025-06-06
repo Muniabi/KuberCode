@@ -1,6 +1,6 @@
 "use client";
 import { MainInfoBlock } from "@/components/shared/landing/main-info";
-import { ContainerScroll } from "@/components/shared/landing/container-scroll-animation";
+
 import PopularCourses from "@/components/shared/landing/popular-courses";
 import PopularCategories from "@/components/shared/landing/popular-categories";
 import BestAuthors from "@/components/shared/landing/best-authors";
