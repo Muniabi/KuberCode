@@ -16,26 +16,21 @@ import {
     Users,
     Timer,
     BookOpen,
+    X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
     Command,
-    CommandDialog,
     CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 
 interface LanguageStats {
     students: number;
@@ -203,60 +198,87 @@ const LANGUAGES: Language[] = [
 export default function CoursesPage() {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
+    const [displayedQuery, setDisplayedQuery] = useState("");
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
-    const [placeholderText, setPlaceholderText] = useState("Поиск...");
+    const [placeholderIndex, setPlaceholderIndex] = useState(0);
+    const searchInputRef = useRef<HTMLInputElement>(null);
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+    const [isFocused, setIsFocused] = useState(false);
 
-    // Анимированный placeholder
     const placeholders = [
-        "Поиск языка программирования...",
-        "Например, Python...",
-        "Или JavaScript...",
-        "Может быть, React?",
+        "Поиск по языкам программирования...",
+        "Например: Python для начинающих...",
+        "Или: JavaScript разработка...",
     ];
 
+    // Placeholder animation
     useEffect(() => {
-        let currentIndex = 0;
         const interval = setInterval(() => {
-            currentIndex = (currentIndex + 1) % placeholders.length;
-            setPlaceholderText(placeholders[currentIndex]);
+            setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
         }, 3000);
 
         return () => clearInterval(interval);
     }, []);
 
-    // Генерация подсказок на основе поискового запроса
-    useEffect(() => {
-        if (searchQuery.length > 0) {
-            const suggestions = LANGUAGES.filter(
-                (lang) =>
-                    lang.name
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                    lang.desc
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                    lang.tags.some((tag) =>
-                        tag.toLowerCase().includes(searchQuery.toLowerCase())
-                    )
-            ).map((lang) => lang.name);
-            setSearchSuggestions(suggestions);
-            setIsSearchOpen(true);
-        } else {
+    // Search suggestions based on input
+    const updateSuggestions = (value: string) => {
+        if (!value.trim()) {
             setSearchSuggestions([]);
-            setIsSearchOpen(false);
+            return;
         }
-    }, [searchQuery]);
 
+        const suggestions = LANGUAGES.filter((lang) => {
+            const searchStr = value.toLowerCase();
+            return (
+                lang.name.toLowerCase().includes(searchStr) ||
+                lang.desc.toLowerCase().includes(searchStr) ||
+                lang.tags.some((tag) => tag.toLowerCase().includes(searchStr))
+            );
+        })
+            .map((lang) => lang.name)
+            .slice(0, 5);
+
+        setSearchSuggestions(suggestions);
+    };
+
+    // Handle search input
+    const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        updateSuggestions(value);
+    };
+
+    // Handle search submission
+    const handleSearch = (query: string) => {
+        setDisplayedQuery(query);
+        setSearchQuery(query);
+        setSearchSuggestions([]);
+        searchInputRef.current?.focus();
+    };
+
+    // Handle keyboard events
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleSearch(searchQuery);
+        }
+    };
+
+    // Filter languages based on search and category
     const filteredLanguages = LANGUAGES.filter((lang) => {
+        const matchesSearch =
+            !displayedQuery ||
+            lang.name.toLowerCase().includes(displayedQuery.toLowerCase()) ||
+            lang.desc.toLowerCase().includes(displayedQuery.toLowerCase()) ||
+            lang.tags.some((tag) =>
+                tag.toLowerCase().includes(displayedQuery.toLowerCase())
+            );
+
         const matchesCategory =
             selectedCategory === "all" || lang.tags.includes(selectedCategory);
-        const matchesSearch =
-            searchQuery === "" ||
-            lang.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            lang.desc.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
+
+        return matchesSearch && matchesCategory;
     });
 
     return (
@@ -279,126 +301,140 @@ export default function CoursesPage() {
             </div>
 
             <Container className="relative z-10 py-12">
-                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col gap-6 mb-10"
+                    className="flex flex-col gap-8 mb-10"
                 >
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-3xl font-bold text-white">
-                            Языки программирования
-                        </h1>
-                        <div className="flex items-center gap-4">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() =>
-                                    setViewMode(
-                                        viewMode === "list" ? "grid" : "list"
-                                    )
-                                }
-                                className="text-gray-400 hover:text-white hover:bg-[--bg-gray]"
-                            >
-                                {viewMode === "list" ? (
-                                    <LayoutGrid className="w-5 h-5" />
-                                ) : (
-                                    <LayoutList className="w-5 h-5" />
+                    <div className="flex items-center justify-between gap-6">
+                        {/* Search */}
+                        <div className="flex-1 max-w-md relative">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 transition-colors group-hover:text-white/70 pointer-events-none" />
+                                <Input
+                                    ref={searchInputRef}
+                                    type="text"
+                                    placeholder={placeholders[placeholderIndex]}
+                                    value={searchQuery}
+                                    onChange={handleSearchInput}
+                                    onKeyDown={handleKeyDown}
+                                    onFocus={() => setIsFocused(true)}
+                                    onBlur={() => {
+                                        // Небольшая задержка, чтобы успеть обработать клик по подсказке
+                                        setTimeout(
+                                            () => setIsFocused(false),
+                                            200
+                                        );
+                                    }}
+                                    className="w-full bg-[--bg-gray]/50 hover:bg-[--bg-gray] focus:bg-[--bg-gray] text-white pl-10 pr-4 py-2 border-none transition-colors duration-200 focus-visible:ring-1 focus-visible:ring-[--purple]/30 placeholder:text-gray-500"
+                                />
+                                {searchQuery && (
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 text-gray-400 hover:text-white"
+                                        onClick={() => {
+                                            setSearchQuery("");
+                                            setDisplayedQuery("");
+                                            setSearchSuggestions([]);
+                                            searchInputRef.current?.focus();
+                                        }}
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </Button>
                                 )}
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-gray-400 hover:text-white hover:bg-[--bg-gray]"
-                            >
-                                <Settings2 className="w-5 h-5" />
-                            </Button>
+                            </div>
+
+                            {/* Search Suggestions */}
+                            {isFocused && searchSuggestions.length > 0 && (
+                                <div className="absolute w-full mt-1 rounded-md border border-[--bg-gray] bg-[--bg-gray] shadow-lg z-50">
+                                    <Command className="bg-transparent">
+                                        <CommandList>
+                                            <CommandGroup>
+                                                {searchSuggestions.map(
+                                                    (suggestion) => (
+                                                        <CommandItem
+                                                            key={suggestion}
+                                                            onSelect={() => {
+                                                                handleSearch(
+                                                                    suggestion
+                                                                );
+                                                            }}
+                                                            className="py-2 text-gray-300 hover:bg-white/5 cursor-pointer"
+                                                        >
+                                                            <Search className="w-4 h-4 mr-2 text-gray-400" />
+                                                            {suggestion}
+                                                        </CommandItem>
+                                                    )
+                                                )}
+                                            </CommandGroup>
+                                        </CommandList>
+                                    </Command>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-3xl font-bold text-white">
+                                Языки программирования
+                            </h1>
+                            <div className="flex items-center gap-3">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                        setViewMode(
+                                            viewMode === "list"
+                                                ? "grid"
+                                                : "list"
+                                        )
+                                    }
+                                    className="text-gray-400 hover:text-white hover:bg-[--bg-gray]/50"
+                                >
+                                    {viewMode === "list" ? (
+                                        <LayoutGrid className="w-5 h-5" />
+                                    ) : (
+                                        <LayoutList className="w-5 h-5" />
+                                    )}
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-gray-400 hover:text-white hover:bg-[--bg-gray]/50"
+                                >
+                                    <Settings2 className="w-5 h-5" />
+                                </Button>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Search */}
-                    <div className="flex w-full max-w-3xl mx-auto">
-                        <Popover
-                            open={isSearchOpen}
-                            onOpenChange={setIsSearchOpen}
-                        >
-                            <PopoverTrigger asChild>
-                                <div className="relative w-full">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                                    <Input
-                                        type="text"
-                                        placeholder={placeholderText}
-                                        value={searchQuery}
-                                        onChange={(e) =>
-                                            setSearchQuery(e.target.value)
-                                        }
-                                        className="w-full bg-[--bg-gray] text-white pl-10 pr-4 py-2 border-none focus-visible:ring-[--purple]/50"
-                                    />
-                                </div>
-                            </PopoverTrigger>
-                            <PopoverContent
-                                className="w-full max-w-3xl p-0 bg-[--bg-gray] border-none shadow-lg"
-                                align="center"
+                    {/* Categories */}
+                    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                        {CATEGORIES.map((category) => (
+                            <Button
+                                key={category.id}
+                                variant={
+                                    selectedCategory === category.id
+                                        ? "default"
+                                        : "ghost"
+                                }
+                                className={cn(
+                                    "transition-all duration-300 flex items-center gap-2 shrink-0",
+                                    selectedCategory === category.id
+                                        ? "bg-gradient-to-r from-[--purple] to-[--button-bg] text-white shadow-lg shadow-[--purple]/25"
+                                        : "text-gray-400 hover:text-white hover:bg-[--bg-gray]/50"
+                                )}
+                                onClick={() => setSelectedCategory(category.id)}
                             >
-                                <Command className="bg-transparent">
-                                    <CommandList>
-                                        <CommandEmpty className="py-2 text-sm text-gray-400">
-                                            Ничего не найдено
-                                        </CommandEmpty>
-                                        <CommandGroup>
-                                            {searchSuggestions.map(
-                                                (suggestion) => (
-                                                    <CommandItem
-                                                        key={suggestion}
-                                                        onSelect={() => {
-                                                            setSearchQuery(
-                                                                suggestion
-                                                            );
-                                                            setIsSearchOpen(
-                                                                false
-                                                            );
-                                                        }}
-                                                        className="py-2 text-gray-300 hover:bg-[--bg-gray] cursor-pointer"
-                                                    >
-                                                        <Search className="w-4 h-4 mr-2" />
-                                                        {suggestion}
-                                                    </CommandItem>
-                                                )
-                                            )}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
+                                <category.icon className="w-4 h-4" />
+                                <span>{category.label}</span>
+                                <span className="px-1.5 py-0.5 rounded-md bg-black/30 text-xs">
+                                    {category.count}
+                                </span>
+                            </Button>
+                        ))}
                     </div>
                 </motion.div>
-
-                {/* Categories */}
-                <div className="flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-hide">
-                    {CATEGORIES.map((category) => (
-                        <Button
-                            key={category.id}
-                            variant={
-                                selectedCategory === category.id
-                                    ? "default"
-                                    : "ghost"
-                            }
-                            className={cn(
-                                "transition-all duration-300 flex items-center gap-2",
-                                selectedCategory === category.id
-                                    ? "bg-gradient-to-r from-[--purple] to-[--button-bg] text-white shadow-lg shadow-[--purple]/25"
-                                    : "text-gray-400 hover:text-white hover:bg-[--bg-gray]"
-                            )}
-                            onClick={() => setSelectedCategory(category.id)}
-                        >
-                            <category.icon className="w-4 h-4" />
-                            <span>{category.label}</span>
-                            <span className="px-1.5 py-0.5 rounded-md bg-black/30 text-xs">
-                                {category.count}
-                            </span>
-                        </Button>
-                    ))}
-                </div>
 
                 {/* Language Cards */}
                 <AnimatePresence mode="wait">
