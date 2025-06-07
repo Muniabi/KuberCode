@@ -26,18 +26,25 @@ export default function ExerciseLayout({ exercise }: ExerciseLayoutProps) {
     const [isTheoryCollapsed, setIsTheoryCollapsed] = useState(false);
 
     return (
-        <div className="flex h-[calc(100vh-4rem)] bg-[--bg-color-dark]">
+        <div className="flex h-[calc(100vh-3rem)] bg-[--bg-color-dark]">
             {/* Theory Panel */}
             <motion.div
                 initial={false}
-                animate={{ width: isTheoryCollapsed ? "0px" : "33.333333%" }}
+                animate={{ width: isTheoryCollapsed ? "0px" : "30%" }}
                 transition={{ duration: 0.3 }}
                 className={cn(
-                    "relative border-r border-[--border-color] bg-[--card-bg]",
-                    isTheoryCollapsed ? "w-0" : "w-1/3"
+                    "relative border-r border-[--border-color] bg-[--card-bg] overflow-hidden",
+                    isTheoryCollapsed ? "w-0" : "w-[30%]"
                 )}
             >
-                <TheoryPanel exercise={exercise} />
+                <TheoryPanel
+                    exercise={{
+                        ...exercise,
+                        conceptId: exercise.id,
+                        languageId: exercise.language,
+                        type: "practice",
+                    }}
+                />
 
                 {/* Collapse Button */}
                 <Button
@@ -58,12 +65,12 @@ export default function ExerciseLayout({ exercise }: ExerciseLayoutProps) {
             <motion.div
                 initial={false}
                 animate={{
-                    width: isTheoryCollapsed ? "100%" : "66.666667%",
+                    width: isTheoryCollapsed ? "100%" : "70%",
                 }}
                 transition={{ duration: 0.3 }}
                 className={cn(
-                    "relative",
-                    isTheoryCollapsed ? "w-full" : "w-2/3"
+                    "relative flex flex-col min-h-full",
+                    isTheoryCollapsed ? "w-full" : "w-[70%]"
                 )}
             >
                 <CodeEditor

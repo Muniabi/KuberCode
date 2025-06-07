@@ -2,259 +2,77 @@
 
 import { Container } from "@/components/shared";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
     ArrowRight,
-    Users,
-    Timer,
     BookOpen,
-    ChevronRight,
-    Star,
     Code2,
-    Brain,
-    Target,
-    Sparkles,
-    ChevronDown,
+    Timer,
+    Users,
+    Star,
     CheckCircle2,
-    Circle,
-    Lock,
+    Terminal,
+    Zap,
+    Brain,
+    ChevronRight,
 } from "lucide-react";
-import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
-import { LANGUAGES, type Language } from "@/app/courses/data/languages";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { LANGUAGES, type Language } from "@/app/courses/data/languages";
 import Link from "next/link";
-import { useState } from "react";
 
-interface Concept {
-    id: string;
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    difficulty: "beginner" | "intermediate" | "advanced";
-}
-
-interface Section {
-    id: string;
-    title: string;
-    description: string;
-    duration: number;
-    topics: Topic[];
-}
-
-interface Topic {
-    id: string;
-    title: string;
-    description: string;
-    duration: number;
-    status: "completed" | "available" | "locked";
-}
-
-const CONCEPTS: Concept[] = [
+const TRACKS = [
     {
         id: "basics",
         title: "Основы",
-        description: "Фундаментальные концепции и синтаксис",
-        icon: <Code2 className="w-5 h-5" />,
-        difficulty: "beginner",
+        description: "Изучите фундаментальные концепции языка",
+        icon: Terminal,
+        exercises: 12,
+        timeToComplete: "4-6 часов",
     },
     {
         id: "algorithms",
         title: "Алгоритмы",
-        description: "Базовые алгоритмы и структуры данных",
-        icon: <Brain className="w-5 h-5" />,
-        difficulty: "intermediate",
+        description: "Решайте алгоритмические задачи и оптимизируйте код",
+        icon: Brain,
+        exercises: 15,
+        timeToComplete: "6-8 часов",
     },
     {
         id: "patterns",
         title: "Паттерны",
-        description: "Продвинутые концепции и паттерны",
-        icon: <Target className="w-5 h-5" />,
-        difficulty: "advanced",
+        description: "Изучите популярные паттерны проектирования",
+        icon: Zap,
+        exercises: 10,
+        timeToComplete: "5-7 часов",
     },
 ];
-
-const CURRICULUM: Record<string, Section[]> = {
-    cpp: [
-        {
-            id: "intro",
-            title: "Введение в C++",
-            description: "Основы языка и базовые концепции",
-            duration: 120,
-            topics: [
-                {
-                    id: "setup",
-                    title: "Установка и настройка окружения",
-                    description: "Подготовка рабочего окружения для разработки",
-                    duration: 30,
-                    status: "completed",
-                },
-                {
-                    id: "basics",
-                    title: "Базовый синтаксис",
-                    description: "Переменные, типы данных, операторы",
-                    duration: 45,
-                    status: "available",
-                },
-                {
-                    id: "control-flow",
-                    title: "Управляющие конструкции",
-                    description: "Условные операторы и циклы",
-                    duration: 45,
-                    status: "locked",
-                },
-            ],
-        },
-        {
-            id: "oop",
-            title: "Объектно-ориентированное программирование",
-            description: "Классы, объекты и принципы ООП",
-            duration: 180,
-            topics: [
-                {
-                    id: "classes",
-                    title: "Классы и объекты",
-                    description: "Создание и использование классов",
-                    duration: 60,
-                    status: "locked",
-                },
-                {
-                    id: "inheritance",
-                    title: "Наследование",
-                    description: "Механизмы наследования и полиморфизма",
-                    duration: 60,
-                    status: "locked",
-                },
-                {
-                    id: "polymorphism",
-                    title: "Полиморфизм",
-                    description: "Виртуальные функции и абстрактные классы",
-                    duration: 60,
-                    status: "locked",
-                },
-            ],
-        },
-    ],
-};
-
-function CurriculumSection({ section }: { section: Section }) {
-    const [expanded, setExpanded] = useState(false);
-    const completedTopics = section.topics.filter(
-        (t) => t.status === "completed"
-    ).length;
-
-    return (
-        <div className="mb-4">
-            <div
-                className="bg-[--card-bg]/50 hover:bg-[--card-hover] rounded-xl p-4 cursor-pointer transition-colors"
-                onClick={() => setExpanded(!expanded)}
-            >
-                <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                        <h3 className="text-lg font-medium text-[--text-color] mb-1">
-                            {section.title}
-                        </h3>
-                        <p className="text-sm text-[--text-secondary]">
-                            {section.description}
-                        </p>
-                        <div className="flex items-center gap-4 mt-2 text-xs text-[--text-secondary]">
-                            <span className="flex items-center gap-1">
-                                <Timer className="w-4 h-4" />
-                                {section.duration} мин
-                            </span>
-                            <span className="flex items-center gap-1">
-                                <CheckCircle2 className="w-4 h-4" />
-                                {completedTopics} из {section.topics.length}
-                            </span>
-                        </div>
-                    </div>
-                    <ChevronDown
-                        className={cn(
-                            "w-5 h-5 text-[--text-secondary] transition-transform",
-                            expanded && "rotate-180"
-                        )}
-                    />
-                </div>
-            </div>
-
-            {expanded && (
-                <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-2 space-y-2 pl-4"
-                >
-                    {section.topics.map((topic) => (
-                        <div
-                            key={topic.id}
-                            className={cn(
-                                "bg-[--card-bg]/30 rounded-lg p-3 transition-colors",
-                                topic.status === "locked"
-                                    ? "opacity-50"
-                                    : "hover:bg-[--card-hover]"
-                            )}
-                        >
-                            <div className="flex items-start gap-3">
-                                <div className="mt-1">
-                                    {topic.status === "completed" && (
-                                        <CheckCircle2 className="w-4 h-4 text-[--lime]" />
-                                    )}
-                                    {topic.status === "available" && (
-                                        <Circle className="w-4 h-4 text-[--text-secondary]" />
-                                    )}
-                                    {topic.status === "locked" && (
-                                        <Lock className="w-4 h-4 text-[--text-secondary]" />
-                                    )}
-                                </div>
-                                <div className="flex-1">
-                                    <h4 className="text-sm font-medium text-[--text-color] mb-1">
-                                        {topic.title}
-                                    </h4>
-                                    <p className="text-xs text-[--text-secondary]">
-                                        {topic.description}
-                                    </p>
-                                    <div className="flex items-center gap-2 mt-2">
-                                        <span className="text-xs text-[--text-secondary] flex items-center gap-1">
-                                            <Timer className="w-3 h-3" />
-                                            {topic.duration} мин
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </motion.div>
-            )}
-        </div>
-    );
-}
 
 export default function LanguagePage() {
     const params = useParams();
     const router = useRouter();
     const slug = params.slug as string;
 
-    // Find the language data based on the slug
     const languageData = LANGUAGES.find((lang: Language) => lang.id === slug);
 
     if (!languageData) {
         return (
-            <Container className="relative z-10 py-8 lg:py-12">
-                <h1 className="text-2xl text-[--text-color]">Курс не найден</h1>
+            <Container className="relative z-10 py-8">
+                <h1 className="text-2xl text-[--text-color]">Язык не найден</h1>
                 <Button
                     className="mt-4 bg-[--purple] hover:bg-[--button-bg] text-white"
-                    onClick={() => (window.location.href = "/courses")}
+                    onClick={() => router.back()}
                 >
-                    Вернуться к списку курсов
+                    Вернуться назад
                 </Button>
             </Container>
         );
     }
 
-    const curriculum = CURRICULUM[slug] || [];
-
     return (
         <div className="relative min-h-screen w-full bg-[--bg-color] overflow-x-hidden">
-            {/* Background Elements */}
+            {/* Background Pattern */}
             <div className="absolute inset-0 opacity-5">
                 <div
                     className="absolute inset-0"
@@ -265,161 +83,131 @@ export default function LanguagePage() {
                 />
             </div>
 
-            {/* Gradient Orbs */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[--purple]/20 to-[--button-bg]/20 rounded-full blur-3xl" />
-                <div className="absolute top-1/3 -left-40 w-96 h-96 bg-gradient-to-br from-[--lime]/10 to-[--yellow]/10 rounded-full blur-3xl" />
-            </div>
+            {/* Hero Section */}
+            <div className="relative bg-[--card-bg] border-b border-[--border-color]">
+                <Container className="relative z-10 py-12 lg:py-16">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8">
+                        {/* Language Icon */}
+                        <div
+                            className={cn(
+                                "w-24 h-24 lg:w-32 lg:h-32 rounded-2xl flex items-center justify-center relative shadow-lg",
+                                languageData.color
+                            )}
+                        >
+                            <span className="text-white text-4xl lg:text-5xl font-bold">
+                                {languageData.icon}
+                            </span>
+                        </div>
 
-            <Container className="relative z-10 py-8 lg:py-12">
-                {/* Header */}
-                <div className="flex items-center gap-2 text-sm text-[--text-secondary] mb-8">
-                    <a
-                        href="/courses"
-                        className="hover:text-[--text-color] transition-colors"
-                    >
-                        Курсы
-                    </a>
-                    <ChevronRight className="w-4 h-4" />
-                    <span className="text-[--text-color]">
-                        {languageData.name}
-                    </span>
-                </div>
-
-                {/* Hero Section */}
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
-                    <div>
-                        <div className="flex items-center gap-6 mb-6">
-                            <div
-                                className={`w-20 h-20 ${languageData.color} rounded-2xl flex items-center justify-center`}
-                            >
-                                <span className="text-white text-3xl font-bold">
-                                    {languageData.icon}
-                                </span>
-                            </div>
-                            <div>
-                                <h1 className="text-3xl lg:text-4xl font-bold text-[--text-color] mb-2">
+                        {/* Language Info */}
+                        <div className="flex-1">
+                            <div className="flex items-center gap-4 mb-4">
+                                <h1 className="text-3xl lg:text-4xl font-bold text-[--text-color]">
                                     {languageData.name}
                                 </h1>
-                                <div className="flex items-center gap-4 text-[--text-secondary]">
-                                    <div className="flex items-center gap-1">
-                                        <Star className="w-4 h-4 text-[--yellow]" />
-                                        <span>4.8</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <Users className="w-4 h-4" />
-                                        <span>
-                                            {languageData.stats.students}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <Timer className="w-4 h-4" />
-                                        <span>{languageData.stats.hours}ч</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <BookOpen className="w-4 h-4" />
-                                        <span>
-                                            {languageData.stats.modules}
-                                        </span>
-                                    </div>
+                                {languageData.status && (
+                                    <span className="px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-full text-[--bg-color] text-sm font-medium">
+                                        {languageData.status}
+                                    </span>
+                                )}
+                            </div>
+                            <p className="text-lg text-[--text-secondary] mb-6 max-w-2xl">
+                                {languageData.desc}
+                            </p>
+                            <div className="flex flex-wrap gap-6">
+                                <div className="flex items-center gap-2">
+                                    <Users className="w-5 h-5 text-[--yellow]" />
+                                    <span className="text-[--text-color]">
+                                        {languageData.stats.students.toLocaleString()}{" "}
+                                        учеников
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Timer className="w-5 h-5 text-[--lime]" />
+                                    <span className="text-[--text-color]">
+                                        {languageData.stats.hours} часов
+                                        контента
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <BookOpen className="w-5 h-5 text-[--purple]" />
+                                    <span className="text-[--text-color]">
+                                        {languageData.stats.modules} модулей
+                                    </span>
                                 </div>
                             </div>
                         </div>
-
-                        <div className="space-y-4 text-[--text-secondary] mb-8">
-                            <p>
-                                Изучите {languageData.name} с нуля и станьте
-                                профессиональным разработчиком.{" "}
-                                {languageData.desc}
-                            </p>
-                            <ul className="space-y-2">
-                                {[
-                                    "Автоматическая проверка кода",
-                                    "Интерактивные задания",
-                                    "Персональное менторство",
-                                    "Сертификат по окончании",
-                                ].map((feature) => (
-                                    <li
-                                        key={feature}
-                                        className="flex items-center gap-2"
-                                    >
-                                        <Sparkles className="w-4 h-4 text-[--lime]" />
-                                        <span>{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <Button className="w-full sm:w-auto bg-[--purple] hover:bg-[--button-bg] text-white px-8 py-3 rounded-xl">
-                            <span className="mr-2">Начать обучение</span>
-                            <ArrowRight className="w-5 h-5" />
-                        </Button>
                     </div>
+                </Container>
+            </div>
 
-                    {/* Learning Path */}
-                    <div className="bg-[--card-bg]/30 backdrop-blur-sm rounded-2xl p-6 lg:p-8">
-                        <h2 className="text-xl font-semibold text-[--text-color] mb-6">
-                            Ваш путь обучения
-                        </h2>
-                        <div className="space-y-4">
-                            {CONCEPTS.map((concept, index) => (
-                                <Link
-                                    key={concept.id}
-                                    href={`/courses/${slug}/${concept.id}`}
-                                    className="block"
-                                >
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className="group relative bg-[--card-bg]/50 hover:bg-[--card-hover] rounded-xl p-4 transition-colors cursor-pointer"
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity" />
-                                        <div className="relative flex items-start gap-4">
-                                            <div
-                                                className={cn(
-                                                    "w-10 h-10 rounded-lg flex items-center justify-center",
-                                                    concept.difficulty ===
-                                                        "beginner"
-                                                        ? "bg-[--lime-alpha] text-[--lime]"
-                                                        : concept.difficulty ===
-                                                          "intermediate"
-                                                        ? "bg-[--yellow-alpha] text-[--yellow]"
-                                                        : "bg-[--purple-alpha] text-[--purple]"
-                                                )}
-                                            >
-                                                {concept.icon}
-                                            </div>
-                                            <div className="flex-1">
-                                                <h3 className="text-[--text-color] font-medium mb-1 group-hover:text-[--lime] transition-colors">
-                                                    {concept.title}
-                                                </h3>
-                                                <p className="text-sm text-[--text-secondary] group-hover:text-[--text-color] transition-colors">
-                                                    {concept.description}
-                                                </p>
-                                            </div>
-                                            <ArrowRight className="w-5 h-5 text-[--text-secondary] group-hover:text-[--text-color] transition-colors" />
-                                        </div>
-                                    </motion.div>
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
+            {/* Learning Tracks */}
+            <Container className="relative z-10 py-12 lg:py-16">
+                <div className="mb-12">
+                    <h2 className="text-2xl lg:text-3xl font-bold text-[--text-color] mb-4">
+                        Путь обучения
+                    </h2>
+                    <p className="text-lg text-[--text-secondary] max-w-2xl">
+                        Выберите трек обучения и начните свой путь к мастерству
+                        в {languageData.name}
+                    </p>
                 </div>
 
-                {/* Curriculum Section */}
-                <div className="mt-12">
-                    <h2 className="text-2xl font-bold text-[--text-color] mb-6">
-                        Программа обучения
-                    </h2>
-                    <div className="space-y-4">
-                        {curriculum.map((section) => (
-                            <CurriculumSection
-                                key={section.id}
-                                section={section}
-                            />
-                        ))}
-                    </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {TRACKS.map((track, index) => (
+                        <Link
+                            key={track.id}
+                            href={`/courses/${slug}/${track.id}`}
+                            className="block group"
+                        >
+                            <Card className="h-full bg-[--card-bg] hover:bg-[--card-hover] border-none p-6 transition-all duration-300">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="relative h-full"
+                                >
+                                    {/* Track Icon */}
+                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[--purple] to-[--button-bg] flex items-center justify-center mb-4">
+                                        <track.icon className="w-6 h-6 text-white" />
+                                    </div>
+
+                                    {/* Track Content */}
+                                    <div>
+                                        <h3 className="text-xl font-semibold text-[--text-color] mb-2 group-hover:text-[--lime] transition-colors">
+                                            {track.title}
+                                        </h3>
+                                        <p className="text-[--text-secondary] mb-4 group-hover:text-[--text-color] transition-colors">
+                                            {track.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Track Stats */}
+                                    <div className="mt-auto">
+                                        <div className="flex items-center justify-between text-sm text-[--text-secondary] mb-4">
+                                            <span>
+                                                {track.exercises} упражнений
+                                            </span>
+                                            <span>{track.timeToComplete}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex -space-x-2">
+                                                {[...Array(3)].map((_, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="w-8 h-8 rounded-full bg-gradient-to-br from-[--purple] to-[--button-bg] flex items-center justify-center text-white text-xs border-2 border-[--bg-color]"
+                                                    >
+                                                        {i + 1}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <ChevronRight className="w-5 h-5 text-[--text-secondary] group-hover:text-[--text-color] transition-colors" />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </Card>
+                        </Link>
+                    ))}
                 </div>
             </Container>
         </div>

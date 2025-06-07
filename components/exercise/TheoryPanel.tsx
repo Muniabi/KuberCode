@@ -1,132 +1,142 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Book, Video, FileText, ExternalLink, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Exercise } from "@/app/courses/data/exercises";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import ReactMarkdown from "react-markdown";
+import { cn } from "@/lib/utils";
+import {
+    BookOpen,
+    Video,
+    FileText,
+    LightbulbIcon,
+    GraduationCap,
+    CheckCircle2,
+    Lock,
+    PlayCircle,
+} from "lucide-react";
+import { useState } from "react";
 
 interface TheoryPanelProps {
-    exercise: {
-        title: string;
-        description: string;
-        theory: string;
-        resources: Array<{
-            title: string;
-            url: string;
-            type: "article" | "video" | "documentation";
-        }>;
-    };
+    exercise: Exercise;
 }
 
-const ResourceIcon = {
-    article: FileText,
-    video: Video,
-    documentation: Book,
-};
-
 export default function TheoryPanel({ exercise }: TheoryPanelProps) {
-    const [activeTab, setActiveTab] = useState<"theory" | "task">("theory");
-    const [isResourcesExpanded, setIsResourcesExpanded] = useState(true);
+    const [activeTab, setActiveTab] = useState<"theory" | "hints" | "solution">(
+        "theory"
+    );
+
+    const tabs = [
+        {
+            id: "theory" as const,
+            label: "Теория",
+            icon: BookOpen,
+            content: exercise.theory,
+        },
+        {
+            id: "hints" as const,
+            label: "Подсказки",
+            icon: LightbulbIcon,
+            content: exercise.hints?.join("\n\n") || "Подсказок пока нет",
+        },
+        {
+            id: "solution" as const,
+            label: "Решение",
+            icon: CheckCircle2,
+            content: exercise.solution || "Решение пока не доступно",
+            locked: true,
+        },
+    ];
 
     return (
-        <div className="h-full flex flex-col">
-            {/* Header */}
-            <div className="flex items-center gap-2 p-4 border-b border-[--border-color]">
+        <div className="space-y-6">
+            {/* Tabs */}
+            <div className="flex gap-2">
+                {tabs.map((tab) => (
+                    <Button
+                        key={tab.id}
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                            "flex-1 text-white/60 hover:text-white hover:bg-white/5 rounded-xl gap-2",
+                            activeTab === tab.id &&
+                                "bg-white/5 text-white hover:bg-white/10"
+                        )}
+                        onClick={() => setActiveTab(tab.id)}
+                        disabled={tab.locked}
+                    >
+                        {tab.locked ? (
+                            <Lock className="w-4 h-4" />
+                        ) : (
+                            <tab.icon className="w-4 h-4" />
+                        )}
+                        {tab.label}
+                    </Button>
+                ))}
+            </div>
+
+            {/* Resources */}
+            <div className="grid grid-cols-2 gap-2">
                 <Button
-                    variant={activeTab === "theory" ? "default" : "ghost"}
-                    className={cn(
-                        "flex-1",
-                        activeTab === "theory"
-                            ? "bg-gradient-to-r from-[--purple] to-[--button-bg] text-white"
-                            : "text-[--text-secondary] hover:text-[--text-color]"
-                    )}
-                    onClick={() => setActiveTab("theory")}
+                    variant="ghost"
+                    className="bg-white/5 hover:bg-white/10 text-white rounded-xl h-auto py-3 flex-col items-center gap-2"
                 >
-                    Теория
+                    <Video className="w-5 h-5 text-[--purple]" />
+                    <span className="text-sm">Видео урок</span>
                 </Button>
                 <Button
-                    variant={activeTab === "task" ? "default" : "ghost"}
-                    className={cn(
-                        "flex-1",
-                        activeTab === "task"
-                            ? "bg-gradient-to-r from-[--purple] to-[--button-bg] text-white"
-                            : "text-[--text-secondary] hover:text-[--text-color]"
-                    )}
-                    onClick={() => setActiveTab("task")}
+                    variant="ghost"
+                    className="bg-white/5 hover:bg-white/10 text-white rounded-xl h-auto py-3 flex-col items-center gap-2"
                 >
-                    Задача
+                    <FileText className="w-5 h-5 text-[--lime]" />
+                    <span className="text-sm">Документация</span>
                 </Button>
             </div>
 
             {/* Content */}
-            <ScrollArea className="flex-1 p-4">
-                <div className="space-y-6">
-                    {/* Title */}
-                    <h1 className="text-2xl font-bold text-[--text-color]">
-                        {exercise.title}
-                    </h1>
-
-                    {/* Main Content */}
+            <div className="space-y-4">
+                {activeTab === "theory" && (
                     <div className="prose prose-invert max-w-none">
-                        <ReactMarkdown>
-                            {activeTab === "theory"
-                                ? exercise.theory
-                                : exercise.description}
-                        </ReactMarkdown>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: exercise.theory || "",
+                            }}
+                        />
                     </div>
+                )}
 
-                    {/* Resources */}
-                    <div className="pt-6 border-t border-[--border-color]">
-                        <Button
-                            variant="ghost"
-                            className="w-full flex items-center justify-between text-[--text-secondary] hover:text-[--text-color]"
-                            onClick={() =>
-                                setIsResourcesExpanded(!isResourcesExpanded)
-                            }
-                        >
-                            <span className="text-lg font-semibold">
-                                Материалы
-                            </span>
-                            <ChevronDown
-                                className={cn(
-                                    "w-5 h-5 transition-transform",
-                                    isResourcesExpanded ? "rotate-180" : ""
-                                )}
-                            />
-                        </Button>
-
-                        {isResourcesExpanded && (
-                            <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="mt-2 space-y-2"
+                {activeTab === "hints" && (
+                    <div className="space-y-4">
+                        {exercise.hints?.map((hint, index) => (
+                            <div
+                                key={index}
+                                className="p-4 rounded-xl bg-white/5 text-white/90"
                             >
-                                {exercise.resources.map((resource, index) => {
-                                    const Icon = ResourceIcon[resource.type];
-                                    return (
-                                        <a
-                                            key={index}
-                                            href={resource.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-3 p-3 rounded-lg bg-[--card-hover] hover:bg-[--card-hover-darker] transition-colors group"
-                                        >
-                                            <Icon className="w-5 h-5 text-[--purple]" />
-                                            <span className="flex-1 text-[--text-secondary] group-hover:text-[--text-color] transition-colors">
-                                                {resource.title}
-                                            </span>
-                                            <ExternalLink className="w-4 h-4 text-[--text-secondary] group-hover:text-[--text-color]" />
-                                        </a>
-                                    );
-                                })}
-                            </motion.div>
+                                <div className="flex items-center gap-2 mb-2 text-[--lime]">
+                                    <LightbulbIcon className="w-4 h-4" />
+                                    <span className="font-medium">
+                                        Подсказка {index + 1}
+                                    </span>
+                                </div>
+                                <p className="text-sm">{hint}</p>
+                            </div>
+                        )) || (
+                            <div className="text-center text-white/60 py-8">
+                                Подсказок пока нет
+                            </div>
                         )}
                     </div>
-                </div>
-            </ScrollArea>
+                )}
+
+                {activeTab === "solution" && (
+                    <div className="text-center py-8">
+                        <Lock className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-white mb-2">
+                            Решение заблокировано
+                        </h3>
+                        <p className="text-white/60 text-sm max-w-sm mx-auto">
+                            Сначала попробуйте решить задачу самостоятельно.
+                            Используйте подсказки, если застряли.
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

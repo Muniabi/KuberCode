@@ -5,67 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
     ChevronRight,
-    Code2,
-    CheckCircle2,
-    Circle,
-    Lock,
-    PlayCircle,
     Timer,
     ArrowLeft,
     BookOpen,
     Video,
     FileText,
     ExternalLink,
-    ChevronDown,
     LightbulbIcon,
     GraduationCap,
+    CheckCircle2,
+    Circle,
+    Lock,
+    PlayCircle,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { LANGUAGES, type Language } from "@/app/courses/data/languages";
+import { LANGUAGES } from "@/app/courses/data/languages";
 import Link from "next/link";
 import { useState } from "react";
 import { Exercise, EXERCISES } from "@/app/courses/data/exercises";
-
-export interface Author {
-    id: string;
-    name: string;
-    role: string;
-    avatar: string;
-    bio: string;
-}
-
-export interface Resource {
-    id: string;
-    title: string;
-    type: "article" | "video" | "documentation";
-    url: string;
-    duration?: number;
-}
-
-export interface Hint {
-    id: string;
-    content: string;
-    unlockAfter?: number; // minutes after starting
-}
-
-const AUTHORS: Record<string, Author> = {
-    "john-doe": {
-        id: "john-doe",
-        name: "Джон Доу",
-        role: "Senior Developer",
-        avatar: "JD",
-        bio: "10+ лет опыта в разработке. Специализация на алгоритмах и структурах данных.",
-    },
-    "jane-smith": {
-        id: "jane-smith",
-        name: "Джейн Смит",
-        role: "Tech Lead",
-        avatar: "JS",
-        bio: "Full-stack разработчик с фокусом на архитектуре приложений.",
-    },
-};
 
 function ExerciseCard({
     exercise,
@@ -79,229 +38,69 @@ function ExerciseCard({
     conceptId: string;
 }) {
     const [expanded, setExpanded] = useState(isExpanded);
-    const [showHints, setShowHints] = useState(false);
     const router = useRouter();
 
     const handleExerciseClick = () => {
-        if (exercise.status !== "locked") {
-            router.push(`/courses/${languageId}/${conceptId}/${exercise.id}`);
-        }
+        router.push(`/courses/${languageId}/${conceptId}/${exercise.id}`);
     };
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="group"
+        >
             <Card
                 className={cn(
-                    "group relative bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 transition-all duration-300",
-                    exercise.status === "locked" && "opacity-50",
-                    exercise.status !== "locked" && "cursor-pointer"
+                    "relative bg-[--card-bg] hover:bg-[--card-hover] border-none p-6 transition-all duration-300 cursor-pointer"
                 )}
                 onClick={handleExerciseClick}
             >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
+                {/* Status Indicator Line */}
+                <div className="absolute top-0 left-0 h-1 w-full rounded-t-lg bg-[--text-secondary]" />
 
-                {/* Main Exercise Info */}
-                <div className="relative flex items-center gap-4">
+                <div className="flex items-start gap-6">
+                    {/* Status Icon */}
                     <div className="shrink-0">
-                        {exercise.status === "completed" && (
-                            <CheckCircle2 className="w-5 h-5 text-[--lime]" />
-                        )}
-                        {exercise.status === "in_progress" && (
-                            <PlayCircle className="w-5 h-5 text-[--purple]" />
-                        )}
-                        {exercise.status === "available" && (
-                            <Circle className="w-5 h-5 text-[--text-secondary]" />
-                        )}
-                        {exercise.status === "locked" && (
-                            <Lock className="w-5 h-5 text-[--text-secondary]" />
-                        )}
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-1">
-                            <h3 className="font-medium text-[--text-color] group-hover:text-[--lime] transition-colors">
-                                {exercise.title}
-                            </h3>
-                            <span className="text-xs text-[--text-secondary] ml-4">
-                                {exercise.duration} мин
-                            </span>
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[--text-secondary]/10">
+                            <Circle className="w-6 h-6 text-[--text-secondary]" />
                         </div>
-                        <p className="text-sm text-[--text-secondary] group-hover:text-[--text-color] transition-colors">
-                            {exercise.description}
-                        </p>
                     </div>
 
-                    <div className="shrink-0 flex items-center gap-2">
-                        <span
-                            className={cn(
-                                "px-2 py-1 rounded text-xs",
-                                exercise.type === "tutorial"
-                                    ? "bg-[--purple-alpha] text-[--purple]"
-                                    : "bg-[--lime-alpha] text-[--lime]"
-                            )}
-                        >
-                            {exercise.type === "tutorial"
-                                ? "Теория"
-                                : "Практика"}
-                        </span>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-[--text-secondary] hover:text-[--text-color]"
-                            onClick={() => setExpanded(!expanded)}
-                        >
-                            <ChevronDown
-                                className={cn(
-                                    "w-5 h-5 transition-transform",
-                                    expanded && "rotate-180"
-                                )}
-                            />
-                        </Button>
-                    </div>
-                </div>
-
-                {/* Expanded Content */}
-                {expanded && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-4 pt-4 border-t border-[--border-color]"
-                    >
-                        {/* Author Info */}
-                        <div className="flex items-center gap-4 mb-4">
-                            <div
-                                className={cn(
-                                    "w-10 h-10 rounded-full flex items-center justify-center text-white font-medium",
-                                    "bg-gradient-to-br from-[--purple] to-[--button-bg]"
-                                )}
-                            >
-                                {exercise.author.avatar}
-                            </div>
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-3">
                             <div>
-                                <h4 className="text-sm font-medium text-[--text-color]">
-                                    {exercise.author.name}
-                                </h4>
-                                <p className="text-xs text-[--text-secondary]">
-                                    {exercise.author.role}
+                                <h3 className="text-xl font-semibold text-[--text-color] group-hover:text-[--lime] transition-colors">
+                                    {exercise.title}
+                                </h3>
+                                <p className="text-[--text-secondary] mt-1 group-hover:text-[--text-color] transition-colors">
+                                    {exercise.description}
                                 </p>
                             </div>
-                        </div>
-
-                        {/* Resources */}
-                        <div className="mb-4">
-                            <h4 className="text-sm font-medium text-[--text-color] mb-2 flex items-center gap-2">
-                                <BookOpen className="w-4 h-4" />
-                                Материалы
-                            </h4>
-                            <div className="space-y-2">
-                                {exercise.resources.map((resource) => (
-                                    <a
-                                        key={resource.id}
-                                        href={resource.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-xs text-[--text-secondary] hover:text-[--text-color] transition-colors"
-                                    >
-                                        {resource.type === "video" && (
-                                            <Video className="w-3 h-3" />
-                                        )}
-                                        {resource.type === "article" && (
-                                            <FileText className="w-3 h-3" />
-                                        )}
-                                        {resource.type === "documentation" && (
-                                            <ExternalLink className="w-3 h-3" />
-                                        )}
-                                        {resource.title}
-                                        {resource.duration && (
-                                            <span className="text-[--text-secondary]">
-                                                ({resource.duration} мин)
-                                            </span>
-                                        )}
-                                    </a>
-                                ))}
+                            <div className="flex items-center gap-3 ml-6">
+                                <div className="flex items-center gap-2 text-[--text-secondary]">
+                                    <Timer className="w-4 h-4" />
+                                    <span>~15 мин</span>
+                                </div>
+                                <div
+                                    className={cn(
+                                        "px-3 py-1 rounded-full text-sm",
+                                        exercise.type === "tutorial"
+                                            ? "bg-[--purple-alpha] text-[--purple]"
+                                            : "bg-[--lime-alpha] text-[--lime]"
+                                    )}
+                                >
+                                    {exercise.type === "tutorial"
+                                        ? "Теория"
+                                        : "Практика"}
+                                </div>
                             </div>
                         </div>
-
-                        {/* Hints */}
-                        <div>
-                            <h4 className="text-sm font-medium text-[--text-color] mb-2 flex items-center gap-2">
-                                <LightbulbIcon className="w-4 h-4" />
-                                Подсказки
-                            </h4>
-                            <div className="space-y-2">
-                                {exercise.hints.map((hint) => (
-                                    <div
-                                        key={hint.id}
-                                        className={cn(
-                                            "p-2 rounded bg-black/5 dark:bg-white/5",
-                                            !showHints &&
-                                                "blur-sm hover:blur-none transition-all cursor-pointer"
-                                        )}
-                                        onClick={() => setShowHints(true)}
-                                    >
-                                        <p className="text-xs text-[--text-secondary]">
-                                            {hint.content}
-                                        </p>
-                                        {hint.unlockAfter && !showHints && (
-                                            <p className="text-[10px] text-[--text-secondary] mt-1">
-                                                Доступно через{" "}
-                                                {hint.unlockAfter} мин
-                                            </p>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
+                    </div>
+                </div>
             </Card>
         </motion.div>
-    );
-}
-
-function DependencyDiagram({ exercises }: { exercises: Exercise[] }) {
-    return (
-        <div className="mt-8 p-6 bg-[--card-bg] rounded-2xl">
-            <h3 className="text-lg font-medium text-[--text-color] mb-4 flex items-center gap-2">
-                <GraduationCap className="w-5 h-5" />
-                Карта зависимостей
-            </h3>
-            <div className="mermaid">
-                {`graph TD;
-                    ${exercises
-                        .map((ex) => {
-                            const status =
-                                ex.status === "available"
-                                    ? "Доступно"
-                                    : ex.status === "completed"
-                                    ? "Завершено"
-                                    : ex.status === "in_progress"
-                                    ? "В процессе"
-                                    : "Заблокировано";
-                            return `${ex.id}["${ex.title}<br/>(${status})"]`;
-                        })
-                        .join("\n")}
-
-                    ${exercises
-                        .map((ex) =>
-                            ex.dependencies
-                                .map((dep) => `${dep} --> ${ex.id}`)
-                                .join("\n")
-                        )
-                        .join("\n")}
-
-                    classDef completed fill:#4ade80,stroke:none,color:#1a1b1e;
-                    classDef available fill:#818cf8,stroke:none,color:#1a1b1e;
-                    classDef inProgress fill:#fbbf24,stroke:none,color:#1a1b1e;
-                    classDef locked fill:#71717a,stroke:none,color:#white;
-                    
-                    ${exercises
-                        .map((ex) => `class ${ex.id} ${ex.status}`)
-                        .join("\n")}
-                `}
-            </div>
-        </div>
     );
 }
 
@@ -312,124 +111,94 @@ export default function ConceptPage() {
     const conceptId = params.concept as string;
 
     const languageData = LANGUAGES.find((lang) => lang.id === slug);
-    const exercises = EXERCISES[conceptId] || [];
+    const exercises = EXERCISES.filter((ex) => ex.id.startsWith(conceptId));
 
     if (!languageData || !exercises.length) {
         return (
-            <Container className="relative z-10 py-8 lg:py-12">
-                <h1 className="text-2xl text-[--text-color]">
-                    Раздел не найден
-                </h1>
-                <Button
-                    className="mt-4 bg-[--purple] hover:bg-[--button-bg] text-white"
-                    onClick={() => router.back()}
-                >
-                    Вернуться назад
-                </Button>
-            </Container>
+            <div className="min-h-screen bg-[--bg-color-dark] text-[--text-color]">
+                <Container className="py-6">
+                    <div className="flex items-center gap-2 mb-6">
+                        <Button
+                            variant="ghost"
+                            className="text-white/60 hover:text-white"
+                            onClick={() => router.back()}
+                        >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Назад
+                        </Button>
+                        <div className="flex items-center gap-2 text-white/40">
+                            <Link
+                                href={`/courses/${languageData?.id}`}
+                                className="hover:text-white transition-colors"
+                            >
+                                {languageData?.name}
+                            </Link>
+                            <ChevronRight className="w-4 h-4" />
+                            <span className="text-white capitalize">
+                                {conceptId}
+                            </span>
+                        </div>
+                    </div>
+
+                    <Card className="bg-[--card-bg] border-none p-6">
+                        <h1 className="text-2xl font-semibold mb-2">
+                            Раздел не найден
+                        </h1>
+                        <p className="text-white/60 mb-4">
+                            К сожалению, запрошенный раздел не существует или
+                            был удален.
+                        </p>
+                        <Button
+                            onClick={() => router.back()}
+                            className="bg-white/5 hover:bg-white/10 text-white"
+                        >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Вернуться назад
+                        </Button>
+                    </Card>
+                </Container>
+            </div>
         );
     }
 
-    const stats = {
-        total: exercises.length,
-        completed: exercises.filter((ex) => ex.status === "completed").length,
-        inProgress: exercises.filter((ex) => ex.status === "in_progress")
-            .length,
-        available: exercises.filter((ex) => ex.status === "available").length,
-        locked: exercises.filter((ex) => ex.status === "locked").length,
-    };
-
     return (
-        <div className="relative min-h-screen w-full bg-[--bg-color] overflow-x-hidden">
-            {/* Background Elements */}
-            <div className="absolute inset-0 opacity-5">
-                <div
-                    className="absolute inset-0"
-                    style={{
-                        backgroundImage: `radial-gradient(var(--text-color) 1px, transparent 1px)`,
-                        backgroundSize: "24px 24px",
-                    }}
-                />
-            </div>
-
-            {/* Gradient Orbs */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[--purple]/20 to-[--button-bg]/20 rounded-full blur-3xl" />
-                <div className="absolute top-1/3 -left-40 w-96 h-96 bg-gradient-to-br from-[--lime]/10 to-[--yellow]/10 rounded-full blur-3xl" />
-            </div>
-
-            <Container className="relative z-10 py-8 lg:py-12">
-                {/* Breadcrumbs */}
-                <div className="flex items-center gap-2 text-sm text-[--text-secondary] mb-8">
-                    <Link
-                        href="/courses"
-                        className="hover:text-[--text-color] transition-colors"
-                    >
-                        Курсы
-                    </Link>
-                    <ChevronRight className="w-4 h-4" />
-                    <Link
-                        href={`/courses/${slug}`}
-                        className="hover:text-[--text-color] transition-colors"
-                    >
-                        {languageData.name}
-                    </Link>
-                    <ChevronRight className="w-4 h-4" />
-                    <span className="text-[--text-color]">
-                        {conceptId === "basics"
-                            ? "Основы"
-                            : conceptId === "algorithms"
-                            ? "Алгоритмы"
-                            : "Паттерны"}
-                    </span>
-                </div>
-
+        <div className="min-h-screen bg-[--bg-color-dark] text-[--text-color]">
+            <Container className="py-6">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
-                    <div>
-                        <h1 className="text-3xl font-bold text-[--text-color] mb-2">
-                            {conceptId === "basics"
-                                ? "Основы"
-                                : conceptId === "algorithms"
-                                ? "Алгоритмы"
-                                : "Паттерны"}
-                        </h1>
-                        <div className="flex items-center gap-4 text-sm">
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-[--lime]" />
-                                <span className="text-[--text-secondary]">
-                                    {stats.completed} из {stats.total}
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Timer className="w-4 h-4 text-[--purple]" />
-                                <span className="text-[--text-secondary]">
-                                    {exercises.reduce(
-                                        (acc, ex) => acc + ex.duration,
-                                        0
-                                    )}{" "}
-                                    мин
-                                </span>
-                            </div>
-                        </div>
+                <div className="flex items-center gap-2 mb-6">
+                    <Button
+                        variant="ghost"
+                        className="text-white/60 hover:text-white"
+                        onClick={() => router.back()}
+                    >
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Назад
+                    </Button>
+                    <div className="flex items-center gap-2 text-white/40">
+                        <Link
+                            href={`/courses/${languageData.id}`}
+                            className="hover:text-white transition-colors"
+                        >
+                            {languageData.name}
+                        </Link>
+                        <ChevronRight className="w-4 h-4" />
+                        <span className="text-white capitalize">
+                            {conceptId}
+                        </span>
                     </div>
                 </div>
 
-                {/* Exercise List with Dependencies */}
+                {/* Exercise List */}
                 <div className="space-y-4">
-                    {exercises.map((exercise, index) => (
+                    {exercises.map((exercise) => (
                         <ExerciseCard
                             key={exercise.id}
                             exercise={exercise}
-                            isExpanded={index === 0}
                             languageId={slug}
                             conceptId={conceptId}
                         />
                     ))}
                 </div>
-
-                {/* Dependencies Visualization */}
-                <DependencyDiagram exercises={exercises} />
             </Container>
         </div>
     );

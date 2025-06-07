@@ -63,7 +63,6 @@ export default function CodeRunner({
         setStatus("running");
 
         try {
-            console.log("Running exercise:", exerciseId); // Debug log
             const solution = SOLUTIONS[exerciseId];
             if (!solution) {
                 throw new Error(
@@ -71,11 +70,9 @@ export default function CodeRunner({
                 );
             }
 
-            // Simple output check
             let userOutput = "";
             const console_log = (text: string) => (userOutput = text);
 
-            // Safe code execution (demo only)
             if (language === "javascript") {
                 try {
                     const modifiedCode = code.replace(
@@ -87,7 +84,6 @@ export default function CodeRunner({
                     throw new Error("Code error: " + (e as Error).message);
                 }
             } else {
-                // For other languages, just check for keywords
                 if (
                     language === "python" &&
                     !code.includes('print("Hello, World!")')
@@ -103,18 +99,17 @@ export default function CodeRunner({
                 userOutput = "Hello, World!";
             }
 
-            // Check all test cases
             const testCase = solution.testCases[0];
             if (userOutput.trim() === testCase.expectedOutput) {
-                setOutput("Success! Task completed correctly.");
+                setOutput("✨ Отлично! Задача решена правильно.");
                 setStatus("success");
             } else {
                 throw new Error(
-                    `Expected output: "${testCase.expectedOutput}"\nYour output: "${userOutput}"`
+                    `Ожидаемый вывод: "${testCase.expectedOutput}"\nВаш вывод: "${userOutput}"`
                 );
             }
         } catch (error) {
-            setOutput(`Error: ${(error as Error).message}`);
+            setOutput(`❌ ${(error as Error).message}`);
             setStatus("error");
         }
     };
@@ -127,40 +122,43 @@ export default function CodeRunner({
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
                 <Button
                     onClick={runCode}
                     disabled={status === "running"}
+                    size="lg"
                     className={cn(
-                        "bg-[--purple] hover:bg-[--button-bg] text-white",
+                        "bg-white/5 hover:bg-white/10 text-white rounded-2xl px-6 transition-all duration-300 min-w-[180px]",
                         status === "success" &&
-                            "bg-[--lime] hover:bg-[--lime]/90",
+                            "bg-[--lime] hover:bg-[--lime]/90 text-[--bg-color]",
                         status === "error" && "bg-red-500 hover:bg-red-600"
                     )}
                 >
-                    <Play className="w-4 h-4 mr-2" />
-                    {status === "running" ? "Checking..." : "Run"}
+                    <Play className="w-5 h-5 mr-2" />
+                    {status === "running" ? "Проверяем..." : "Проверить"}
                 </Button>
                 <Button
-                    variant="outline"
+                    variant="ghost"
+                    size="lg"
                     onClick={handleReset}
-                    className="text-[--text-secondary] hover:text-[--text-color]"
+                    className="text-white/60 hover:text-white hover:bg-white/5 rounded-2xl px-6"
                 >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Reset
+                    <RotateCcw className="w-5 h-5 mr-2" />
+                    Сбросить
                 </Button>
             </div>
 
             {output && (
                 <div
                     className={cn(
-                        "p-4 rounded-lg font-mono text-sm",
-                        status === "success" &&
-                            "bg-[--lime-alpha] text-[--lime]",
+                        "p-6 rounded-2xl font-medium text-base transition-colors duration-300",
+                        status === "success" && "bg-[--lime]/10 text-[--lime]",
                         status === "error" && "bg-red-500/10 text-red-500"
                     )}
                 >
-                    <pre className="whitespace-pre-wrap">{output}</pre>
+                    <pre className="whitespace-pre-wrap font-sans">
+                        {output}
+                    </pre>
                 </div>
             )}
         </div>
