@@ -29,6 +29,9 @@ import {
     Calendar,
     MessageSquare,
     ChevronRight,
+    Info,
+    GraduationCap,
+    Mail,
 } from "lucide-react";
 import Image from "next/image";
 import SocialLinks from "@/components/mentors/SocialLinks";
@@ -38,6 +41,16 @@ import BackToTop from "@/components/shared/BackToTop";
 import TopMentors from "@/components/mentors/TopMentors";
 import MentorSkeleton from "@/components/mentors/MentorSkeleton";
 import { useState, useEffect } from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import MentorCard from "@/components/mentors/MentorCard";
 
 // Add types for mentors
 interface SocialLink {
@@ -59,6 +72,10 @@ interface Mentor {
     pricePerHour: number;
     availability: string;
     socialLinks?: SocialLink[];
+    contacts?: {
+        telegram?: string;
+        email?: string;
+    };
 }
 
 // Временные данные для менторов
@@ -82,6 +99,10 @@ const MENTORS: Mentor[] = [
             { type: "linkedin", url: "https://linkedin.com/in/aivanov" },
             { type: "website", url: "https://aivanov.dev" },
         ],
+        contacts: {
+            telegram: "@aivanov",
+            email: "alexander.ivanov@example.com",
+        },
     },
     {
         id: 2,
@@ -97,6 +118,10 @@ const MENTORS: Mentor[] = [
         sessions: 98,
         pricePerHour: 4500,
         availability: "Завтра",
+        contacts: {
+            telegram: "@mpetrovadev",
+            email: "maria.petrova@example.com",
+        },
     },
     {
         id: 3,
@@ -112,6 +137,10 @@ const MENTORS: Mentor[] = [
         sessions: 134,
         pricePerHour: 5500,
         availability: "Через 2 дня",
+        contacts: {
+            telegram: "@dsmirnov",
+            email: "dmitry.smirnov@example.com",
+        },
     },
     {
         id: 4,
@@ -127,6 +156,10 @@ const MENTORS: Mentor[] = [
         sessions: 87,
         pricePerHour: 4000,
         availability: "Сегодня",
+        contacts: {
+            telegram: "@ekozlova",
+            email: "elena.kozlova@example.com",
+        },
     },
     {
         id: 5,
@@ -142,6 +175,10 @@ const MENTORS: Mentor[] = [
         sessions: 192,
         pricePerHour: 6000,
         availability: "Завтра",
+        contacts: {
+            telegram: "@svolkov",
+            email: "sergey.volkov@example.com",
+        },
     },
     {
         id: 6,
@@ -157,6 +194,10 @@ const MENTORS: Mentor[] = [
         sessions: 76,
         pricePerHour: 3500,
         availability: "Сегодня",
+        contacts: {
+            telegram: "@asokolova",
+            email: "anna.sokolova@example.com",
+        },
     },
 ];
 
@@ -216,6 +257,19 @@ const generateSchemaMarkup = (mentors: Mentor[]) => {
 export default function MentorsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [mentors, setMentors] = useState<Mentor[]>([]);
+
+    const handleContactClick = (
+        type: "telegram" | "email",
+        contact?: string
+    ) => {
+        if (!contact) return;
+
+        if (type === "telegram") {
+            window.open(`https://t.me/${contact.replace("@", "")}`, "_blank");
+        } else if (type === "email") {
+            window.location.href = `mailto:${contact}`;
+        }
+    };
 
     useEffect(() => {
         const fetchMentors = async () => {
@@ -326,103 +380,11 @@ export default function MentorsPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {mentors.map((mentor, index) => (
-                                <motion.div
+                                <MentorCard
                                     key={mentor.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                >
-                                    <Card className="group bg-white dark:bg-[--card-bg] border-none overflow-hidden transition-all duration-300 hover:shadow-xl">
-                                        <CardHeader className="relative pb-0">
-                                            <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-500 text-sm">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                                                {mentor.availability}
-                                            </div>
-                                            <div className="relative w-24 h-24 rounded-2xl overflow-hidden mb-4">
-                                                <Image
-                                                    src={mentor.photo}
-                                                    alt={mentor.name}
-                                                    fill
-                                                    className="object-cover"
-                                                    sizes="(max-width: 96px) 100vw, 96px"
-                                                    priority={index < 6}
-                                                />
-                                            </div>
-                                            <CardTitle className="text-xl mb-1">
-                                                {mentor.name}
-                                            </CardTitle>
-                                            <CardDescription className="text-base text-gray-600 dark:text-gray-400">
-                                                {mentor.role}
-                                            </CardDescription>
-                                            {mentor.socialLinks && (
-                                                <SocialLinks
-                                                    links={mentor.socialLinks}
-                                                    className="mt-2"
-                                                />
-                                            )}
-                                        </CardHeader>
-                                        <CardContent>
-                                            <p className="text-gray-600 dark:text-gray-400 mb-4">
-                                                {mentor.description}
-                                            </p>
-                                            <div className="flex flex-wrap gap-2 mb-6">
-                                                {mentor.technologies.map(
-                                                    (tech) => (
-                                                        <Badge
-                                                            key={tech}
-                                                            variant="secondary"
-                                                            className="bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400"
-                                                        >
-                                                            {tech}
-                                                        </Badge>
-                                                    )
-                                                )}
-                                            </div>
-                                            <div className="grid grid-cols-3 gap-4 mb-6">
-                                                <div className="flex flex-col items-center p-2 rounded-xl bg-gray-50 dark:bg-white/5">
-                                                    <Star className="w-4 h-4 text-yellow-400 mb-1" />
-                                                    <span className="text-sm font-medium">
-                                                        {mentor.rating}
-                                                    </span>
-                                                    <span className="text-xs text-gray-500">
-                                                        Рейтинг
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col items-center p-2 rounded-xl bg-gray-50 dark:bg-white/5">
-                                                    <Users className="w-4 h-4 text-[--purple] mb-1" />
-                                                    <span className="text-sm font-medium">
-                                                        {mentor.sessions}
-                                                    </span>
-                                                    <span className="text-xs text-gray-500">
-                                                        Сессий
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col items-center p-2 rounded-xl bg-gray-50 dark:bg-white/5">
-                                                    <Timer className="w-4 h-4 text-[--lime] mb-1" />
-                                                    <span className="text-sm font-medium">
-                                                        {mentor.pricePerHour}₽
-                                                    </span>
-                                                    <span className="text-xs text-gray-500">
-                                                        В час
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                        <CardFooter className="flex gap-2">
-                                            <QuickBook
-                                                mentorName={mentor.name}
-                                                mentorId={mentor.id}
-                                                availability={
-                                                    mentor.availability
-                                                }
-                                            />
-                                            <Button className="flex-1 bg-[--purple] hover:bg-[--button-bg] text-white">
-                                                <MessageSquare className="w-4 h-4 mr-2" />
-                                                Связаться
-                                            </Button>
-                                        </CardFooter>
-                                    </Card>
-                                </motion.div>
+                                    mentor={mentor}
+                                    index={index}
+                                />
                             ))}
                         </div>
                     )}
