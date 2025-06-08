@@ -200,23 +200,16 @@ export const Header: React.FC<Props> = ({ className }) => {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="bg-stone-100/80 text-stone-900 hover:bg-[#A559DD]/20 hover:text-[#A559DD] border-b-2 border-transparent hover:border-[#A559DD] dark:bg-white/10 dark:text-white dark:hover:bg-[#A559DD]/20 dark:hover:text-[#A559DD] dark:border-b-2 dark:border-transparent dark:hover:border-[#A559DD]">
+                                    <Link
+                                        className={cn(
+                                            navigationMenuTriggerStyle(),
+                                            "bg-stone-100/80 text-stone-900 hover:bg-[#A559DD]/20 hover:text-[#A559DD] border-b-2 border-transparent hover:border-[#A559DD]",
+                                            "dark:bg-white/10 dark:text-white dark:hover:bg-[#A559DD]/20 dark:hover:text-[#A559DD] dark:border-b-2 dark:border-transparent dark:hover:border-[#A559DD]"
+                                        )}
+                                        href="/mentors"
+                                    >
                                         Менторы
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                                            {communitys.map((community) => (
-                                                <ListItem
-                                                    key={community.title}
-                                                    title={community.title}
-                                                    href={community.href}
-                                                    className="hover:bg-[#A559DD]/10 hover:text-[#A559DD] dark:hover:bg-[#A559DD]/10 dark:hover:text-[#A559DD]"
-                                                >
-                                                    {community.description}
-                                                </ListItem>
-                                            ))}
-                                        </ul>
-                                    </NavigationMenuContent>
+                                    </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <Link
@@ -309,52 +302,13 @@ export const Header: React.FC<Props> = ({ className }) => {
                                             )}
                                         </div>
 
-                                        {/* Менторы */}
-                                        <div>
-                                            <button
-                                                className="flex items-center w-full font-semibold text-[#A559DD] dark:text-[#A559DD] py-2 text-lg focus:outline-none"
-                                                onClick={() =>
-                                                    setMentorsOpen(!mentorsOpen)
-                                                }
-                                            >
-                                                <span className="mr-2">
-                                                    Менторы
-                                                </span>
-                                                <ChevronDown
-                                                    className={`transition-transform ${
-                                                        mentorsOpen
-                                                            ? "rotate-180"
-                                                            : ""
-                                                    }`}
-                                                />
-                                            </button>
-                                            {mentorsOpen && (
-                                                <div className="pl-4 border-l-2 border-[#A559DD]/30 ml-2 flex flex-col space-y-2 mt-2">
-                                                    {communitys.map(
-                                                        (community) => (
-                                                            <Link
-                                                                key={
-                                                                    community.title
-                                                                }
-                                                                href={
-                                                                    community.href
-                                                                }
-                                                                className="block text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] text-base transition-colors pl-2 border-l border-[#A559DD]/10"
-                                                                onClick={() =>
-                                                                    setIsOpen(
-                                                                        false
-                                                                    )
-                                                                }
-                                                            >
-                                                                {
-                                                                    community.title
-                                                                }
-                                                            </Link>
-                                                        )
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
+                                        <Link
+                                            href="/mentors"
+                                            className="text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] font-semibold text-lg transition-colors"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            Менторы
+                                        </Link>
 
                                         <Link
                                             href="/media"
