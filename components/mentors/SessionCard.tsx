@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/card";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
+import { useState } from "react";
+import { RescheduleDialog } from "./RescheduleDialog";
+import { CancelDialog } from "./CancelDialog";
 
 interface SessionCardProps {
     mentorName: string;
@@ -19,7 +22,12 @@ interface SessionCardProps {
     communicationType: string;
     communicationLink?: string;
     onCancel?: () => void;
-    onReschedule?: () => void;
+    onReschedule?: (
+        newDate: Date,
+        newTime: string,
+        newDuration: string
+    ) => void;
+    onJoinClick?: () => void;
 }
 
 export function SessionCard({
@@ -31,80 +39,109 @@ export function SessionCard({
     communicationLink,
     onCancel,
     onReschedule,
+    onJoinClick,
 }: SessionCardProps) {
+    const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+    const [isCancelOpen, setIsCancelOpen] = useState(false);
+
     return (
-        <Card className="group relative overflow-hidden transition-all hover:shadow-lg dark:hover:shadow-purple-900/20 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 backdrop-blur-sm border border-gray-100 dark:border-gray-800">
-            <CardHeader className="flex flex-row items-center gap-4 pb-3">
-                <div className="relative">
-                    <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-purple-500/20 dark:ring-purple-500/30">
-                        <img
-                            src={mentorAvatar}
-                            alt={mentorName}
-                            className="w-full h-full object-cover"
-                        />
+        <>
+            <Card className="group relative overflow-hidden transition-all hover:shadow-lg hover:scale-[1.02] bg-white dark:bg-zinc-900 border border-purple-100/50 dark:border-lime-900/30">
+                <CardHeader className="flex flex-row items-center gap-4 pb-3">
+                    <div className="relative">
+                        <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-purple-500/30 dark:ring-lime-400/30 transition-all group-hover:ring-purple-500/50 dark:group-hover:ring-lime-400/50">
+                            <img
+                                src={mentorAvatar}
+                                alt={mentorName}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-lg" />
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-900" />
-                </div>
-                <div>
-                    <CardTitle className="text-lg font-medium bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent">
-                        {mentorName}
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
-                        Ментор
-                    </CardDescription>
-                </div>
-            </CardHeader>
-            <CardContent className="space-y-3 pb-3">
-                <div className="flex items-center gap-2.5 text-sm text-gray-600 dark:text-gray-300">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-md bg-purple-50 dark:bg-purple-900/20">
-                        <CalendarDays className="w-4 h-4 text-purple-500 dark:text-purple-400" />
+                    <div>
+                        <CardTitle className="text-lg font-medium bg-gradient-to-br from-purple-600 to-purple-400 dark:from-lime-300 dark:to-lime-500 bg-clip-text text-transparent">
+                            {mentorName}
+                        </CardTitle>
+                        <CardDescription className="text-sm text-zinc-500 dark:text-zinc-400">
+                            Ментор
+                        </CardDescription>
                     </div>
-                    <span>{format(date, "d MMMM yyyy", { locale: ru })}</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-sm text-gray-600 dark:text-gray-300">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-md bg-blue-50 dark:bg-blue-900/20">
-                        <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <span>{format(date, "HH:mm")}</span>
-                        <span className="text-gray-400 dark:text-gray-500">
-                            •
+                </CardHeader>
+                <CardContent className="space-y-3 pb-3">
+                    <div className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-300">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-md bg-purple-100/50 dark:bg-lime-900/20 transition-colors group-hover:bg-purple-100 dark:group-hover:bg-lime-900/30">
+                            <CalendarDays className="w-4 h-4 text-purple-500 dark:text-lime-400" />
+                        </div>
+                        <span>
+                            {format(date, "d MMMM yyyy", { locale: ru })}
                         </span>
-                        <span>{duration} час.</span>
                     </div>
-                </div>
-                <div className="flex items-center gap-2.5 text-sm text-gray-600 dark:text-gray-300">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-md bg-green-50 dark:bg-green-900/20">
-                        <Video className="w-4 h-4 text-green-500 dark:text-green-400" />
+                    <div className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-300">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-md bg-purple-100/50 dark:bg-lime-900/20 transition-colors group-hover:bg-purple-100 dark:group-hover:bg-lime-900/30">
+                            <Clock className="w-4 h-4 text-purple-500 dark:text-lime-400" />
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <span>{format(date, "HH:mm")}</span>
+                            <span className="text-zinc-400 dark:text-zinc-500">
+                                •
+                            </span>
+                            <span>{duration} час.</span>
+                        </div>
                     </div>
-                    <span>{communicationType}</span>
-                </div>
-                {communicationLink && (
+                    <div className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-300">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-md bg-purple-100/50 dark:bg-lime-900/20 transition-colors group-hover:bg-purple-100 dark:group-hover:bg-lime-900/30">
+                            <Video className="w-4 h-4 text-purple-500 dark:text-lime-400" />
+                        </div>
+                        <span>{communicationType}</span>
+                    </div>
+                    {communicationLink && (
+                        <Button
+                            variant="outline"
+                            className="w-full mt-3 bg-gradient-to-r from-purple-500/10 to-purple-500/5 dark:from-lime-400/10 dark:to-lime-400/5 border-purple-200 dark:border-lime-900/50 hover:border-purple-300 dark:hover:border-lime-800 text-purple-700 dark:text-lime-400 transition-all hover:bg-purple-100/50 dark:hover:bg-lime-900/20"
+                            onClick={onJoinClick}
+                        >
+                            Присоединиться
+                        </Button>
+                    )}
+                </CardContent>
+                <CardFooter className="flex gap-2 pt-0">
                     <Button
-                        variant="outline"
-                        className="w-full mt-3 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-100 dark:border-purple-800 hover:border-purple-200 dark:hover:border-purple-700 text-purple-700 dark:text-purple-300"
-                        onClick={() => window.open(communicationLink, "_blank")}
+                        variant="ghost"
+                        className="flex-1 hover:bg-purple-100/50 dark:hover:bg-lime-900/20 text-purple-600 dark:text-lime-400 transition-colors"
+                        onClick={() => setIsRescheduleOpen(true)}
                     >
-                        Присоединиться
+                        Перенести
                     </Button>
-                )}
-            </CardContent>
-            <CardFooter className="flex gap-2 pt-0">
-                <Button
-                    variant="ghost"
-                    className="flex-1 hover:bg-purple-50 dark:hover:bg-purple-900/20 text-gray-700 dark:text-gray-300"
-                    onClick={onReschedule}
-                >
-                    Перенести
-                </Button>
-                <Button
-                    variant="ghost"
-                    className="flex-1 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
-                    onClick={onCancel}
-                >
-                    Отменить
-                </Button>
-            </CardFooter>
-        </Card>
+                    <Button
+                        variant="ghost"
+                        className="flex-1 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
+                        onClick={() => setIsCancelOpen(true)}
+                    >
+                        Отменить
+                    </Button>
+                </CardFooter>
+            </Card>
+
+            <RescheduleDialog
+                isOpen={isRescheduleOpen}
+                onClose={() => setIsRescheduleOpen(false)}
+                onConfirm={(newDate, newTime, newDuration) => {
+                    onReschedule?.(newDate, newTime, newDuration);
+                    setIsRescheduleOpen(false);
+                }}
+                currentDate={date}
+                currentDuration={duration}
+            />
+
+            <CancelDialog
+                isOpen={isCancelOpen}
+                onClose={() => setIsCancelOpen(false)}
+                onConfirm={() => {
+                    onCancel?.();
+                    setIsCancelOpen(false);
+                }}
+                sessionDate={date}
+            />
+        </>
     );
 }

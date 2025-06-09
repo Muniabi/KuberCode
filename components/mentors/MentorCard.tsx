@@ -110,7 +110,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                     <CardTitle className="text-xl mb-1">
                         {mentor.name}
                     </CardTitle>
-                    <CardDescription className="text-base text-gray-600 dark:text-gray-400">
+                    <CardDescription className="text-base text-zinc-600 dark:text-zinc-400">
                         {mentor.role}
                     </CardDescription>
                     {mentor.socialLinks && (
@@ -125,7 +125,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                     {/* Price Section */}
                     <div className="bg-[--purple]/5 rounded-xl p-4 mb-4">
                         <div className="flex items-center justify-between mb-2">
-                            <span className="text-gray-600 dark:text-gray-400 font-medium">
+                            <span className="text-zinc-600 dark:text-zinc-400 font-medium">
                                 Стоимость занятия
                             </span>
                             <Badge
@@ -142,13 +142,13 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                             <span className="text-lg font-medium text-[--purple] ml-1">
                                 ₽
                             </span>
-                            <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+                            <span className="text-sm text-zinc-500 dark:text-zinc-400 ml-2">
                                 за занятие
                             </span>
                         </div>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                    <p className="text-zinc-600 dark:text-zinc-400 mb-4 line-clamp-2">
                         {mentor.description}
                     </p>
 
@@ -157,7 +157,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                             <Badge
                                 key={tech}
                                 variant="secondary"
-                                className="bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400"
+                                className="bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400"
                             >
                                 {tech}
                             </Badge>
@@ -165,30 +165,30 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="flex flex-col items-center p-2 rounded-xl bg-gray-50 dark:bg-white/5">
+                        <div className="flex flex-col items-center p-2 rounded-xl bg-zinc-50 dark:bg-white/5">
                             <Star className="w-4 h-4 text-yellow-400 mb-1" />
                             <span className="text-sm font-medium">
                                 {mentor.rating}
                             </span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-zinc-500">
                                 Рейтинг
                             </span>
                         </div>
-                        <div className="flex flex-col items-center p-2 rounded-xl bg-gray-50 dark:bg-white/5">
+                        <div className="flex flex-col items-center p-2 rounded-xl bg-zinc-50 dark:bg-white/5">
                             <Users className="w-4 h-4 text-[--purple] mb-1" />
                             <span className="text-sm font-medium">
                                 {mentor.sessions}
                             </span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-zinc-500">
                                 Сессий
                             </span>
                         </div>
-                        <div className="flex flex-col items-center p-2 rounded-xl bg-gray-50 dark:bg-white/5">
+                        <div className="flex flex-col items-center p-2 rounded-xl bg-zinc-50 dark:bg-white/5">
                             <Timer className="w-4 h-4 text-[--lime] mb-1" />
                             <span className="text-sm font-medium">
                                 {mentor.experience}
                             </span>
-                            <span className="text-xs text-gray-500">Опыт</span>
+                            <span className="text-xs text-zinc-500">Опыт</span>
                         </div>
                     </div>
                 </CardContent>
@@ -297,7 +297,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                                 <h4 className="font-semibold">
                                                     Описание
                                                 </h4>
-                                                <p className="text-gray-600 dark:text-gray-400">
+                                                <p className="text-zinc-600 dark:text-zinc-400">
                                                     {mentor.description}
                                                 </p>
                                             </div>
@@ -305,7 +305,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                                 <h4 className="font-semibold">
                                                     Специализация
                                                 </h4>
-                                                <p className="text-gray-600 dark:text-gray-400">
+                                                <p className="text-zinc-600 dark:text-zinc-400">
                                                     {mentor.specialization}
                                                 </p>
                                             </div>
@@ -319,7 +319,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                                             <Badge
                                                                 key={tech}
                                                                 variant="secondary"
-                                                                className="bg-gray-100 dark:bg-white/5"
+                                                                className="bg-zinc-100 dark:bg-white/5"
                                                             >
                                                                 {tech}
                                                             </Badge>
@@ -338,7 +338,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                         <h4 className="font-semibold">
                                             Образование
                                         </h4>
-                                        <ul className="list-disc list-inside text-gray-600 dark:text-gray-400">
+                                        <ul className="list-disc list-inside text-zinc-600 dark:text-zinc-400">
                                             {mentor.education?.map(
                                                 (edu, index) => (
                                                     <li key={index}>{edu}</li>
@@ -366,12 +366,12 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                                     (project, index) => (
                                                         <div
                                                             key={index}
-                                                            className="p-4 rounded-xl bg-gray-50 dark:bg-white/5"
+                                                            className="p-4 rounded-xl bg-zinc-50 dark:bg-white/5"
                                                         >
                                                             <h5 className="font-medium mb-2">
                                                                 {project.name}
                                                             </h5>
-                                                            <p className="text-gray-600 dark:text-gray-400 mb-2">
+                                                            <p className="text-zinc-600 dark:text-zinc-400 mb-2">
                                                                 {
                                                                     project.description
                                                                 }
@@ -384,7 +384,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                                                                 tech
                                                                             }
                                                                             variant="secondary"
-                                                                            className="bg-gray-100 dark:bg-white/5"
+                                                                            className="bg-zinc-100 dark:bg-white/5"
                                                                         >
                                                                             {
                                                                                 tech
@@ -396,7 +396,7 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
                                                         </div>
                                                     )
                                                 ) || (
-                                                    <p className="text-gray-600 dark:text-gray-400">
+                                                    <p className="text-zinc-600 dark:text-zinc-400">
                                                         Информация о проектах
                                                         отсутствует
                                                     </p>

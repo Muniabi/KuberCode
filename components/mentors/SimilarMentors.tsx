@@ -78,10 +78,10 @@ export default function SimilarMentors({
                         <Card key={i} className="animate-pulse">
                             <CardHeader className="space-y-4">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700" />
+                                    <div className="w-12 h-12 rounded-full bg-zinc-200 dark:bg-zinc-700" />
                                     <div className="space-y-2">
-                                        <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
-                                        <div className="h-3 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
+                                        <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-700 rounded" />
+                                        <div className="h-3 w-32 bg-zinc-200 dark:bg-zinc-700 rounded" />
                                     </div>
                                 </div>
                             </CardHeader>
@@ -91,7 +91,7 @@ export default function SimilarMentors({
                                         {[1, 2, 3].map((j) => (
                                             <div
                                                 key={j}
-                                                className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded"
+                                                className="h-6 w-16 bg-zinc-200 dark:bg-zinc-700 rounded"
                                             />
                                         ))}
                                     </div>
@@ -127,7 +127,7 @@ export default function SimilarMentors({
                                     <CardTitle className="text-base">
                                         {mentor.name}
                                     </CardTitle>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
                                         {mentor.role}
                                     </p>
                                 </div>
@@ -139,7 +139,7 @@ export default function SimilarMentors({
                                     <Badge
                                         key={tech}
                                         variant="secondary"
-                                        className="bg-gray-100 dark:bg-white/5"
+                                        className="bg-zinc-100 dark:bg-white/5"
                                     >
                                         {tech}
                                     </Badge>

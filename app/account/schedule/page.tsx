@@ -15,6 +15,7 @@ import { SessionsList } from "@/components/mentors/SessionsList";
 import { Calendar } from "@/components/ui/calendar";
 import { ru } from "date-fns/locale";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import VideoCall from "@/components/mentors/VideoCall";
 
 // Тестовые данные для демонстрации
 const mockSessions = [
@@ -45,10 +46,20 @@ const mockSessions = [
         communicationType: "Zoom",
         communicationLink: "https://zoom.us/test-session-3",
     },
+    {
+        id: "4",
+        mentorName: "Елена Волкова",
+        mentorAvatar: "https://i.pravatar.cc/150?img=4",
+        date: new Date(2024, 3, 18, 15, 0),
+        duration: 1,
+        communicationType: "Jitsi Meet",
+        communicationLink: "test-session-4", // Будет использоваться как sessionId для Jitsi
+    },
 ];
 
 const SchedulePage = () => {
     const [date, setDate] = useState<Date | undefined>(new Date());
+    const [activeSession, setActiveSession] = useState<string | null>(null);
 
     const handleCancel = (sessionId: string) => {
         console.log("Cancel session:", sessionId);
@@ -59,6 +70,40 @@ const SchedulePage = () => {
         console.log("Reschedule session:", sessionId);
         // Здесь будет логика переноса сессии
     };
+
+    const handleJoinSession = (
+        sessionId: string,
+        communicationType: string,
+        communicationLink: string
+    ) => {
+        if (communicationType === "Jitsi Meet") {
+            setActiveSession(communicationLink);
+        } else {
+            window.open(communicationLink, "_blank");
+        }
+    };
+
+    const handleEndCall = () => {
+        setActiveSession(null);
+    };
+
+    if (activeSession) {
+        const session = mockSessions.find(
+            (s) => s.communicationLink === activeSession
+        );
+        if (session) {
+            return (
+                <div className="p-4">
+                    <VideoCall
+                        sessionId={activeSession}
+                        mentorName={session.mentorName}
+                        studentName="Тестовый студент"
+                        onEnd={handleEndCall}
+                    />
+                </div>
+            );
+        }
+    }
 
     return (
         <SidebarInset>
@@ -92,6 +137,7 @@ const SchedulePage = () => {
                                 sessions={mockSessions}
                                 onCancel={handleCancel}
                                 onReschedule={handleReschedule}
+                                onJoinSession={handleJoinSession}
                             />
                         </CardContent>
                     </Card>

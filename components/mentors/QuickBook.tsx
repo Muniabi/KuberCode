@@ -218,7 +218,7 @@ export default function QuickBook({
                             </div>
 
                             {selectedDate && (
-                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                <div className="text-sm text-zinc-500 dark:text-zinc-400">
                                     Выбрано:{" "}
                                     {format(selectedDate, "d MMMM yyyy", {
                                         locale: ru,
@@ -279,23 +279,23 @@ export default function QuickBook({
                             <h4 className="font-medium">
                                 Детали бронирования:
                             </h4>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-zinc-500">
                                 Дата:{" "}
                                 {selectedDate &&
                                     format(selectedDate, "d MMMM yyyy", {
                                         locale: ru,
                                     })}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-zinc-500">
                                 Время: {customTime}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-zinc-500">
                                 Длительность:{" "}
                                 {duration === "1"
                                     ? "1 час"
                                     : `${duration} часа`}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-zinc-500">
                                 Способ связи:{" "}
                                 {
                                     communicationMethods.find(
@@ -320,7 +320,7 @@ export default function QuickBook({
                                         <Copy className="w-4 h-4" />
                                     </Button>
                                 </div>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-zinc-500">
                                     Ссылка будет доступна в вашем личном
                                     кабинете. Вы сможете подключиться к встрече
                                     непосредственно из него.

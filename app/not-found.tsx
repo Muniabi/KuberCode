@@ -26,7 +26,7 @@ export default function NotFound() {
                             </p>
                             <Link
                                 href="/"
-                                className="inline-flex items-center justify-center px-6 py-3 text-lg font-medium text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 transition-colors duration-200 mt-2"
+                                className="inline-flex items-center justify-center px-6 py-3 text-lg font-medium text-zinc-700 bg-zinc-200 rounded-md shadow-sm hover:bg-zinc-300 transition-colors duration-200 mt-2"
                             >
                                 Окэй, на главную
                             </Link>

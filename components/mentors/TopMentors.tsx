@@ -18,7 +18,7 @@ interface TopMentor {
 
 const ACHIEVEMENT_ICONS = {
     gold: { icon: Trophy, color: "text-yellow-400" },
-    silver: { icon: Trophy, color: "text-gray-400" },
+    silver: { icon: Trophy, color: "text-zinc-400" },
     bronze: { icon: Trophy, color: "text-amber-700" },
 };
 
@@ -87,21 +87,21 @@ export default function TopMentors() {
                         <Card key={i} className="animate-pulse">
                             <CardHeader className="space-y-4">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-700" />
+                                    <div className="w-16 h-16 rounded-full bg-zinc-200 dark:bg-zinc-700" />
                                     <div className="space-y-2">
-                                        <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
-                                        <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
+                                        <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-700 rounded" />
+                                        <div className="h-3 w-24 bg-zinc-200 dark:bg-zinc-700 rounded" />
                                     </div>
                                 </div>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-2">
-                                    <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded" />
+                                    <div className="h-4 w-full bg-zinc-200 dark:bg-zinc-700 rounded" />
                                     <div className="flex gap-2">
                                         {[1, 2].map((j) => (
                                             <div
                                                 key={j}
-                                                className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded"
+                                                className="h-6 w-16 bg-zinc-200 dark:bg-zinc-700 rounded"
                                             />
                                         ))}
                                     </div>
@@ -153,7 +153,7 @@ export default function TopMentors() {
                                             <h3 className="font-semibold">
                                                 {mentor.name}
                                             </h3>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            <p className="text-sm text-zinc-600 dark:text-zinc-400">
                                                 {mentor.role}
                                             </p>
                                         </div>
@@ -166,7 +166,7 @@ export default function TopMentors() {
                                             <span className="font-medium">
                                                 {mentor.rating}
                                             </span>
-                                            <span className="text-gray-600 dark:text-gray-400">
+                                            <span className="text-zinc-600 dark:text-zinc-400">
                                                 • {mentor.sessionsThisMonth}{" "}
                                                 сессий в этом месяце
                                             </span>
@@ -176,7 +176,7 @@ export default function TopMentors() {
                                                 <Badge
                                                     key={tech}
                                                     variant="secondary"
-                                                    className="bg-gray-100 dark:bg-white/5"
+                                                    className="bg-zinc-100 dark:bg-white/5"
                                                 >
                                                     {tech}
                                                 </Badge>
