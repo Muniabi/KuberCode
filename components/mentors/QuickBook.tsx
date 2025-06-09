@@ -6,7 +6,7 @@ import {
     Info,
     Copy,
     MessageCircle,
-    Mail,
+    Monitor,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,8 +49,10 @@ interface QuickBookProps {
 
 const communicationMethods = [
     { id: "jitsi", label: "Jitsi Meet", icon: Video },
+    { id: "google-meet", label: "Google Meet", icon: Monitor },
+    { id: "zoom", label: "Zoom", icon: Video },
     { id: "telegram", label: "Telegram", icon: MessageCircle },
-    { id: "email", label: "Email", icon: Mail },
+    { id: "discord", label: "Discord", icon: MessageCircle },
 ];
 
 export default function QuickBook({
@@ -72,9 +74,14 @@ export default function QuickBook({
             setStep(2);
         } else if (step === 2 && communicationMethod) {
             if (communicationMethod === "jitsi") {
-                // Генерируем уникальную ссылку для Jitsi Meet
                 const meetingId = `mentor-${mentorId}-${Date.now()}`;
                 setJitsiLink(`https://meet.jit.si/${meetingId}`);
+            } else if (communicationMethod === "google-meet") {
+                // В реальном приложении здесь будет интеграция с Google Calendar API
+                setJitsiLink("https://meet.google.com/new");
+            } else if (communicationMethod === "zoom") {
+                // В реальном приложении здесь будет интеграция с Zoom API
+                setJitsiLink("https://zoom.us/start/videomeeting");
             }
             setStep(3);
         }
@@ -284,9 +291,7 @@ export default function QuickBook({
                             </p>
                             <p className="text-sm text-gray-500">
                                 Длительность:{" "}
-                                {duration === "0.5"
-                                    ? "30 минут"
-                                    : duration === "1"
+                                {duration === "1"
                                     ? "1 час"
                                     : `${duration} часа`}
                             </p>
@@ -300,7 +305,9 @@ export default function QuickBook({
                             </p>
                         </div>
 
-                        {communicationMethod === "jitsi" && (
+                        {(communicationMethod === "jitsi" ||
+                            communicationMethod === "google-meet" ||
+                            communicationMethod === "zoom") && (
                             <div className="space-y-2">
                                 <Label>Ссылка для подключения:</Label>
                                 <div className="flex gap-2">

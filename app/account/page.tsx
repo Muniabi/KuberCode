@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -13,10 +15,47 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SessionsList } from "@/components/mentors/SessionsList";
+import { Button } from "@/components/ui/button";
+import { CalendarDays } from "lucide-react";
+import Link from "next/link";
+
+// Тестовые данные для демонстрации
+const mockUpcomingSessions = [
+    {
+        id: "1",
+        mentorName: "Александр Иванов",
+        mentorAvatar: "https://i.pravatar.cc/150?img=1",
+        date: new Date(2024, 3, 15, 14, 30),
+        duration: 1,
+        communicationType: "Jitsi Meet",
+        communicationLink: "https://meet.jit.si/test-session-1",
+    },
+    {
+        id: "2",
+        mentorName: "Мария Петрова",
+        mentorAvatar: "https://i.pravatar.cc/150?img=2",
+        date: new Date(2024, 3, 16, 16, 0),
+        duration: 1.5,
+        communicationType: "Google Meet",
+        communicationLink: "https://meet.google.com/test-session-2",
+    },
+];
 
 export default function DashboardPage() {
     // Временно для демонстрации
     const isProfileIncomplete = false;
+
+    const handleCancel = (sessionId: string) => {
+        console.log("Cancel session:", sessionId);
+        // Здесь будет логика отмены сессии
+    };
+
+    const handleReschedule = (sessionId: string) => {
+        console.log("Reschedule session:", sessionId);
+        // Здесь будет логика переноса сессии
+    };
 
     return (
         <SidebarInset>
@@ -46,12 +85,52 @@ export default function DashboardPage() {
                     </div>
                 ) : (
                     <>
-                        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                            <div className="aspect-video rounded-xl bg-stone-100/50 dark:bg-stone-800/50" />
-                            <div className="aspect-video rounded-xl bg-stone-100/50 dark:bg-stone-800/50" />
-                            <div className="aspect-video rounded-xl bg-stone-100/50 dark:bg-stone-800/50" />
+                        <div className="grid gap-4 md:grid-cols-3">
+                            <Card className="md:col-span-2">
+                                <CardHeader className="flex flex-row items-center justify-between">
+                                    <CardTitle>Ближайшие сессии</CardTitle>
+                                    <Link href="/account/schedule">
+                                        <Button variant="outline" size="sm">
+                                            <CalendarDays className="w-4 h-4 mr-2" />
+                                            Все сессии
+                                        </Button>
+                                    </Link>
+                                </CardHeader>
+                                <CardContent>
+                                    <SessionsList
+                                        sessions={mockUpcomingSessions}
+                                        onCancel={handleCancel}
+                                        onReschedule={handleReschedule}
+                                    />
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Прогресс обучения</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {/* Здесь будет компонент с прогрессом обучения */}
+                                </CardContent>
+                            </Card>
                         </div>
-                        <div className="min-h-[100vh] flex-1 rounded-xl bg-stone-100/50 md:min-h-min dark:bg-stone-800/50" />
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Текущие курсы</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {/* Здесь будет список текущих курсов */}
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Домашние задания</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {/* Здесь будет список домашних заданий */}
+                                </CardContent>
+                            </Card>
+                        </div>
                     </>
                 )}
             </div>
