@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { QRCodeSVG } from "qrcode.react";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface SbpPaymentProps {
     amount: number;
     onSubmit: (data: any) => void;
+    onBack: () => void;
 }
 
-export default function SbpPayment({ amount, onSubmit }: SbpPaymentProps) {
+export default function SbpPayment({
+    amount,
+    onSubmit,
+    onBack,
+}: SbpPaymentProps) {
     const [qrCode, setQrCode] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -67,7 +73,17 @@ export default function SbpPayment({ amount, onSubmit }: SbpPaymentProps) {
 
     return (
         <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Оплата через СБП</h2>
+            <div className="flex items-center justify-between mb-6">
+                <Button
+                    variant="ghost"
+                    onClick={onBack}
+                    className="text-zinc-500 hover:text-zinc-900"
+                >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Назад
+                </Button>
+                <h2 className="text-xl font-semibold">Оплата через СБП</h2>
+            </div>
 
             <div className="text-center">
                 {isLoading ? (

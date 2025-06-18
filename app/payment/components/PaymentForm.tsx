@@ -3,18 +3,20 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Lock } from "lucide-react";
+import { CreditCard, Lock, ArrowLeft } from "lucide-react";
 
 interface PaymentFormProps {
     method: "card" | "paypal";
     onSubmit: (data: any) => void;
     amount: number;
+    onBack: () => void;
 }
 
 export default function PaymentForm({
     method,
     onSubmit,
     amount,
+    onBack,
 }: PaymentFormProps) {
     const [cardData, setCardData] = useState({
         number: "",
@@ -63,6 +65,16 @@ export default function PaymentForm({
     if (method === "paypal") {
         return (
             <Card className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                    <Button
+                        variant="ghost"
+                        onClick={onBack}
+                        className="text-zinc-500 hover:text-zinc-900"
+                    >
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Назад
+                    </Button>
+                </div>
                 <h2 className="text-xl font-semibold mb-4">
                     Оплата через PayPal
                 </h2>
@@ -82,7 +94,17 @@ export default function PaymentForm({
 
     return (
         <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Данные карты</h2>
+            <div className="flex items-center justify-between mb-6">
+                <Button
+                    variant="ghost"
+                    onClick={onBack}
+                    className="text-zinc-500 hover:text-zinc-900"
+                >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Назад
+                </Button>
+                <h2 className="text-xl font-semibold">Данные карты</h2>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
