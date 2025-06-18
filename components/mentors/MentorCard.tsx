@@ -64,10 +64,24 @@ interface Mentor {
         description: string;
         technologies: string[];
     }>;
+    hourlyRate: number;
 }
 
 interface MentorCardProps {
-    mentor: Mentor;
+    mentor: {
+        id: number;
+        name: string;
+        photo: string;
+        role: string;
+        experience: string;
+        description: string;
+        specialization: string;
+        technologies: string[];
+        rating: number;
+        sessions: number;
+        pricePerHour: number;
+        availability: string;
+    };
     index?: number;
 }
 
@@ -195,10 +209,11 @@ export default function MentorCard({ mentor, index = 0 }: MentorCardProps) {
 
                 <CardFooter className="flex gap-2 mt-auto">
                     <QuickBook
-                        mentorName={mentor.name}
                         mentorId={mentor.id}
+                        mentorName={mentor.name}
                         availability={mentor.availability}
-                        className="flex-1"
+                        hourlyRate={mentor.pricePerHour}
+                        className="w-full"
                     />
                     <Dialog>
                         <DialogTrigger asChild>

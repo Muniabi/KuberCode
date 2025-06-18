@@ -173,8 +173,8 @@ export default function VideoCall({
     };
 
     return (
-        <Card className="w-full rounded-none" style={containerStyles}>
-            <CardHeader className="flex px-6 py-1 flex-row items-center justify-between">
+        <Card className="w-full h-screen rounded-none" style={containerStyles}>
+            <CardHeader className="flex px-6 py-1 flex-row items-center justify-between h-12">
                 <CardTitle className="flex items-center gap-2 text-base">
                     <Video className="w-4 h-4" />
                     Сессия с ментором {mentorName}
@@ -198,11 +198,8 @@ export default function VideoCall({
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent className="h-full overflow-y-auto">
-                <div
-                    ref={jitsiContainer}
-                    className="rounded-lg overflow-hidden h-full"
-                />
+            <CardContent className="p-0 h-[calc(100vh-3rem)]">
+                <div ref={jitsiContainer} className="w-full h-full" />
             </CardContent>
         </Card>
     );

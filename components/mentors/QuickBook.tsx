@@ -44,6 +44,7 @@ interface QuickBookProps {
     mentorName: string;
     mentorId: number;
     availability: string;
+    hourlyRate?: number;
     className?: string;
 }
 
@@ -59,6 +60,7 @@ export default function QuickBook({
     mentorName,
     mentorId,
     availability,
+    hourlyRate = 4500,
     className,
 }: QuickBookProps) {
     const [isOpen, setIsOpen] = useState(false);
@@ -88,15 +90,19 @@ export default function QuickBook({
     };
 
     const handleBooking = () => {
-        // Здесь будет логика сохранения бронирования
-        toast.success("Бронирование успешно создано!");
-        setIsOpen(false);
-        setStep(1);
-        setSelectedDate(undefined);
-        setCustomTime("");
-        setDuration("");
-        setCommunicationMethod(undefined);
-        setJitsiLink("");
+        // Формируем URL с параметрами для страницы оплаты
+        const params = new URLSearchParams({
+            mentorId: mentorId.toString(),
+            mentorName,
+            date: selectedDate ? format(selectedDate, "yyyy-MM-dd") : "",
+            time: customTime,
+            duration: duration.toString(),
+            hourlyRate: (hourlyRate || 4500).toString(),
+            communicationMethod: communicationMethod || "",
+        });
+
+        // Перенаправляем на страницу оплаты
+        window.location.href = `/payment?${params.toString()}`;
     };
 
     const copyJitsiLink = () => {
@@ -331,6 +337,15 @@ export default function QuickBook({
                 )}
 
                 <DialogFooter>
+                    {step > 1 && (
+                        <Button
+                            onClick={() => setStep(step - 1)}
+                            variant="outline"
+                            className="mr-2"
+                        >
+                            Назад
+                        </Button>
+                    )}
                     {step < 3 ? (
                         <Button
                             onClick={handleContinue}
