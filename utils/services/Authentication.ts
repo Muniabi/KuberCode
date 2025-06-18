@@ -78,11 +78,10 @@ export const login = async (email: string, password: string) => {
 
         if (result?.error) {
             console.error("Login error:", result.error);
-            throw new Error(
-                result.error === "CredentialsSignin"
-                    ? "Неверный email или пароль"
-                    : `Ошибка авторизации: ${result.error}`
-            );
+            if (result.error === "CredentialsSignin") {
+                throw new Error("Неверный email или пароль");
+            }
+            throw new Error(`Ошибка авторизации: ${result.error}`);
         }
 
         if (!result?.ok) {

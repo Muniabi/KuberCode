@@ -41,21 +41,22 @@ const authOptions: AuthOptions = {
                 }
 
                 try {
-                    formSchema.parse({
+                    // Валидация входных данных
+                    const validatedData = formSchema.parse({
                         email: credentials.email,
                         password: credentials.password,
                     });
 
                     console.log("Attempting to authenticate with:", {
-                        email: credentials.email,
+                        email: validatedData.email,
                         apiUrl: process.env.NEXT_PUBLIC_API_URL,
                     });
 
                     const response = await axios.post(
                         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
                         {
-                            email: credentials.email,
-                            password: credentials.password,
+                            email: validatedData.email,
+                            password: validatedData.password,
                         },
                         {
                             headers: { "Content-Type": "application/json" },
@@ -63,29 +64,32 @@ const authOptions: AuthOptions = {
                     );
 
                     const data = response.data;
-                    console.log(
-                        "Authentication successful. Raw response:",
-                        JSON.stringify(data)
-                    );
+                    console.log("Raw login response:", data);
 
-                    if (!data.user || !data.access_token) {
-                        console.error("Invalid response structure:", data);
-                        throw new Error("Неверный формат ответа от сервера");
+                    // Проверяем наличие необходимых данных
+                    if (!data) {
+                        throw new Error("No data received from login endpoint");
                     }
 
+                    // Адаптивное извлечение данных
                     const user = {
-                        id: data.user.id,
-                        email: data.user.email,
-                        name: data.user.email,
-                        image: data.user.avatar || "",
-                        avatar: data.user.avatar || "",
-                        isMentor: data.user.isMentor,
-                        premium: data.user.premium || false,
-                        accessToken: data.access_token,
-                        refreshToken: data.refresh_token,
+                        id:
+                            data.id ||
+                            data.user?.id ||
+                            data.userId ||
+                            "unknown",
+                        email: validatedData.email,
+                        name: validatedData.email,
+                        image: data.avatar || data.user?.avatar || "",
+                        avatar: data.avatar || data.user?.avatar || "",
+                        isMentor: data.isMentor || data.user?.isMentor || false,
+                        premium: data.premium || data.user?.premium || false,
+                        accessToken:
+                            data.access_token || data.accessToken || data.token,
+                        refreshToken: data.refresh_token || data.refreshToken,
                     };
 
-                    console.log("Processed user data:", JSON.stringify(user));
+                    console.log("Processed user data:", user);
                     return user;
                 } catch (e) {
                     console.error("Authorization error:", e);
@@ -100,28 +104,20 @@ const authOptions: AuthOptions = {
                                 headers: e.config?.headers,
                             },
                         });
-
-                        if (e.response?.status === 401) {
-                            throw new Error("Неверный email или пароль");
-                        } else if (e.response?.status === 400) {
-                            throw new Error("Неверный формат данных");
-                        } else {
-                            throw new Error(
-                                `Ошибка сервера: ${e.response?.status}`
-                            );
-                        }
                     }
-                    throw new Error("Произошла ошибка при авторизации");
+                    return null;
                 }
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, account }) {
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;
                 token.isMentor = user.isMentor;
+                token.email = user.email;
+                token.id = user.id;
             }
             return token;
         },
@@ -130,6 +126,8 @@ const authOptions: AuthOptions = {
                 session.user.accessToken = token.accessToken as string;
                 session.user.refreshToken = token.refreshToken as string;
                 session.user.isMentor = token.isMentor as boolean;
+                session.user.email = token.email as string;
+                session.user.id = token.id as string;
             }
             return session;
         },

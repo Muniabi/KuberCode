@@ -70,11 +70,20 @@ export default function RegisterPage() {
 
         setIsLoading(true);
         try {
+            // Сохраняем данные перед регистрацией
+            localStorage.setItem("pendingEmail", data.email);
+            localStorage.setItem("pendingPassword", data.password);
+            localStorage.setItem(
+                "pendingIsTeacher",
+                String(selectedRole === "mentor")
+            );
+
             await register(
                 data.email,
                 data.password,
                 selectedRole === "mentor"
             );
+
             const verificationCode = Math.floor(
                 100000 + Math.random() * 900000
             ).toString();

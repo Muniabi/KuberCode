@@ -190,18 +190,37 @@ export default function Verified() {
 
     const handleAnimationComplete = async () => {
         try {
+            const storedEmail = localStorage.getItem("pendingEmail");
+            const storedPassword = localStorage.getItem("pendingPassword");
+
+            if (!storedEmail || !storedPassword) {
+                toast.error("Данные для входа не найдены");
+                return;
+            }
+
+            console.log("Attempting to sign in with:", { email: storedEmail });
+
             const result = await signIn("credentials", {
-                email: email,
-                password: password,
+                email: storedEmail,
+                password: storedPassword,
                 redirect: false,
             });
 
+            console.log("Sign in result:", result);
+
             if (result?.error) {
+                console.error("Sign in error:", result.error);
                 toast.error("Ошибка при входе в систему");
                 return;
             }
 
+            // Очищаем данные только после успешного входа
             localStorage.removeItem("verificationCode");
+            localStorage.removeItem("pendingEmail");
+            localStorage.removeItem("pendingPassword");
+            localStorage.removeItem("pendingIsTeacher");
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push("/account");
         } catch (error) {
             console.error("Ошибка при входе:", error);
