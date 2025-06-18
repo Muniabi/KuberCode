@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import PaymentSummary from "./components/PaymentSummary";
 import PaymentMethods from "./components/PaymentMethods";
@@ -19,7 +19,7 @@ interface PaymentDetails {
     communicationMethod: string;
 }
 
-export default function PaymentPage() {
+function PaymentContent() {
     const searchParams = useSearchParams();
     const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(
         null
@@ -92,52 +92,47 @@ export default function PaymentPage() {
 
     if (!paymentDetails) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                Loading...
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <p className="text-lg text-zinc-600">
+                    Недостаточно данных для оформления платежа
+                </p>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <h1 className="text-3xl font-bold mb-8 text-center">
-                Оплата сессии с ментором
+        <div className="container max-w-5xl py-8">
+            <h1 className="text-2xl font-bold mb-8">
+                Оплата менторской сессии
             </h1>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="order-2 md:order-1">
-                    {paymentStep === "details" && (
-                        <PaymentMethods onSelect={handlePaymentMethodSelect} />
-                    )}
-                    {paymentStep === "payment" && selectedMethod === "card" && (
-                        <PaymentForm
-                            method="card"
-                            onSubmit={handlePaymentSubmit}
-                            amount={paymentDetails.amount}
-                        />
-                    )}
-                    {paymentStep === "payment" && selectedMethod === "sbp" && (
-                        <SbpPayment
-                            amount={paymentDetails.amount}
-                            onSubmit={handlePaymentSubmit}
-                        />
-                    )}
-                    {(paymentStep === "processing" ||
-                        paymentStep === "complete") && (
-                        <PaymentStatus
-                            status={paymentStep}
-                            details={paymentDetails}
-                        />
-                    )}
-                </div>
-
-                <div className="order-1 md:order-2">
-                    <PaymentSummary
-                        details={paymentDetails}
-                        step={paymentStep}
-                    />
-                </div>
+            <div className="grid gap-8 md:grid-cols-[1fr_300px]">
+                <PaymentMethods
+                    amount={paymentDetails.amount}
+                    onSelect={handlePaymentMethodSelect}
+                />
+                <PaymentSummary
+                    mentorName={paymentDetails.mentorName}
+                    date={paymentDetails.sessionDate}
+                    time={paymentDetails.sessionTime}
+                    duration={paymentDetails.duration}
+                    amount={paymentDetails.amount}
+                    communicationMethod={paymentDetails.communicationMethod}
+                />
             </div>
         </div>
+    );
+}
+
+export default function PaymentPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex items-center justify-center min-h-[60vh]">
+                    <p className="text-lg text-zinc-600">Загрузка...</p>
+                </div>
+            }
+        >
+            <PaymentContent />
+        </Suspense>
     );
 }

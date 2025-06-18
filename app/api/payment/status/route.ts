@@ -1,35 +1,35 @@
 import { NextResponse } from "next/server";
-import YooKassa from "yookassa";
-
-const yooKassa = new YooKassa({
-    shopId: process.env.YOOKASSA_SHOP_ID || "",
-    secretKey: process.env.YOOKASSA_SECRET_KEY || "",
-});
 
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
-        const paymentId = searchParams.get("id");
+        const paymentId = searchParams.get("paymentId");
 
         if (!paymentId) {
             return NextResponse.json(
-                { error: "Payment ID is required" },
+                { success: false, message: "Payment ID is required" },
                 { status: 400 }
             );
         }
 
-        // Получение информации о платеже
-        const payment = await yooKassa.getPayment(paymentId);
+        // Имитация задержки сети
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Временная заглушка: случайным образом возвращаем статус платежа
+        const statuses = ["pending", "succeeded", "canceled"];
+        const randomStatus =
+            statuses[Math.floor(Math.random() * statuses.length)];
 
         return NextResponse.json({
-            status: payment.status,
-            paid: payment.paid,
-            amount: payment.amount,
+            success: true,
+            status: randomStatus,
         });
     } catch (error) {
-        console.error("Error checking payment status:", error);
+        console.error("Payment status check error:", error);
         return NextResponse.json(
             {
+                success: false,
+                message: "Failed to check payment status",
                 error: error instanceof Error ? error.message : "Unknown error",
             },
             { status: 500 }

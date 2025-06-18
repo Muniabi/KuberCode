@@ -81,6 +81,17 @@ interface MentorCardProps {
         sessions: number;
         pricePerHour: number;
         availability: string;
+        socialLinks?: SocialLink[];
+        contacts?: {
+            telegram?: string;
+            email?: string;
+        };
+        education?: string[];
+        projects?: Array<{
+            name: string;
+            description: string;
+            technologies: string[];
+        }>;
     };
     index?: number;
 }

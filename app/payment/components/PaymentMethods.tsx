@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 interface PaymentMethodsProps {
+    amount: number;
     onSelect: (method: "card" | "sbp") => void;
 }
 
@@ -23,7 +24,10 @@ const methods = [
     },
 ];
 
-export default function PaymentMethods({ onSelect }: PaymentMethodsProps) {
+export default function PaymentMethods({
+    amount,
+    onSelect,
+}: PaymentMethodsProps) {
     return (
         <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">

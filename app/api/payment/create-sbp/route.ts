@@ -1,37 +1,24 @@
 import { NextResponse } from "next/server";
-import YooKassa from "yookassa";
-
-// Инициализация ЮKassa с тестовыми данными
-const yooKassa = new YooKassa({
-    shopId: process.env.YOOKASSA_SHOP_ID || "",
-    secretKey: process.env.YOOKASSA_SECRET_KEY || "",
-});
 
 export async function POST(request: Request) {
     try {
         const { amount } = await request.json();
 
-        // Создание платежа в ЮKassa
-        const payment = await yooKassa.createPayment({
-            amount: {
-                value: amount.toFixed(2),
-                currency: "RUB",
-            },
-            capture: true,
+        // Временная заглушка для тестирования
+        const mockPayment = {
+            id: `mock_${Date.now()}`,
             confirmation: {
-                type: "qr",
-                locale: "ru_RU",
+                confirmation_url: "https://example.com/qr-code",
             },
-            description: "Оплата менторской сессии",
-            metadata: {
-                paymentType: "sbp",
-            },
-        });
+        };
+
+        // Имитация задержки сети
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         return NextResponse.json({
             success: true,
-            paymentId: payment.id,
-            qrUrl: payment.confirmation.confirmation_url,
+            paymentId: mockPayment.id,
+            qrUrl: mockPayment.confirmation.confirmation_url,
         });
     } catch (error) {
         console.error("Payment creation error:", error);
