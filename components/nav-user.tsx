@@ -137,7 +137,7 @@ export function NavUser({
                                 <Bell className="mr-2 h-4 w-4" />
                                 <span>Уведомления</span>
                             </DropdownMenuItem>
-                            <SettingsDialog user={user} />
+                            {/* <SettingsDialog user={user} /> */}
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
