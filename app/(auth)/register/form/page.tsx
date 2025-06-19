@@ -84,18 +84,6 @@ function RegisterForm() {
 
             console.log("Registration response:", registerResponse);
 
-            if (!registerResponse?.message) {
-                console.error(
-                    "Invalid registration response:",
-                    registerResponse
-                );
-                throw new Error("Ошибка при регистрации");
-            }
-
-            if (registerResponse.message !== "User registered successfully") {
-                throw new Error("Ошибка при регистрации");
-            }
-
             setCurrentStep(1);
             await new Promise((resolve) => setTimeout(resolve, 800));
 
@@ -103,7 +91,7 @@ function RegisterForm() {
             setCurrentStep(2);
             await new Promise((resolve) => setTimeout(resolve, 800));
 
-            // Шаг 3: Автоматический вход
+            // Шаг 3: Автоматический вход сразу после регистрации
             console.log("Attempting login after registration");
             const loginResult = await login(data.email, data.password);
 

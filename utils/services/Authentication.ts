@@ -53,11 +53,7 @@ export const register = async (
 
         console.log("Register response:", response.data);
 
-        if (
-            !response.data ||
-            !response.data.access_token ||
-            !response.data.user
-        ) {
+        if (!response.data || !response.data.message) {
             console.error("Invalid register response:", response.data);
             throw new Error("Некорректный ответ от сервера");
         }
