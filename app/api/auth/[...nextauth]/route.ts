@@ -46,18 +46,28 @@ const authOptions: AuthOptions = {
                         password: credentials.password,
                     });
 
+                    console.log("Attempting login with:", {
+                        email: validatedData.email,
+                        url: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
+                    });
+
                     // Запрос к API для входа
                     const response = await axios.post(
                         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
                         {
                             email: validatedData.email,
                             password: validatedData.password,
+                            deviceToken: "web",
                         }
                     );
 
+                    console.log("Login response:", response.data);
+
                     const data = response.data;
 
-                    if (!data || !data.access_token) {
+                    // Проверяем формат ответа от сервера
+                    if (!data) {
+                        console.error("No data in response");
                         throw new Error("Некорректный ответ от сервера");
                     }
 
@@ -72,7 +82,12 @@ const authOptions: AuthOptions = {
                         isMentor: data.user.is_mentor,
                     };
                 } catch (error) {
+                    console.error("Login error:", error);
                     if (axios.isAxiosError(error)) {
+                        console.error("Axios error details:", {
+                            status: error.response?.status,
+                            data: error.response?.data,
+                        });
                         throw new Error(
                             error.response?.data?.message ||
                                 "Ошибка авторизации"

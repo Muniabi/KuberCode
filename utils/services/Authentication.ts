@@ -74,13 +74,19 @@ export const register = async (
 // Вход через NextAuth credentials
 export const login = async (email: string, password: string) => {
     try {
+        console.log("Attempting login with credentials:", { email });
+
         const result = await signIn("credentials", {
             email,
             password,
+            deviceToken: "web",
             redirect: false,
         });
 
+        console.log("SignIn result:", result);
+
         if (result?.error) {
+            console.error("SignIn error:", result.error);
             if (result.error === "CredentialsSignin") {
                 throw new Error("Неверный email или пароль");
             }
@@ -88,11 +94,13 @@ export const login = async (email: string, password: string) => {
         }
 
         if (!result?.ok) {
+            console.error("SignIn not OK:", result);
             throw new Error("Не удалось выполнить вход");
         }
 
         return result;
     } catch (error) {
+        console.error("Login error:", error);
         if (error instanceof Error) {
             throw error;
         }
