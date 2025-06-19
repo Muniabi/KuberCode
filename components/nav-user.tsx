@@ -53,7 +53,7 @@ export function NavUser({
     }
 
     // Извлекаем данные пользователя из сессии
-    const { email = "", premium, id } = session.user;
+    const { email = "", id } = session.user;
 
     // Сначала пытаемся получить аватар из session
     let userAvatar = session.user.avatar;
@@ -81,17 +81,6 @@ export function NavUser({
                                     {user.name.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="flex items-center gap-2 truncate font-semibold">
-                                    {user.name}
-                                    {premium && (
-                                        <Badge variant={"premium"}>PRO</Badge>
-                                    )}
-                                </span>
-                                <span className="truncate text-xs">
-                                    {user.email}
-                                </span>
-                            </div>
                             <ChevronsUpDown className="ml-auto size-4" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>

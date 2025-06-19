@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,6 +11,7 @@ import { ArrowLeft } from "lucide-react";
 import { register } from "@/utils/services/Authentication";
 import { login } from "@/utils/services/Authentication";
 import { toast } from "sonner";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import {
     Card,
     CardContent,
@@ -22,7 +23,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PasswordInput from "@/components/ui/password-input";
-import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
 // Схема валидации формы
 const formSchema = z.object({
@@ -35,7 +35,8 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function RegisterFormPage() {
+// Компонент формы регистрации
+function RegisterForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const role = searchParams.get("role");
@@ -255,5 +256,20 @@ export default function RegisterFormPage() {
                 </div>
             </motion.div>
         </div>
+    );
+}
+
+// Основной компонент страницы с оберткой Suspense
+export default function RegisterFormPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex items-center justify-center min-h-screen">
+                    <LoadingOverlay message="Загрузка формы регистрации..." />
+                </div>
+            }
+        >
+            <RegisterForm />
+        </Suspense>
     );
 }
