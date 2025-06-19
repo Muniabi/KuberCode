@@ -8,9 +8,9 @@ import { z } from "zod";
 import type { AuthOptions } from "next-auth";
 
 // Схема валидации
-const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
+const loginSchema = z.object({
+    email: z.string().email("Некорректный email"),
+    password: z.string().min(6, "Пароль должен содержать минимум 6 символов"),
 });
 
 // Конфигурация NextAuth
@@ -36,98 +36,73 @@ const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials) {
-                    console.error("No credentials provided");
-                    return null;
+                    throw new Error("Не предоставлены учетные данные");
                 }
 
                 try {
                     // Валидация входных данных
-                    const validatedData = formSchema.parse({
+                    const validatedData = loginSchema.parse({
                         email: credentials.email,
                         password: credentials.password,
                     });
 
-                    console.log("Attempting to authenticate with:", {
-                        email: validatedData.email,
-                        apiUrl: process.env.NEXT_PUBLIC_API_URL,
-                    });
-
+                    // Запрос к API для входа
                     const response = await axios.post(
                         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
                         {
                             email: validatedData.email,
                             password: validatedData.password,
-                        },
-                        {
-                            headers: { "Content-Type": "application/json" },
                         }
                     );
 
                     const data = response.data;
-                    console.log("Raw login response:", data);
 
-                    // Проверяем наличие необходимых данных
-                    if (!data) {
-                        throw new Error("No data received from login endpoint");
+                    if (!data || !data.access_token) {
+                        throw new Error("Некорректный ответ от сервера");
                     }
 
-                    // Адаптивное извлечение данных
-                    const user = {
-                        id:
-                            data.id ||
-                            data.user?.id ||
-                            data.userId ||
-                            "unknown",
-                        email: validatedData.email,
-                        name: validatedData.email,
-                        image: data.avatar || data.user?.avatar || "",
-                        avatar: data.avatar || data.user?.avatar || "",
-                        isMentor: data.isMentor || data.user?.isMentor || false,
-                        premium: data.premium || data.user?.premium || false,
-                        accessToken:
-                            data.access_token || data.accessToken || data.token,
-                        refreshToken: data.refresh_token || data.refreshToken,
+                    // Формируем объект пользователя для сессии
+                    return {
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.email,
+                        image: undefined,
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token,
+                        isMentor: data.user.is_mentor,
                     };
-
-                    console.log("Processed user data:", user);
-                    return user;
-                } catch (e) {
-                    console.error("Authorization error:", e);
-                    if (axios.isAxiosError(e)) {
-                        console.error("Axios error details:", {
-                            status: e.response?.status,
-                            data: e.response?.data,
-                            message: e.message,
-                            config: {
-                                url: e.config?.url,
-                                method: e.config?.method,
-                                headers: e.config?.headers,
-                            },
-                        });
+                } catch (error) {
+                    if (axios.isAxiosError(error)) {
+                        throw new Error(
+                            error.response?.data?.message ||
+                                "Ошибка авторизации"
+                        );
                     }
-                    return null;
+                    throw error;
                 }
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user, account }) {
+        async jwt({ token, user }) {
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;
                 token.isMentor = user.isMentor;
                 token.email = user.email;
                 token.id = user.id;
+                token.avatar = user.avatar;
             }
             return token;
         },
         async session({ session, token }) {
             if (session.user) {
+                session.user.id = token.id as string;
+                session.user.email = token.email as string;
                 session.user.accessToken = token.accessToken as string;
                 session.user.refreshToken = token.refreshToken as string;
                 session.user.isMentor = token.isMentor as boolean;
-                session.user.email = token.email as string;
-                session.user.id = token.id as string;
+                session.user.avatar = token.avatar as string;
             }
             return session;
         },
@@ -138,13 +113,10 @@ const authOptions: AuthOptions = {
     },
     session: {
         strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 дней
     },
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Создаем handler с помощью NextAuth
 const handler = NextAuth(authOptions);
-
-// Экспортируем функции GET и POST отдельно
 export { handler as GET, handler as POST };
-
-// Не экспортируем authOptions напрямую

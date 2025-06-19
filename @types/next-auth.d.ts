@@ -12,7 +12,6 @@ declare module "next-auth" {
             accessToken: string;
             refreshToken: string;
             isMentor: boolean;
-            premium?: boolean;
             error?: string;
         };
     }
@@ -26,7 +25,24 @@ declare module "next-auth" {
         accessToken: string;
         refreshToken: string;
         isMentor: boolean;
-        premium?: boolean;
         error?: string;
     }
+}
+
+// Добавляем типы для API ответов
+interface AuthResponse {
+    message?: string;
+    user: {
+        id: string;
+        email: string;
+        name: string;
+        avatar?: string;
+        isMentor: boolean;
+    };
+    accessToken: string;
+    refreshToken: string;
+}
+
+interface RegisterResponse {
+    message: string;
 }

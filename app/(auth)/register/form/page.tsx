@@ -1,15 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
-import { toast } from "sonner";
-import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { register } from "@/utils/services/Authentication";
+import { login } from "@/utils/services/Authentication";
+import { toast } from "sonner";
 import {
     Card,
     CardContent,
@@ -21,18 +22,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PasswordInput from "@/components/ui/password-input";
-import ForgotPasswordLink from "@/components/ForgotPasswordLink";
 
-// Схема валидации
+// Схема валидации формы
 const formSchema = z.object({
     email: z.string().email("Некорректный email"),
-    password: z.string().min(6, "Пароль должен содержать минимум 6 символов"),
+    password: z
+        .string()
+        .min(6, "Пароль должен содержать минимум 6 символов")
+        .max(50, "Пароль не должен превышать 50 символов"),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function LoginPage() {
+export default function RegisterFormPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const role = searchParams.get("role");
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<FormData>({
@@ -43,33 +48,43 @@ export default function LoginPage() {
         },
     });
 
+    // Если роль не выбрана, перенаправляем на страницу выбора роли
+    if (!role || !["student", "mentor"].includes(role)) {
+        router.replace("/register");
+        return null;
+    }
+
     const onSubmit = async (data: FormData) => {
         setIsLoading(true);
         try {
-            const result = await signIn("credentials", {
-                email: data.email,
-                password: data.password,
-                redirect: false,
-            });
+            // Регистрация пользователя
+            const registerResponse = await register(
+                data.email,
+                data.password,
+                role === "mentor"
+            );
 
-            if (result?.error) {
-                if (result.error === "CredentialsSignin") {
-                    throw new Error("Неверный email или пароль");
-                }
-                throw new Error(result.error);
+            if (!registerResponse?.message) {
+                throw new Error("Ошибка при регистрации");
             }
 
-            if (!result?.ok) {
-                throw new Error("Не удалось выполнить вход");
+            toast.success("Регистрация успешна!");
+
+            // Автоматический вход после регистрации
+            const loginResult = await login(data.email, data.password);
+
+            if (!loginResult?.ok) {
+                throw new Error("Ошибка при входе");
             }
 
-            toast.success("Успешный вход");
+            // Перенаправление в личный кабинет
             router.push("/account");
         } catch (error) {
+            console.error("Ошибка:", error);
             toast.error(
                 error instanceof Error
                     ? error.message
-                    : "Произошла ошибка при входе"
+                    : "Произошла неизвестная ошибка"
             );
         } finally {
             setIsLoading(false);
@@ -83,78 +98,28 @@ export default function LoginPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
             >
+                <Button
+                    variant="ghost"
+                    className="mb-6"
+                    onClick={() => router.back()}
+                >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Назад к выбору роли
+                </Button>
+
                 <Card className="shadow-lg">
                     <CardHeader className="space-y-4">
                         <CardTitle className="text-2xl text-center font-bold">
-                            Добро пожаловать
+                            Регистрация как{" "}
+                            {role === "mentor" ? "ментор" : "студент"}
                         </CardTitle>
                         <CardDescription className="text-center text-base">
-                            Войдите с помощью социальных сетей
+                            {role === "mentor"
+                                ? "Делитесь знаниями и помогайте другим учиться"
+                                : "Начните свой путь в программировании"}
                         </CardDescription>
-                        <div className="flex flex-col gap-4">
-                            <Button
-                                variant="outline"
-                                className="w-full h-11 text-base font-medium"
-                                onClick={() => signIn("github")}
-                                disabled={isLoading}
-                            >
-                                <div className="h-5 w-5 mr-2">
-                                    <Image
-                                        src="/github.png"
-                                        alt="Github"
-                                        width={20}
-                                        height={20}
-                                        priority
-                                    />
-                                </div>
-                                Войти через GitHub
-                            </Button>
-
-                            <Button
-                                variant="outline"
-                                className="w-full h-11 text-base font-medium"
-                                onClick={() => signIn("google")}
-                                disabled={isLoading}
-                            >
-                                <div className="h-5 w-5 mr-2">
-                                    <Image
-                                        src="/google.png"
-                                        alt="Google"
-                                        width={20}
-                                        height={20}
-                                        priority
-                                    />
-                                </div>
-                                Войти через Google
-                            </Button>
-
-                            <Button
-                                variant="outline"
-                                className="w-full h-11 text-base font-medium"
-                                onClick={() => signIn("vk")}
-                                disabled={isLoading}
-                            >
-                                <div className="h-5 w-5 mr-2">
-                                    <Image
-                                        src="/vk.png"
-                                        alt="VK"
-                                        width={20}
-                                        height={20}
-                                        priority
-                                    />
-                                </div>
-                                Войти через VK
-                            </Button>
-                        </div>
                     </CardHeader>
-
                     <CardContent className="space-y-6">
-                        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-                            <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                                Или войдите с помощью email
-                            </span>
-                        </div>
-
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
                             className="space-y-4"
@@ -168,7 +133,6 @@ export default function LoginPage() {
                                     type="email"
                                     placeholder="m@example.com"
                                     className="h-11"
-                                    autoFocus
                                     {...form.register("email")}
                                 />
                                 {form.formState.errors.email && (
@@ -177,22 +141,13 @@ export default function LoginPage() {
                                     </p>
                                 )}
                             </div>
-
                             <div className="space-y-2">
-                                <div className="flex items-center">
-                                    <Label
-                                        htmlFor="password"
-                                        className="text-base"
-                                    >
-                                        Пароль
-                                    </Label>
-                                    <div className="ml-auto">
-                                        <ForgotPasswordLink />
-                                    </div>
-                                </div>
+                                <Label htmlFor="password" className="text-base">
+                                    Пароль
+                                </Label>
                                 <PasswordInput
                                     id="password"
-                                    placeholder="Введите пароль"
+                                    placeholder="Минимум 6 символов"
                                     className="h-11"
                                     {...form.register("password")}
                                 />
@@ -202,7 +157,6 @@ export default function LoginPage() {
                                     </p>
                                 )}
                             </div>
-
                             <Button
                                 type="submit"
                                 className="w-full h-11 text-base font-medium"
@@ -230,25 +184,42 @@ export default function LoginPage() {
                                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                             />
                                         </svg>
-                                        Выполняется вход...
+                                        Регистрация...
                                     </div>
                                 ) : (
-                                    "Войти"
+                                    "Зарегистрироваться"
                                 )}
                             </Button>
                         </form>
-
                         <div className="text-center text-sm text-muted-foreground">
-                            Нет аккаунта?{" "}
+                            Уже есть аккаунт?{" "}
                             <Link
-                                href="/register"
+                                href="/login"
                                 className="text-primary hover:text-primary/90 underline underline-offset-4"
                             >
-                                Зарегистрироваться
+                                Войти
                             </Link>
                         </div>
                     </CardContent>
                 </Card>
+
+                <div className="mt-8 text-center text-sm text-muted-foreground">
+                    Нажимая кнопку входа, вы соглашаетесь с нашими{" "}
+                    <Link
+                        href="/terms"
+                        className="text-primary hover:text-primary/90 underline underline-offset-4"
+                    >
+                        Условиями использования
+                    </Link>{" "}
+                    и{" "}
+                    <Link
+                        href="/privacy"
+                        className="text-primary hover:text-primary/90 underline underline-offset-4"
+                    >
+                        Политикой конфиденциальности
+                    </Link>
+                    .
+                </div>
             </motion.div>
         </div>
     );

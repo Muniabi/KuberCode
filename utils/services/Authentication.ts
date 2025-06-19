@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { signIn, signOut } from "next-auth/react";
 import { toast } from "sonner";
 
-export const IP = process.env.NEXT_PUBLIC_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface AuthResponse {
     token: string;
@@ -27,57 +27,60 @@ interface ResetPasswordResponse {
     message: string;
 }
 
+interface RegisterResponse {
+    message: string;
+    user: {
+        id: string;
+        email: string;
+        name: string;
+        avatar?: string;
+        isMentor: boolean;
+        premium?: boolean;
+    };
+}
+
 // Регистрация пользователя
 export const register = async (
     email: string,
     password: string,
     isMentor: boolean
-): Promise<{ email: string; password: string }> => {
+): Promise<RegisterResponse> => {
     try {
-        const url = `${IP}/api/v1/auth/signup`;
-
-        const response = await axios.post(url, {
+        const response = await axios.post(`${API_URL}/api/v1/auth/signup`, {
             email,
             password,
             isMentor,
-            deviceToken: "test",
+            deviceToken: "web",
         });
 
-        console.log("Успешный ответ:", response.data);
+        if (!response.data?.message) {
+            throw new Error("Некорректный ответ от сервера");
+        }
 
-        // Возвращаем данные для последующего входа
-        return { email, password };
+        return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 409) {
-                toast.error("Пользователь с таким email уже существует");
                 throw new Error("Пользователь с таким email уже существует");
             }
-            console.error("Ошибка при регистрации:", error.response?.data);
             throw new Error(
                 error.response?.data?.message || "Ошибка при регистрации"
             );
         }
-        console.error("Ошибка при регистрации:", error);
-        throw error;
+        throw new Error("Произошла ошибка при регистрации");
     }
 };
 
-// Логин через NextAuth
+// Вход через NextAuth credentials
 export const login = async (email: string, password: string) => {
     try {
-        console.log("Attempting login with:", { email });
-
         const result = await signIn("credentials", {
             email,
             password,
             redirect: false,
         });
 
-        console.log("Login result:", result);
-
         if (result?.error) {
-            console.error("Login error:", result.error);
             if (result.error === "CredentialsSignin") {
                 throw new Error("Неверный email или пароль");
             }
@@ -85,13 +88,11 @@ export const login = async (email: string, password: string) => {
         }
 
         if (!result?.ok) {
-            console.error("Login failed:", result);
             throw new Error("Не удалось выполнить вход");
         }
 
         return result;
     } catch (error) {
-        console.error("Login error:", error);
         if (error instanceof Error) {
             throw error;
         }
@@ -102,19 +103,9 @@ export const login = async (email: string, password: string) => {
 // Выход
 export const logout = async () => {
     try {
-        const session = await axios.post("/api/auth/session");
-        const sessionData = session.data;
-
-        if (sessionData?.accessToken) {
-            await api.post("/api/v1/auth/logout", {
-                accessToken: sessionData.accessToken,
-            });
-        }
-
         await signOut({ redirect: false });
     } catch (error) {
-        console.error("Ошибка выхода:", error);
-        await signOut({ redirect: false });
+        console.error("Ошибка при выходе:", error);
         throw error;
     }
 };
@@ -124,11 +115,11 @@ export const refreshTokens = async (
     refreshToken: string
 ): Promise<TokenResponse> => {
     try {
-        const response = await api.post(`${IP}/api/v1/auth/refresh`, {
+        const response = await axios.post(`${API_URL}/api/v1/auth/refresh`, {
             refreshToken,
         });
 
-        await api.post("/api/auth/session", {
+        await axios.post("/api/auth/session", {
             accessToken: response.data.accessToken,
             refreshToken: response.data.refreshToken,
         });
@@ -149,7 +140,7 @@ export const requestPasswordReset = async (
     email: string
 ): Promise<ResetPasswordResponse> => {
     try {
-        const { data } = await api.post("/resetPassword", { email });
+        const { data } = await axios.post("/resetPassword", { email });
         return data;
     } catch (error) {
         console.error("Ошибка запроса сброса пароля:", error);
@@ -163,7 +154,7 @@ export const confirmPasswordReset = async (
     newPassword: string
 ): Promise<{ success: boolean; message: string }> => {
     try {
-        const { data } = await api.post("/confirmResetPassword", {
+        const { data } = await axios.post("/confirmResetPassword", {
             token,
             newPassword,
         });
@@ -174,26 +165,27 @@ export const confirmPasswordReset = async (
     }
 };
 
-// Создаем axios инстанс с перехватчиками
+// Создаем axios инстанс с базовым URL
 export const api = axios.create({
-    baseURL: IP,
+    baseURL: API_URL,
 });
 
-// Добавляем токен к каждому запросу
+// Добавляем перехватчик для добавления токена к запросам
 api.interceptors.request.use(
     async (config) => {
-        // Получаем текущую сессию
-        const session = await api.get("/api/auth/session");
-        const sessionData = session.data;
+        try {
+            const response = await axios.get("/api/auth/session");
+            const session = response.data;
 
-        if (sessionData?.accessToken) {
-            config.headers.Authorization = `Bearer ${sessionData.accessToken}`;
+            if (session?.user?.accessToken) {
+                config.headers.Authorization = `Bearer ${session.user.accessToken}`;
+            }
+            return config;
+        } catch (error) {
+            return config;
         }
-        return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 // Обработка ответов и обновление токена при необходимости
