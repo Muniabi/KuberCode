@@ -5,9 +5,10 @@ import { toast } from "sonner";
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface AuthResponse {
-    access_token: string;
-    refresh_token: string;
-    user: {
+    message?: string;
+    access_token?: string;
+    refresh_token?: string;
+    user?: {
         id: string;
         email: string;
         is_mentor: boolean;

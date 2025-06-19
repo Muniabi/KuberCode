@@ -84,11 +84,15 @@ function RegisterForm() {
 
             console.log("Registration response:", registerResponse);
 
-            if (!registerResponse?.access_token || !registerResponse?.user) {
+            if (!registerResponse?.message) {
                 console.error(
                     "Invalid registration response:",
                     registerResponse
                 );
+                throw new Error("Ошибка при регистрации");
+            }
+
+            if (registerResponse.message !== "User registered successfully") {
                 throw new Error("Ошибка при регистрации");
             }
 
