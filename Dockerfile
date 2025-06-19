@@ -28,9 +28,9 @@ COPY --from=builder /app/shop-verification-d1vxwd57yj.txt ./shop-verification-d1
 
 # Указываем переменные среды
 ENV NODE_ENV=production
-ENV NEXT_PUBLIC_API_URL=http://localhost:8080
+ENV NEXT_PUBLIC_API_URL=http://147.45.68.254:8080
 ENV NEXTAUTH_SECRET=58aeddb0d583a
-ENV NEXTAUTH_URL=http://85.198.82.117:3000
+ENV NEXTAUTH_URL=http://147.45.68.254:3000
 
 # Открываем порт
 EXPOSE 3000
