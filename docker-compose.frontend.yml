@@ -9,8 +9,8 @@ services:
         ports:
             - "3000:3000"
         environment:
-            - NEXT_PUBLIC_API_URL=http://localhost:8080
-            - NEXTAUTH_URL=http://localhost:3000
+            - NEXT_PUBLIC_API_URL=http://85.198.82.117:8080
+            - NEXTAUTH_URL=http://85.198.82.117:3000
             - NEXTAUTH_SECRET=58aeddb0d583a
         networks:
             - app_network
