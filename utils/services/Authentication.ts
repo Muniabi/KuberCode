@@ -5,15 +5,12 @@ import { toast } from "sonner";
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface AuthResponse {
-    token: string;
-    refreshToken: string;
+    access_token: string;
+    refresh_token: string;
     user: {
         id: string;
         email: string;
-        name: string;
-        avatar?: string;
-        isMentor: boolean;
-        premium?: boolean;
+        is_mentor: boolean;
     };
 }
 
@@ -44,7 +41,7 @@ export const register = async (
     email: string,
     password: string,
     isMentor: boolean
-): Promise<RegisterResponse> => {
+): Promise<AuthResponse> => {
     try {
         const response = await axios.post(`${API_URL}/api/v1/auth/signup`, {
             email,
@@ -53,12 +50,20 @@ export const register = async (
             deviceToken: "web",
         });
 
-        if (!response.data?.message) {
+        console.log("Register response:", response.data);
+
+        if (
+            !response.data ||
+            !response.data.access_token ||
+            !response.data.user
+        ) {
+            console.error("Invalid register response:", response.data);
             throw new Error("Некорректный ответ от сервера");
         }
 
         return response.data;
     } catch (error) {
+        console.error("Register error:", error);
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 409) {
                 throw new Error("Пользователь с таким email уже существует");

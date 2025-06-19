@@ -71,13 +71,24 @@ function RegisterForm() {
         try {
             // Шаг 1: Регистрация пользователя
             await new Promise((resolve) => setTimeout(resolve, 1000));
+            console.log("Attempting registration with:", {
+                email: data.email,
+                role,
+            });
+
             const registerResponse = await register(
                 data.email,
                 data.password,
                 role === "mentor"
             );
 
-            if (!registerResponse?.message) {
+            console.log("Registration response:", registerResponse);
+
+            if (!registerResponse?.access_token || !registerResponse?.user) {
+                console.error(
+                    "Invalid registration response:",
+                    registerResponse
+                );
                 throw new Error("Ошибка при регистрации");
             }
 
@@ -89,9 +100,13 @@ function RegisterForm() {
             await new Promise((resolve) => setTimeout(resolve, 800));
 
             // Шаг 3: Автоматический вход
+            console.log("Attempting login after registration");
             const loginResult = await login(data.email, data.password);
 
+            console.log("Login result:", loginResult);
+
             if (!loginResult?.ok) {
+                console.error("Login failed after registration:", loginResult);
                 throw new Error("Ошибка при входе");
             }
 

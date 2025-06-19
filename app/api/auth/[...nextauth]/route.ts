@@ -66,8 +66,8 @@ const authOptions: AuthOptions = {
                     const data = response.data;
 
                     // Проверяем формат ответа от сервера
-                    if (!data) {
-                        console.error("No data in response");
+                    if (!data || !data.access_token || !data.user) {
+                        console.error("Invalid response format:", data);
                         throw new Error("Некорректный ответ от сервера");
                     }
 
