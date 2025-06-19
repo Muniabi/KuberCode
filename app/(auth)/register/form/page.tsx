@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { register } from "@/utils/services/Authentication";
@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PasswordInput from "@/components/ui/password-input";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
 // Схема валидации формы
 const formSchema = z.object({
@@ -39,6 +40,14 @@ export default function RegisterFormPage() {
     const searchParams = useSearchParams();
     const role = searchParams.get("role");
     const [isLoading, setIsLoading] = useState(false);
+    const [currentStep, setCurrentStep] = useState(0);
+
+    const registrationSteps = [
+        { text: "Создание аккаунта", icon: "✨" },
+        { text: "Настройка профиля", icon: "👤" },
+        { text: "Подготовка личного кабинета", icon: "🎨" },
+        { text: "Завершение регистрации", icon: "🚀" },
+    ];
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -56,8 +65,11 @@ export default function RegisterFormPage() {
 
     const onSubmit = async (data: FormData) => {
         setIsLoading(true);
+        setCurrentStep(0);
+
         try {
-            // Регистрация пользователя
+            // Шаг 1: Регистрация пользователя
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             const registerResponse = await register(
                 data.email,
                 data.password,
@@ -68,14 +80,24 @@ export default function RegisterFormPage() {
                 throw new Error("Ошибка при регистрации");
             }
 
-            toast.success("Регистрация успешна!");
+            setCurrentStep(1);
+            await new Promise((resolve) => setTimeout(resolve, 800));
 
-            // Автоматический вход после регистрации
+            // Шаг 2: Настройка профиля
+            setCurrentStep(2);
+            await new Promise((resolve) => setTimeout(resolve, 800));
+
+            // Шаг 3: Автоматический вход
             const loginResult = await login(data.email, data.password);
 
             if (!loginResult?.ok) {
                 throw new Error("Ошибка при входе");
             }
+
+            setCurrentStep(3);
+            await new Promise((resolve) => setTimeout(resolve, 800));
+
+            toast.success("Регистрация успешна!");
 
             // Перенаправление в личный кабинет
             router.push("/account");
@@ -88,11 +110,22 @@ export default function RegisterFormPage() {
             );
         } finally {
             setIsLoading(false);
+            setCurrentStep(0);
         }
     };
 
     return (
         <div className="container max-w-[400px] mx-auto px-4 py-8 md:py-16">
+            <AnimatePresence>
+                {isLoading && (
+                    <LoadingOverlay
+                        message="Регистрация в процессе..."
+                        steps={registrationSteps}
+                        currentStep={currentStep}
+                    />
+                )}
+            </AnimatePresence>
+
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
