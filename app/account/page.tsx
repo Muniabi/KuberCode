@@ -15,11 +15,13 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SessionsList } from "@/components/mentors/SessionsList";
 import { Button } from "@/components/ui/button";
 import { CalendarDays } from "lucide-react";
 import Link from "next/link";
+import { CurrentLanguages } from "@/components/account/CurrentLanguages";
+import { Homeworks } from "@/components/account/Homeworks";
+import { LearningProgress } from "@/components/account/LearningProgress";
 
 // Тестовые данные для демонстрации
 const mockUpcomingSessions = [
@@ -84,54 +86,24 @@ export default function DashboardPage() {
                         <OnboardingFlow />
                     </div>
                 ) : (
-                    <>
-                        <div className="grid gap-4 md:grid-cols-3">
-                            <Card className="md:col-span-2">
-                                <CardHeader className="flex flex-row items-center justify-between">
-                                    <CardTitle>Ближайшие сессии</CardTitle>
-                                    <Link href="/account/schedule">
-                                        <Button variant="outline" size="sm">
-                                            <CalendarDays className="w-4 h-4 mr-2" />
-                                            Все сессии
-                                        </Button>
-                                    </Link>
-                                </CardHeader>
-                                <CardContent>
-                                    <SessionsList
-                                        sessions={mockUpcomingSessions}
-                                        onCancel={handleCancel}
-                                        onReschedule={handleReschedule}
-                                    />
-                                </CardContent>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Прогресс обучения</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    {/* Здесь будет компонент с прогрессом обучения */}
-                                </CardContent>
-                            </Card>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-2">
+                            <SessionsList
+                                sessions={mockUpcomingSessions.slice(0, 2)}
+                                onCancel={handleCancel}
+                                onReschedule={handleReschedule}
+                            />
                         </div>
-                        <div className="grid gap-4 md:grid-cols-2">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Текущие курсы</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    {/* Здесь будет список текущих курсов */}
-                                </CardContent>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Домашние задания</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    {/* Здесь будет список домашних заданий */}
-                                </CardContent>
-                            </Card>
+                        <div className="lg:col-span-1">
+                            <LearningProgress />
                         </div>
-                    </>
+                        <div className="lg:col-span-2">
+                            <CurrentLanguages />
+                        </div>
+                        <div className="lg:col-span-1">
+                            <Homeworks />
+                        </div>
+                    </div>
                 )}
             </div>
         </SidebarInset>
