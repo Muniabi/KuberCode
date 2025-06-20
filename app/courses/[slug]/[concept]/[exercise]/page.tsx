@@ -116,17 +116,17 @@ export default function ExercisePage() {
     };
 
     return (
-        <div className="min-h-screen bg-[--bg-color-dark] text-[--text-color]">
+        <div className="min-h-screen bg-white dark:bg-[--bg-color-dark] text-gray-900 dark:text-[--text-color]">
             {/* Header */}
-            <div className="relative border-b border-white/5">
-                <Container className="py-4">
+            <div className="relative border-b border-gray-200 dark:border-white/5">
+                <Container className="py-4 px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between">
                         {/* Navigation */}
                         <div className="flex items-center gap-2 text-sm">
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-white/60 hover:text-white"
+                                className="text-gray-500 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 dark:text-white/60 dark:hover:text-white dark:bg-transparent dark:hover:bg-white/5"
                                 onClick={() => router.back()}
                             >
                                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -165,8 +165,8 @@ export default function ExercisePage() {
             </div>
 
             {/* Main Content */}
-            <Container className="py-6">
-                <div className="flex gap-6">
+            <Container className="py-6 px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col lg:flex-row gap-6">
                     {/* Theory Panel */}
                     <motion.div
                         initial={false}
@@ -175,21 +175,21 @@ export default function ExercisePage() {
                         }}
                         className="relative"
                     >
-                        <Card className="sticky top-6 bg-[--card-bg] border-none rounded-3xl overflow-hidden">
-                            <div className="p-6 border-b border-white/5">
+                        <Card className="sticky top-6 bg-gray-50 dark:bg-[--card-bg] border border-gray-200 dark:border-none rounded-3xl overflow-hidden">
+                            <div className="p-6 border-b border-gray-200 dark:border-white/5">
                                 <div className="flex items-start justify-between gap-4">
                                     <div>
                                         <h1 className="text-2xl font-semibold mb-2">
                                             {exercise.title}
                                         </h1>
-                                        <p className="text-white/60">
+                                        <p className="text-gray-500 dark:text-white/60">
                                             {exercise.description}
                                         </p>
                                     </div>
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="shrink-0 w-10 h-10 rounded-xl text-white/60 hover:text-white hover:bg-white/5"
+                                        className="shrink-0 w-10 h-10 rounded-xl text-gray-500 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 dark:text-white/60 dark:hover:text-white dark:bg-transparent dark:hover:bg-white/5"
                                         onClick={() =>
                                             setIsTheoryOpen(!isTheoryOpen)
                                         }
@@ -214,14 +214,14 @@ export default function ExercisePage() {
                     {/* Code Editor and Test Results */}
                     <div className="flex-1 space-y-6">
                         {/* Code Editor */}
-                        <Card className="bg-[--card-bg] border-none rounded-3xl overflow-hidden">
-                            <div className="flex items-center justify-between p-4 border-b border-white/5">
-                                <div className="text-sm text-white/60">
+                        <Card className="bg-gray-50 dark:bg-[--card-bg] border border-gray-200 dark:border-none rounded-3xl overflow-hidden">
+                            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/5">
+                                <div className="text-sm text-gray-500 dark:text-white/60">
                                     main.{language.id}
                                 </div>
                                 <Button
                                     size="sm"
-                                    className="bg-[--lime] hover:bg-[--lime]/90 text-black"
+                                    className="bg-purple-600 hover:bg-purple-700 text-white dark:bg-[--lime] dark:hover:bg-[--lime]/90 dark:text-black"
                                     onClick={handleRunTests}
                                     disabled={isRunning}
                                 >
@@ -240,7 +240,7 @@ export default function ExercisePage() {
                         </Card>
 
                         {/* Test Results */}
-                        <Card className="bg-[--card-bg] border-none rounded-3xl overflow-hidden">
+                        <Card className="bg-gray-50 dark:bg-[--card-bg] border border-gray-200 dark:border-none rounded-3xl overflow-hidden">
                             <div className="p-6">
                                 <h2 className="text-xl font-semibold mb-4">
                                     Результаты тестов
@@ -249,18 +249,24 @@ export default function ExercisePage() {
                                     {testResults.map((test, index) => (
                                         <div
                                             key={index}
-                                            className="p-4 rounded-2xl bg-white/5"
+                                            className="p-4 rounded-2xl bg-gray-100 dark:bg-white/5"
                                         >
                                             <div className="flex items-center justify-between mb-3">
                                                 <div className="flex items-center gap-2">
                                                     {test.passed ? (
-                                                        <CheckCircle2 className="w-5 h-5 text-[--lime]" />
+                                                        <CheckCircle2 className="w-5 h-5 text-lime-500" />
                                                     ) : (
                                                         <X className="w-5 h-5 text-red-500" />
                                                     )}
-                                                    <span className="font-medium">
-                                                        Тест {index + 1}
-                                                    </span>
+                                                    {test.passed ? (
+                                                        <span className="font-medium text-lime-500">
+                                                            Тест {index + 1}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="font-medium">
+                                                            Тест {index + 1}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 {test.error && (
                                                     <span className="text-sm text-red-400">
@@ -270,30 +276,30 @@ export default function ExercisePage() {
                                             </div>
                                             <div className="grid grid-cols-3 gap-4 text-sm">
                                                 <div>
-                                                    <div className="text-white/40 mb-1">
+                                                    <div className="text-gray-400 dark:text-white/40 mb-1">
                                                         Входные данные
                                                     </div>
-                                                    <code className="px-2 py-1 rounded bg-black/30">
+                                                    <code className="px-2 py-1 rounded bg-gray-200 dark:bg-black/30">
                                                         {JSON.stringify(
                                                             test.input
                                                         )}
                                                     </code>
                                                 </div>
                                                 <div>
-                                                    <div className="text-white/40 mb-1">
+                                                    <div className="text-gray-400 dark:text-white/40 mb-1">
                                                         Ожидаемый результат
                                                     </div>
-                                                    <code className="px-2 py-1 rounded bg-black/30">
+                                                    <code className="px-2 py-1 rounded bg-gray-200 dark:bg-black/30">
                                                         {JSON.stringify(
                                                             test.expected
                                                         )}
                                                     </code>
                                                 </div>
                                                 <div>
-                                                    <div className="text-white/40 mb-1">
+                                                    <div className="text-gray-400 dark:text-white/40 mb-1">
                                                         Ваш результат
                                                     </div>
-                                                    <code className="px-2 py-1 rounded bg-black/30">
+                                                    <code className="px-2 py-1 rounded bg-gray-200 dark:bg-black/30">
                                                         {test.actual !==
                                                         undefined
                                                             ? JSON.stringify(

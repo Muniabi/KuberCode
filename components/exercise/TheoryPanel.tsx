@@ -120,16 +120,16 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
     return (
         <div className="space-y-6">
             {/* Tabs */}
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
                 {tabs.map((tab) => (
                     <Button
                         key={tab.id}
                         variant="ghost"
                         size="sm"
                         className={cn(
-                            "flex-1 text-white/60 hover:text-white hover:bg-white/5 rounded-xl gap-2",
+                            "flex-1 gap-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-purple-50 hover:text-purple-700 dark:text-white/60 dark:bg-white/5 dark:hover:text-white dark:hover:bg-white/10",
                             activeTab === tab.id &&
-                                "bg-white/5 text-white hover:bg-white/10"
+                                "bg-purple-100 text-purple-700 dark:bg-white/10 dark:text-white"
                         )}
                         onClick={() => setActiveTab(tab.id)}
                     >
@@ -140,27 +140,52 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
             </div>
 
             {/* Resources */}
-            <div className="grid grid-cols-2 gap-2">
-                <Button
-                    variant="ghost"
-                    className="bg-white/5 hover:bg-white/10 text-white rounded-xl h-auto py-3 flex-col items-center gap-2"
-                >
-                    <Video className="w-5 h-5 text-[--purple]" />
-                    <span className="text-sm">Видео урок</span>
-                </Button>
-                <Button
-                    variant="ghost"
-                    className="bg-white/5 hover:bg-white/10 text-white rounded-xl h-auto py-3 flex-col items-center gap-2"
-                >
-                    <FileText className="w-5 h-5 text-[--lime]" />
-                    <span className="text-sm">Документация</span>
-                </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {exercise.id === "basics-smart-sum" ? (
+                    <>
+                        <a
+                            href="https://rutube.ru/video/7e2e2b2e2e2e2e2e2e2e2e2e2e2e2e2e/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-gray-100 hover:bg-purple-50 text-gray-900 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white rounded-xl h-auto py-3 flex flex-col items-center gap-2 transition-colors"
+                        >
+                            <Video className="w-5 h-5 text-purple-600 dark:text-[--purple]" />
+                            <span className="text-sm">Видео урок</span>
+                        </a>
+                        <a
+                            href="https://proglib.io/p/python-sum"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-gray-100 hover:bg-purple-50 text-gray-900 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white rounded-xl h-auto py-3 flex flex-col items-center gap-2 transition-colors"
+                        >
+                            <FileText className="w-5 h-5 text-lime-600 dark:text-[--lime]" />
+                            <span className="text-sm">Документация</span>
+                        </a>
+                    </>
+                ) : (
+                    <>
+                        <Button
+                            variant="ghost"
+                            className="bg-gray-100 hover:bg-purple-50 text-gray-900 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white rounded-xl h-auto py-3 flex flex-col items-center gap-2"
+                        >
+                            <Video className="w-5 h-5 text-purple-600 dark:text-[--purple]" />
+                            <span className="text-sm">Видео урок</span>
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            className="bg-gray-100 hover:bg-purple-50 text-gray-900 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white rounded-xl h-auto py-3 flex flex-col items-center gap-2"
+                        >
+                            <FileText className="w-5 h-5 text-lime-600 dark:text-[--lime]" />
+                            <span className="text-sm">Документация</span>
+                        </Button>
+                    </>
+                )}
             </div>
 
             {/* Content */}
             <div className="space-y-4">
                 {activeTab === "theory" && (
-                    <div className="prose prose-invert max-w-none">
+                    <div className="prose max-w-none text-gray-900 dark:prose-invert dark:text-white">
                         <div
                             dangerouslySetInnerHTML={{
                                 __html: exercise.theory || "",
@@ -174,9 +199,9 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
                         {exercise.hints?.map((hint, index) => (
                             <div
                                 key={index}
-                                className="p-4 rounded-xl bg-white/5 text-white/90"
+                                className="p-4 rounded-xl bg-gray-100 text-gray-900 dark:bg-white/5 dark:text-white/90"
                             >
-                                <div className="flex items-center gap-2 mb-2 text-[--lime]">
+                                <div className="flex items-center gap-2 mb-2 text-purple-600 dark:text-[--purple]">
                                     <LightbulbIcon className="w-4 h-4" />
                                     <span className="font-medium">
                                         Подсказка {index + 1}
@@ -185,7 +210,7 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
                                 <p className="text-sm">{hint}</p>
                             </div>
                         )) || (
-                            <div className="text-center text-white/60 py-8">
+                            <div className="text-center text-gray-400 dark:text-white/60 py-8">
                                 Подсказок пока нет
                             </div>
                         )}
@@ -194,8 +219,8 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
 
                 {activeTab === "solution" && exercise.solution && (
                     <div className="space-y-4">
-                        <div className="p-4 rounded-xl bg-white/5">
-                            <div className="flex items-center gap-2 mb-4 text-[--lime]">
+                        <div className="p-4 rounded-xl bg-gray-100 dark:bg-white/5">
+                            <div className="flex items-center gap-2 mb-4 text-purple-600 dark:text-[--purple]">
                                 <CheckCircle2 className="w-5 h-5" />
                                 <span className="font-medium">
                                     Готовое решение
@@ -220,7 +245,7 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
                                     }
                                 />
                             </div>
-                            <p className="mt-4 text-sm text-white/60">
+                            <p className="mt-4 text-sm text-gray-500 dark:text-white/60">
                                 Это лишь одно из возможных решений. Попробуйте
                                 сначала решить задачу самостоятельно, а затем
                                 сравните свое решение с предложенным.

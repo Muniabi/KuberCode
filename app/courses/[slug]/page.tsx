@@ -103,7 +103,7 @@ export default function LanguagePage() {
     }
 
     return (
-        <div className="relative min-h-screen w-full bg-gray-50 dark:bg-[--bg-color] overflow-x-hidden">
+        <div className="relative min-h-screen w-full bg-gray-50 dark:bg-[--bg-color] overflow-x-hidden px-4 sm:px-6 lg:px-8">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-[0.03] dark:opacity-5">
                 <div

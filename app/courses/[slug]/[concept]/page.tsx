@@ -115,42 +115,42 @@ export default function ConceptPage() {
 
     if (!languageData || !exercises.length) {
         return (
-            <div className="min-h-screen bg-[--bg-color-dark] text-[--text-color]">
+            <div className="min-h-screen bg-white dark:bg-[--bg-color-dark] text-gray-900 dark:text-[--text-color] px-4 sm:px-6 lg:px-8">
                 <Container className="py-6">
                     <div className="flex items-center gap-2 mb-6">
                         <Button
                             variant="ghost"
-                            className="text-white/60 hover:text-white"
+                            className="text-gray-500 hover:text-gray-900 dark:text-white/60 dark:hover:text-white"
                             onClick={() => router.back()}
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
                             Назад
                         </Button>
-                        <div className="flex items-center gap-2 text-white/40">
+                        <div className="flex items-center gap-2 text-gray-400 dark:text-white/40">
                             <Link
                                 href={`/courses/${languageData?.id}`}
-                                className="hover:text-white transition-colors"
+                                className="hover:text-gray-900 dark:hover:text-white transition-colors"
                             >
                                 {languageData?.name}
                             </Link>
                             <ChevronRight className="w-4 h-4" />
-                            <span className="text-white capitalize">
+                            <span className="text-gray-500 dark:text-white capitalize">
                                 {conceptId}
                             </span>
                         </div>
                     </div>
 
-                    <Card className="bg-[--card-bg] border-none p-6">
+                    <Card className="bg-gray-50 dark:bg-[--card-bg] border-none p-6">
                         <h1 className="text-2xl font-semibold mb-2">
                             Раздел не найден
                         </h1>
-                        <p className="text-white/60 mb-4">
+                        <p className="text-gray-500 dark:text-white/60 mb-4">
                             К сожалению, запрошенный раздел не существует или
                             был удален.
                         </p>
                         <Button
                             onClick={() => router.back()}
-                            className="bg-white/5 hover:bg-white/10 text-white"
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white"
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
                             Вернуться назад
@@ -162,27 +162,27 @@ export default function ConceptPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[--bg-color-dark] text-[--text-color]">
+        <div className="min-h-screen bg-white dark:bg-[--bg-color-dark] text-gray-900 dark:text-[--text-color] px-4 sm:px-6 lg:px-8">
             <Container className="py-6">
                 {/* Header */}
                 <div className="flex items-center gap-2 mb-6">
                     <Button
                         variant="ghost"
-                        className="text-white/60 hover:text-white"
+                        className="text-gray-500 hover:text-gray-900 dark:text-white/60 dark:hover:text-white"
                         onClick={() => router.back()}
                     >
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Назад
                     </Button>
-                    <div className="flex items-center gap-2 text-white/40">
+                    <div className="flex items-center gap-2 text-gray-400 dark:text-white/40">
                         <Link
                             href={`/courses/${languageData.id}`}
-                            className="hover:text-white transition-colors"
+                            className="hover:text-gray-900 dark:hover:text-white transition-colors"
                         >
                             {languageData.name}
                         </Link>
                         <ChevronRight className="w-4 h-4" />
-                        <span className="text-white capitalize">
+                        <span className="text-gray-500 dark:text-white capitalize">
                             {conceptId}
                         </span>
                     </div>

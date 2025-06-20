@@ -135,7 +135,7 @@ export default function CoursesPage() {
     };
 
     return (
-        <div className="relative min-h-screen w-full bg-white dark:bg-[--bg-color-dark] overflow-x-hidden">
+        <div className="relative min-h-screen w-full bg-white dark:bg-[--bg-color-dark] overflow-x-hidden px-4 sm:px-6 lg:px-8">
             {/* Dot Pattern Background */}
             <div className="absolute inset-0 opacity-5 dark:opacity-5">
                 <div
