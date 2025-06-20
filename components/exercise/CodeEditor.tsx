@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TestResults from "./TestResults";
 
 // Предзагрузка Monaco Editor
 loader.config({
@@ -25,6 +27,8 @@ interface CodeEditorProps {
     initialCode: string;
     language: string;
     exerciseId: string;
+    tests?: { input: any[]; expected: any }[];
+    exercise: any;
 }
 
 type OutputStatus = "idle" | "running" | "success" | "error";
@@ -34,6 +38,15 @@ interface OutputState {
     message: string;
     executionTime?: number;
     memory?: string;
+}
+
+interface TestResult {
+    index: number;
+    input: any[];
+    expected: any;
+    actual: any;
+    passed: boolean;
+    error?: string;
 }
 
 const EDITOR_OPTIONS = {
@@ -163,6 +176,8 @@ export default function CodeEditor({
     initialCode,
     language,
     exerciseId,
+    tests,
+    exercise,
 }: CodeEditorProps) {
     const [mounted, setMounted] = useState(false);
     const [code, setCode] = useState(initialCode);
@@ -171,19 +186,34 @@ export default function CodeEditor({
         status: "idle",
         message: "",
     });
+    const [solutionUnlocked, setSolutionUnlocked] = useState(false);
+    const [testResults, setTestResults] = useState<TestResult[] | null>(null);
+    const [isRunningTests, setIsRunningTests] = useState(false);
     const editorRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // Load saved code from localStorage on mount
     useEffect(() => {
         setMounted(true);
-        return () => setMounted(false);
-    }, []);
-
-    useEffect(() => {
-        if (mounted && editorRef.current) {
-            editorRef.current.setValue(initialCode);
+        const saved =
+            typeof window !== "undefined"
+                ? localStorage.getItem(`exercise_code_${exerciseId}`)
+                : null;
+        if (saved && editorRef.current) {
+            editorRef.current.setValue(saved);
+            setCode(saved);
+        } else if (saved) {
+            setCode(saved);
         }
-    }, [initialCode, mounted]);
+        return () => setMounted(false);
+    }, [exerciseId]);
+
+    // Save code to localStorage on change
+    useEffect(() => {
+        if (mounted) {
+            localStorage.setItem(`exercise_code_${exerciseId}`, code);
+        }
+    }, [code, exerciseId, mounted]);
 
     const handleEditorDidMount = (editor: any, monaco: any) => {
         editorRef.current = editor;
@@ -197,15 +227,87 @@ export default function CodeEditor({
         );
     };
 
+    const runJsTests = (userCode: string, testsToRun: any[]): TestResult[] => {
+        try {
+            const functionName = userCode.match(
+                /function\s+([a-zA-Z0-9_]+)\s*\(/
+            )?.[1];
+            if (!functionName) {
+                throw new Error(
+                    "Не удалось найти основную функцию в вашем коде."
+                );
+            }
+
+            const fn = new Function(`${userCode}; return ${functionName};`);
+            const userFunction = fn();
+
+            return testsToRun.map((test, index) => {
+                try {
+                    const actual = userFunction(...test.input);
+                    const passed =
+                        JSON.stringify(actual) ===
+                        JSON.stringify(test.expected);
+
+                    return {
+                        index,
+                        input: test.input,
+                        expected: test.expected,
+                        actual,
+                        passed,
+                    };
+                } catch (error: any) {
+                    return {
+                        index,
+                        input: test.input,
+                        expected: test.expected,
+                        actual: undefined,
+                        passed: false,
+                        error: error.message,
+                    };
+                }
+            });
+        } catch (e: any) {
+            return testsToRun.map((test, index) => ({
+                index,
+                input: test.input,
+                expected: test.expected,
+                actual: undefined,
+                passed: false,
+                error: e.message,
+            }));
+        }
+    };
+
+    const handleRunTests = async () => {
+        if (!editorRef.current || !tests) return;
+
+        setIsRunningTests(true);
+        setTestResults(null);
+
+        // Симуляция задержки для анимации
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        const currentCode = editorRef.current.getValue();
+        const results = runJsTests(currentCode, tests);
+
+        setTestResults(results);
+        setIsRunningTests(false);
+
+        // Проверяем, все ли тесты пройдены
+        const allPassed = results.every((r) => r.passed);
+        if (allPassed) {
+            setSolutionUnlocked(true);
+        }
+    };
+
     const handleRunCode = async () => {
         if (!editorRef.current) return;
 
         setIsRunning(true);
         const startTime = performance.now();
 
+        // --- Логика для языков без тестов ---
         try {
-            const currentCode = editorRef.current.getValue();
-
             // Симуляция выполнения кода с разной длительностью
             const executionTime = Math.floor(Math.random() * 1000) + 500;
             await new Promise((resolve) => setTimeout(resolve, executionTime));
@@ -256,6 +358,16 @@ export default function CodeEditor({
         if (editorRef.current) {
             editorRef.current.setValue(initialCode);
             setOutput({ status: "idle", message: "" });
+            setTestResults(null);
+            setSolutionUnlocked(false);
+        }
+    };
+
+    const handleShowSolution = () => {
+        if (editorRef.current && exercise.solution) {
+            editorRef.current.setValue(exercise.solution);
+            setOutput({ status: "idle", message: "" });
+            setTestResults(null);
         }
     };
 
@@ -265,14 +377,19 @@ export default function CodeEditor({
                 return "cpp";
             case "python":
                 return "python";
+            case "js":
             case "javascript":
                 return "javascript";
             case "typescript":
                 return "typescript";
+            case "html":
+                return "html";
             default:
                 return "plaintext";
         }
     };
+
+    const isJsWithTests = language === "js" && tests && tests.length > 0;
 
     if (!mounted) {
         return (
@@ -284,70 +401,104 @@ export default function CodeEditor({
 
     return (
         <div
-            className="w-full h-[600px] bg-[#101011] rounded-lg flex flex-col overflow-hidden"
+            className="w-full bg-[#101011] rounded-lg flex flex-row overflow-hidden"
+            style={{ height: "70vh", minHeight: "600px" }}
             ref={containerRef}
         >
-            {/* Toolbar */}
-            <div className="flex items-center justify-between px-4 h-14 border-b border-white/5 flex-shrink-0">
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="default"
-                        size="sm"
-                        className={cn(
-                            "bg-[--purple] hover:bg-[--button-bg] text-white rounded-lg transition-all duration-200",
-                            isRunning && "opacity-50 cursor-not-allowed"
+            {/* Left: Editor */}
+            <div
+                className="flex-1 min-w-0 flex flex-col border-r border-white/5"
+                style={{ maxWidth: "65%" }}
+            >
+                {/* Toolbar */}
+                <div className="flex items-center justify-between px-4 h-14 border-b border-white/5 flex-shrink-0">
+                    <div className="flex items-center gap-2">
+                        <Button
+                            variant="default"
+                            size="sm"
+                            className={cn(
+                                "bg-[--purple] hover:bg-[--button-bg] text-white rounded-lg transition-all duration-200",
+                                (isRunning || isRunningTests) &&
+                                    "opacity-50 cursor-not-allowed"
+                            )}
+                            onClick={
+                                isJsWithTests ? handleRunTests : handleRunCode
+                            }
+                            disabled={isRunning || isRunningTests}
+                        >
+                            {isJsWithTests ? (
+                                <CheckCircle2 className="w-4 h-4 mr-2" />
+                            ) : (
+                                <Play className="w-4 h-4 mr-2" />
+                            )}
+                            <span>
+                                {isJsWithTests ? "Проверить" : "Запустить"}
+                            </span>
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-white/60 hover:text-white hover:bg-white/5"
+                            onClick={handleReset}
+                        >
+                            <RotateCcw className="w-4 h-4 mr-2" />
+                            <span>Сбросить</span>
+                        </Button>
+                        {solutionUnlocked && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-white/60 hover:text-white hover:bg-white/5"
+                                onClick={handleShowSolution}
+                            >
+                                <span>Показать решение</span>
+                            </Button>
                         )}
-                        onClick={handleRunCode}
-                        disabled={isRunning}
-                    >
-                        {isRunning ? (
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        ) : (
-                            <Play className="w-4 h-4 mr-2" />
+                    </div>
+                    <div className="text-sm text-white/40">
+                        {language.toUpperCase()}
+                    </div>
+                </div>
+                {/* Editor */}
+                <div className="flex-1 min-h-0 relative">
+                    <Editor
+                        height="100%"
+                        defaultLanguage={getLanguageId()}
+                        value={code}
+                        theme="kubercode-dark"
+                        options={EDITOR_OPTIONS}
+                        onChange={(value) => setCode(value || "")}
+                        onMount={handleEditorDidMount}
+                        loading={
+                            <div className="flex items-center justify-center w-full h-full">
+                                <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20 border-t-white" />
+                            </div>
+                        }
+                    />
+                </div>
+                {/* Output for non-JS languages */}
+                {!isJsWithTests && (
+                    <AnimatePresence>
+                        {(output.message || isRunning) && (
+                            <OutputPanel
+                                output={output}
+                                isRunning={isRunning}
+                            />
                         )}
-                        {isRunning ? "Выполняется..." : "Запустить"}
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-white/60 hover:text-white hover:bg-white/5 rounded-lg"
-                        onClick={handleReset}
-                        disabled={isRunning}
-                    >
-                        <RotateCcw className="w-4 h-4 mr-2" />
-                        Сбросить
-                    </Button>
-                </div>
-
-                <div className="text-sm text-white/40">
-                    {language.toUpperCase()}
-                </div>
-            </div>
-
-            {/* Editor */}
-            <div className="flex-1 min-h-0 relative">
-                <Editor
-                    height="100%"
-                    defaultLanguage={getLanguageId()}
-                    defaultValue={initialCode}
-                    theme="kubercode-dark"
-                    options={EDITOR_OPTIONS}
-                    onChange={(value) => setCode(value || "")}
-                    onMount={handleEditorDidMount}
-                    loading={
-                        <div className="flex items-center justify-center w-full h-full">
-                            <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20 border-t-white" />
-                        </div>
-                    }
-                />
-            </div>
-
-            {/* Output */}
-            <AnimatePresence>
-                {(output.message || isRunning) && (
-                    <OutputPanel output={output} isRunning={isRunning} />
+                    </AnimatePresence>
                 )}
-            </AnimatePresence>
+            </div>
+            {/* Right: Test Results (if JS with tests) */}
+            {isJsWithTests && (
+                <div className="w-[35%] min-w-[320px] max-w-[500px] h-full overflow-y-auto bg-[#0a0a0b] flex flex-col">
+                    <TestResults
+                        tests={tests}
+                        results={testResults}
+                        isRunning={isRunningTests}
+                        onRunTests={handleRunTests}
+                    />
+                </div>
+            )}
         </div>
     );
 }
