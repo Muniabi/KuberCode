@@ -6,21 +6,12 @@ import { Card } from "@/components/ui/card";
 import {
     ArrowLeft,
     ArrowRight,
-    BookOpen,
     ChevronRight,
     Timer,
-    Video,
-    FileText,
-    LightbulbIcon,
-    GraduationCap,
-    CheckCircle2,
     Circle,
-    Lock,ы
-    PlayCircle,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { LANGUAGES } from "@/app/courses/data/languages";
 import Link from "next/link";
 import { useState } from "react";

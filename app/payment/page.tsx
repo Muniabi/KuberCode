@@ -69,11 +69,7 @@ function PaymentContent() {
     const handlePaymentSubmit = async (paymentData: any) => {
         try {
             setPaymentStep("processing");
-            const endpoint =
-                paymentData.method === "sbp"
-                    ? "/api/payment/create-sbp"
-                    : "/api/payment";
-            const response = await fetch(endpoint, {
+            const response = await fetch("/api/payment/create-sbp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

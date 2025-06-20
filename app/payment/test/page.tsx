@@ -3,9 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/shared/container";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
-export default function PaymentTestPage() {
+function PaymentTestContent() {
     const searchParams = useSearchParams();
     const [localStorageData, setLocalStorageData] = useState<any>(null);
 
@@ -97,5 +97,13 @@ export default function PaymentTestPage() {
                 </div>
             </Container>
         </div>
+    );
+}
+
+export default function PaymentTestPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <PaymentTestContent />
+        </Suspense>
     );
 }

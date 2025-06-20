@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/shared/container";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
     const searchParams = useSearchParams();
     const [paymentStatus, setPaymentStatus] = useState<
         "checking" | "success" | "failed"
@@ -165,5 +165,13 @@ export default function PaymentSuccessPage() {
                 </div>
             </Container>
         </div>
+    );
+}
+
+export default function PaymentSuccessPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <PaymentSuccessContent />
+        </Suspense>
     );
 }
