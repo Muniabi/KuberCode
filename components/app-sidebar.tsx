@@ -107,12 +107,12 @@ const data = {
     navSecondary: [
         {
             title: "Поддержка",
-            url: "#",
+            url: "/support",
             icon: LifeBuoy,
         },
         {
             title: "Обратная связь",
-            url: "#",
+            url: "/support#feedback-form",
             icon: Send,
         },
     ],

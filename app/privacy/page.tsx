@@ -282,7 +282,7 @@ export default function PrivacyPage() {
                             нашей Политики конфиденциальности или обработки
                             данных, пожалуйста, свяжитесь с нами:
                         </p>
-                        <div className="bg-violet-50 p-4 rounded-lg mt-3">
+                        <div className="bg-violet-50 dark:bg-violet-900 p-4 rounded-lg mt-3">
                             <p>
                                 <strong>ООО "Кубер Код"</strong>
                             </p>
