@@ -15,7 +15,7 @@ export default function FAQPage() {
             <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
                 {/* О платформе */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             О платформе Kuber Code
                         </CardTitle>
@@ -92,7 +92,7 @@ export default function FAQPage() {
 
                 {/* Учебный процесс */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Учебный процесс
                         </CardTitle>
@@ -167,7 +167,7 @@ export default function FAQPage() {
 
                 {/* Регистрация и аккаунт */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Регистрация и аккаунт
                         </CardTitle>
@@ -235,7 +235,7 @@ export default function FAQPage() {
 
                 {/* Подписки и оплата */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Подписки и оплата
                         </CardTitle>
@@ -316,7 +316,7 @@ export default function FAQPage() {
 
                 {/* Технические вопросы */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Технические вопросы
                         </CardTitle>
@@ -414,7 +414,7 @@ export default function FAQPage() {
 
                 {/* Сертификация */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900 ">
                         <CardTitle className="text-2xl">
                             Сертификация и достижения
                         </CardTitle>
@@ -491,7 +491,7 @@ export default function FAQPage() {
 
                 {/* Контакты */}
                 <Card className="mb-6">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Контакты и поддержка
                         </CardTitle>
@@ -550,7 +550,7 @@ export default function FAQPage() {
 
                 {/* Дополнительные вопросы */}
                 <Card className="mb-10">
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Вы не нашли ответ на свой вопрос?
                         </CardTitle>

@@ -24,8 +24,6 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 import { signOut, useSession } from "next-auth/react";
-import { ProSubscriptionInfo } from "./shared/subscription/subscription";
-import { Badge } from "./ui/badge";
 import { SettingsDialog } from "./shared/settings/settings-dialog";
 
 // Функция для получения аватара из localStorage
@@ -119,11 +117,6 @@ export function NavUser({
                                 </div>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                            <ProSubscriptionInfo />
-                        </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <BadgeCheck className="mr-2 h-4 w-4" />

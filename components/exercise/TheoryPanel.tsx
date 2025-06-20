@@ -12,15 +12,89 @@ import {
     PlayCircle,
 } from "lucide-react";
 import { useState } from "react";
+import Editor, { loader, type EditorProps } from "@monaco-editor/react";
+
+// Настраиваем Monaco Editor
+loader.config({
+    paths: {
+        vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs",
+    },
+});
+
+// Определяем темную тему
+const darkTheme = {
+    base: "vs-dark",
+    inherit: true,
+    rules: [
+        { token: "comment", foreground: "6A9955" },
+        { token: "keyword", foreground: "C586C0" },
+        { token: "string", foreground: "CE9178" },
+        { token: "number", foreground: "B5CEA8" },
+        { token: "function", foreground: "DCDCAA" },
+    ],
+    colors: {
+        "editor.background": "#1E1E1E",
+        "editor.foreground": "#D4D4D4",
+        "editor.lineHighlightBackground": "#2F2F2F",
+        "editorCursor.foreground": "#FFFFFF",
+        "editor.selectionBackground": "#264F78",
+    },
+};
 
 interface TheoryPanelProps {
     exercise: Exercise;
 }
 
+const EDITOR_OPTIONS: EditorProps["options"] = {
+    minimap: { enabled: false },
+    fontSize: 14,
+    lineNumbers: "on" as const,
+    readOnly: true,
+    scrollBeyondLastLine: false,
+    automaticLayout: true,
+    padding: { top: 16, bottom: 16 },
+    fontFamily: "'JetBrains Mono', monospace",
+    contextmenu: false,
+    wordWrap: "on" as const,
+    wrappingIndent: "same" as const,
+    tabSize: 2,
+    renderLineHighlight: "all",
+    scrollbar: {
+        vertical: "visible" as const,
+        horizontal: "visible" as const,
+        useShadows: false,
+        verticalScrollbarSize: 10,
+        horizontalScrollbarSize: 10,
+    },
+};
+
 export default function TheoryPanel({ exercise }: TheoryPanelProps) {
     const [activeTab, setActiveTab] = useState<"theory" | "hints" | "solution">(
         "theory"
     );
+
+    const handleEditorDidMount = (editor: any, monaco: any) => {
+        // Регистрируем темную тему
+        monaco.editor.defineTheme("custom-dark", darkTheme);
+        monaco.editor.setTheme("custom-dark");
+
+        // Настраиваем поддержку языка
+        if (
+            exercise.languageId === "javascript" ||
+            exercise.languageId === "js"
+        ) {
+            monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions(
+                {
+                    noSemanticValidation: false,
+                    noSyntaxValidation: false,
+                }
+            );
+            monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+                target: monaco.languages.typescript.ScriptTarget.ES2020,
+                allowNonTsExtensions: true,
+            });
+        }
+    };
 
     const tabs = [
         {
@@ -40,7 +114,6 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
             label: "Решение",
             icon: CheckCircle2,
             content: exercise.solution || "Решение пока не доступно",
-            locked: true,
         },
     ];
 
@@ -59,13 +132,8 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
                                 "bg-white/5 text-white hover:bg-white/10"
                         )}
                         onClick={() => setActiveTab(tab.id)}
-                        disabled={tab.locked}
                     >
-                        {tab.locked ? (
-                            <Lock className="w-4 h-4" />
-                        ) : (
-                            <tab.icon className="w-4 h-4" />
-                        )}
+                        <tab.icon className="w-4 h-4" />
                         {tab.label}
                     </Button>
                 ))}
@@ -124,16 +192,40 @@ export default function TheoryPanel({ exercise }: TheoryPanelProps) {
                     </div>
                 )}
 
-                {activeTab === "solution" && (
-                    <div className="text-center py-8">
-                        <Lock className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-white mb-2">
-                            Решение заблокировано
-                        </h3>
-                        <p className="text-white/60 text-sm max-w-sm mx-auto">
-                            Сначала попробуйте решить задачу самостоятельно.
-                            Используйте подсказки, если застряли.
-                        </p>
+                {activeTab === "solution" && exercise.solution && (
+                    <div className="space-y-4">
+                        <div className="p-4 rounded-xl bg-white/5">
+                            <div className="flex items-center gap-2 mb-4 text-[--lime]">
+                                <CheckCircle2 className="w-5 h-5" />
+                                <span className="font-medium">
+                                    Готовое решение
+                                </span>
+                            </div>
+                            <div className="h-[300px] rounded-lg overflow-hidden bg-[#1E1E1E]">
+                                <Editor
+                                    height="100%"
+                                    defaultValue={exercise.solution}
+                                    defaultLanguage={
+                                        exercise.languageId === "js"
+                                            ? "javascript"
+                                            : exercise.languageId
+                                    }
+                                    theme="custom-dark"
+                                    options={EDITOR_OPTIONS}
+                                    onMount={handleEditorDidMount}
+                                    loading={
+                                        <div className="flex items-center justify-center w-full h-full">
+                                            <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20 border-t-white" />
+                                        </div>
+                                    }
+                                />
+                            </div>
+                            <p className="mt-4 text-sm text-white/60">
+                                Это лишь одно из возможных решений. Попробуйте
+                                сначала решить задачу самостоятельно, а затем
+                                сравните свое решение с предложенным.
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>

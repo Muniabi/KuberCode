@@ -16,7 +16,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
                 <div>
                     <Card className="h-full">
-                        <CardHeader className="bg-violet-50">
+                        <CardHeader className="bg-violet-50 dark:bg-violet-900">
                             <CardTitle className="text-2xl">
                                 Форма обратной связи
                             </CardTitle>
@@ -29,7 +29,7 @@ export default function ContactPage() {
 
                 <div>
                     <Card className="h-full">
-                        <CardHeader className="bg-violet-50">
+                        <CardHeader className="bg-violet-50 dark:bg-violet-900">
                             <CardTitle className="text-2xl">
                                 Контактная информация
                             </CardTitle>
@@ -192,7 +192,7 @@ export default function ContactPage() {
                                 <div className="flex space-x-4">
                                     <a
                                         href="#"
-                                        className="bg-violet-100 hover:bg-violet-200 transition-colors p-2 rounded-full"
+                                        className="bg-violet-100   hover:bg-violet-200 transition-colors p-2 rounded-full"
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -316,7 +316,7 @@ export default function ContactPage() {
 
             <div className="max-w-6xl mx-auto mb-12">
                 <Card>
-                    <CardHeader className="bg-violet-50">
+                    <CardHeader className="bg-violet-50 dark:bg-violet-900">
                         <CardTitle className="text-2xl">
                             Часто задаваемые вопросы о поддержке
                         </CardTitle>
@@ -379,14 +379,39 @@ export default function ContactPage() {
                 </Card>
             </div>
 
-            <div className="max-w-6xl mx-auto">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2245.3346827582477!2d37.618174098949384!3d55.75696447258026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a50b315e573%3A0xa886bf5a3d9b2e68!2z0JzQvtGB0LrQvtCy0YHQutC40Lkg0JrRgNC10LzQu9GM!5e0!3m2!1sru!2sru!4v1650536096339!5m2!1sru!2sru"
-                    className="w-full h-96 rounded-lg border-2 border-violet-100"
-                    loading="lazy"
-                    title="Карта расположения офиса"
-                    allowFullScreen
-                ></iframe>
+            <div className="flex justify-center items-center">
+                <div style={{ position: "relative", overflow: "hidden" }}>
+                    <a
+                        href="https://yandex.ru/maps/org/rostovskiy_na_donu_kolledzh_svyazi_i_informatiki/1100902337/?utm_medium=mapframe&utm_source=maps"
+                        style={{
+                            color: "#eee",
+                            fontSize: "12px",
+                            position: "absolute",
+                            top: "0px",
+                        }}
+                    >
+                        Ростовский-на-Дону колледж связи и информатики
+                    </a>
+                    <a
+                        href="https://yandex.ru/maps/39/rostov-na-donu/category/college/184106236/?utm_medium=mapframe&utm_source=maps"
+                        style={{
+                            color: "#eee",
+                            fontSize: "12px",
+                            position: "absolute",
+                            top: "14px",
+                        }}
+                    >
+                        Колледж в Ростове‑на‑Дону
+                    </a>
+                    <iframe
+                        src="https://yandex.ru/map-widget/v1/?ll=39.705747%2C47.214907&mode=poi&poi%5Bpoint%5D=39.704911%2C47.214616&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D1100902337&z=19.14"
+                        width="1440"
+                        height="400"
+                        frameBorder="1"
+                        allowFullScreen
+                        style={{ position: "relative" }}
+                    ></iframe>
+                </div>
             </div>
         </div>
     );
