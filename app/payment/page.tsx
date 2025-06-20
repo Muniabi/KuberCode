@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import PaymentSummary from "./components/PaymentSummary";
 import PaymentMethods from "./components/PaymentMethods";
-import PaymentForm from "./components/PaymentForm";
+import YooKassaPayment from "./components/YooKassaPayment";
 import PaymentStatus from "./components/PaymentStatus";
 import SbpPayment from "./components/SbpPayment";
 import { motion } from "framer-motion";
@@ -110,10 +110,14 @@ function PaymentContent() {
         switch (paymentStep) {
             case "payment":
                 return selectedMethod === "card" ? (
-                    <PaymentForm
-                        method="card"
-                        onSubmit={handlePaymentSubmit}
+                    <YooKassaPayment
                         amount={paymentDetails.amount}
+                        mentorId={paymentDetails.mentorId}
+                        mentorName={paymentDetails.mentorName}
+                        sessionDate={paymentDetails.sessionDate}
+                        sessionTime={paymentDetails.sessionTime}
+                        duration={paymentDetails.duration}
+                        onSubmit={handlePaymentSubmit}
                         onBack={handleBackToMethods}
                     />
                 ) : (

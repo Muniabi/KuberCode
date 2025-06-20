@@ -14,9 +14,13 @@ const methods = [
     {
         id: "card",
         label: "Банковская карта",
-        description: "Visa, Mastercard, МИР",
+        description: "Visa, Mastercard, МИР через ЮKassa",
         icon: CreditCard,
-        benefits: ["Мгновенное зачисление", "Без комиссии"],
+        benefits: [
+            "Мгновенное зачисление",
+            "Без комиссии",
+            "Безопасная оплата",
+        ],
     },
     {
         id: "sbp",
@@ -47,7 +51,9 @@ export default function PaymentMethods({
 
             <RadioGroup
                 defaultValue="card"
-                onValueChange={(value) => onSelect(value as "card" | "sbp")}
+                onValueChange={(value: string) =>
+                    onSelect(value as "card" | "sbp")
+                }
                 className="space-y-4"
             >
                 {methods.map(

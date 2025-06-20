@@ -75,9 +75,9 @@ export default function SbpPayment({
         <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
                 <Button
-                    variant="ghost"
+                    variant="default"
                     onClick={onBack}
-                    className="text-zinc-500 hover:text-zinc-900"
+                    className="text-white"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Назад
