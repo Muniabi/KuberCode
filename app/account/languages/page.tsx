@@ -1,4 +1,5 @@
-import CourseCardList from "@/components/myCourses/CourseCardList";
+import { Suspense } from "react";
+import { LanguageList } from "@/components/account/LanguageList";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -10,7 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 
-const CoursesPage = () => {
+const LanguagesPage = () => {
     return (
         <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2">
@@ -20,8 +21,8 @@ const CoursesPage = () => {
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem className="hidden md:block">
-                                <BreadcrumbLink href="/">
-                                    Главная
+                                <BreadcrumbLink href="/account">
+                                    Аккаунт
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator className="hidden md:block" />
@@ -32,17 +33,16 @@ const CoursesPage = () => {
                     </Breadcrumb>
                 </div>
             </header>
-            <div className="flex flex-1 flex-row gap-4 p-4 pt-0">
-                <div className="flex-grow">
-                    <CourseCardList />
-                </div>
-                <div className="min-h-[calc(100vh-64px)] max-w-md flex-none rounded-xl bg-stone-100/50 md:min-h-min dark:bg-stone-800/50 sticky top-0">
-                    {/* Содержимое блока */}
-                    <div className="p-4">gfgsdfggdgdsdfgdsfg</div>
-                </div>
-            </div>
+            <main className="p-4">
+                <h1 className="text-3xl font-bold tracking-tight mb-6">
+                    Мои языки
+                </h1>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <LanguageList />
+                </Suspense>
+            </main>
         </SidebarInset>
     );
 };
 
-export default CoursesPage;
+export default LanguagesPage;

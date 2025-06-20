@@ -153,7 +153,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                         )}
                                         href="/courses"
                                     >
-                                        Курсы
+                                        Языки
                                     </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
@@ -253,7 +253,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                                             className="text-stone-700 dark:text-stone-200 hover:text-[#A559DD] dark:hover:text-[#A559DD] font-semibold text-lg transition-colors"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            Курсы
+                                            Языки
                                         </Link>
 
                                         {/* Мероприятия */}

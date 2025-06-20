@@ -88,6 +88,17 @@ export default function DashboardPage() {
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div className="lg:col-span-2">
+                            <div className="flex items-center justify-between mb-2">
+                                <h2 className="text-xl font-semibold">
+                                    Ближайшие сессии
+                                </h2>
+                                <Link href="/account/schedule">
+                                    <Button variant="outline" size="sm">
+                                        <CalendarDays className="w-4 h-4 mr-2" />
+                                        Все сессии
+                                    </Button>
+                                </Link>
+                            </div>
                             <SessionsList
                                 sessions={mockUpcomingSessions.slice(0, 2)}
                                 onCancel={handleCancel}
