@@ -44,7 +44,8 @@ export async function POST(request: Request) {
             confirmation: {
                 type: "redirect",
                 return_url: `${
-                    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+                    process.env.NEXT_PUBLIC_BASE_URL ||
+                    "http://85.198.82.117:3000"
                 }/payment/success`,
             },
             description: description.substring(0, 128), // Ограничение ЮKassa
