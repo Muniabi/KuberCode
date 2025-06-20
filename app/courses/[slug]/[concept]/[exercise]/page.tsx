@@ -132,10 +132,8 @@ export default function ExercisePage() {
                         <Card className="bg-[--card-bg] border-none rounded-3xl overflow-hidden">
                             <CodeEditor
                                 initialCode={exercise.initialCode}
-                                language={exercise.language}
+                                language={language.id}
                                 exerciseId={exercise.id}
-                                tests={exercise.tests}
-                                exercise={exercise}
                             />
                         </Card>
                     </div>

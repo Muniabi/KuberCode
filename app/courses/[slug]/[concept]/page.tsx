@@ -22,7 +22,6 @@ import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { LANGUAGES } from "@/app/courses/data/languages";
-import { CONCEPTS } from "@/app/courses/data/concepts";
 import Link from "next/link";
 import { useState } from "react";
 import { Exercise, EXERCISES } from "@/app/courses/data/exercises";
@@ -84,8 +83,17 @@ function ExerciseCard({
                                     <Timer className="w-4 h-4" />
                                     <span>~15 мин</span>
                                 </div>
-                                <div className="px-3 py-1 rounded-full text-sm bg-[--lime-alpha] text-[--lime]">
-                                    Практика
+                                <div
+                                    className={cn(
+                                        "px-3 py-1 rounded-full text-sm",
+                                        exercise.type === "tutorial"
+                                            ? "bg-[--purple-alpha] text-[--purple]"
+                                            : "bg-[--lime-alpha] text-[--lime]"
+                                    )}
+                                >
+                                    {exercise.type === "tutorial"
+                                        ? "Теория"
+                                        : "Практика"}
                                 </div>
                             </div>
                         </div>
@@ -103,16 +111,9 @@ export default function ConceptPage() {
     const conceptId = params.concept as string;
 
     const languageData = LANGUAGES.find((lang) => lang.id === slug);
-    const conceptData = CONCEPTS.find(
-        (concept) => concept.languageId === slug && concept.id === conceptId
-    );
+    const exercises = EXERCISES.filter((ex) => ex.id.startsWith(conceptId));
 
-    // Получаем упражнения для данной концепции
-    const exercises = conceptData
-        ? EXERCISES.filter((ex) => conceptData.exercises.includes(ex.id))
-        : [];
-
-    if (!languageData || !conceptData) {
+    if (!languageData || !exercises.length) {
         return (
             <div className="min-h-screen bg-[--bg-color-dark] text-[--text-color]">
                 <Container className="py-6">
@@ -181,31 +182,11 @@ export default function ConceptPage() {
                             {languageData.name}
                         </Link>
                         <ChevronRight className="w-4 h-4" />
-                        <span className="text-white">{conceptData.title}</span>
+                        <span className="text-white capitalize">
+                            {conceptId}
+                        </span>
                     </div>
                 </div>
-
-                {/* Concept Info */}
-                <Card className="bg-[--card-bg] border-none p-6 mb-6">
-                    <div className="flex items-start gap-4">
-                        <div
-                            className={cn(
-                                "w-16 h-16 rounded-xl flex items-center justify-center text-2xl",
-                                conceptData.color
-                            )}
-                        >
-                            {conceptData.icon}
-                        </div>
-                        <div className="flex-1">
-                            <h1 className="text-2xl font-semibold mb-2">
-                                {conceptData.title}
-                            </h1>
-                            <p className="text-white/60">
-                                {conceptData.description}
-                            </p>
-                        </div>
-                    </div>
-                </Card>
 
                 {/* Exercise List */}
                 <div className="space-y-4">
