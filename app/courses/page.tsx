@@ -135,13 +135,13 @@ export default function CoursesPage() {
     };
 
     return (
-        <div className="relative min-h-screen w-full bg-[--bg-color-dark] overflow-x-hidden">
+        <div className="relative min-h-screen w-full bg-white dark:bg-[--bg-color-dark] overflow-x-hidden">
             {/* Dot Pattern Background */}
-            <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0 opacity-5 dark:opacity-5">
                 <div
                     className="absolute inset-0"
                     style={{
-                        backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`,
+                        backgroundImage: `radial-gradient(var(--dot-color, #000) 1px, transparent 1px)`,
                         backgroundSize: "24px 24px",
                     }}
                 />
@@ -149,8 +149,8 @@ export default function CoursesPage() {
 
             {/* Gradient Orbs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[--purple]/20 to-[--button-bg]/20 rounded-full blur-3xl" />
-                <div className="absolute top-1/3 -left-40 w-96 h-96 bg-gradient-to-br from-[--lime]/10 to-[--yellow]/10 rounded-full blur-3xl" />
+                <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-[--purple]/20 dark:to-[--button-bg]/20 rounded-full blur-3xl" />
+                <div className="absolute top-1/3 -left-40 w-96 h-96 bg-gradient-to-br from-lime-400/10 to-yellow-400/10 dark:from-[--lime]/10 dark:to-[--yellow]/10 rounded-full blur-3xl" />
             </div>
 
             <Container className="relative z-10 py-6 lg:py-8">
@@ -163,7 +163,7 @@ export default function CoursesPage() {
                         {/* Search */}
                         <div className="flex-1 w-full lg:max-w-md relative order-2 lg:order-1">
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[--text-secondary] transition-colors group-hover:text-[--text-color] pointer-events-none" />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-[--text-secondary] transition-colors group-hover:text-gray-800 dark:group-hover:text-[--text-color] pointer-events-none" />
                                 <Input
                                     ref={searchInputRef}
                                     type="text"
@@ -178,13 +178,11 @@ export default function CoursesPage() {
                                             200
                                         );
                                     }}
-                                    className="w-full bg-[--card-bg]/50 hover:bg-[--card-bg] focus:bg-[--card-bg] text-[--text-color] pl-10 pr-4 py-2 border-none transition-colors duration-200 focus-visible:ring-1 focus-visible:ring-[--purple]/30 placeholder:text-[--text-secondary]"
+                                    className="w-full bg-white dark:bg-zinc-700 hover:bg-gray-50 dark:hover:bg-[--card-bg] focus:bg-white dark:focus:bg-[--card-bg] text-gray-900 dark:text-[--text-color] pl-10 pr-10 py-2 border border-gray-200 dark:border-transparent rounded-lg transition-colors duration-200 focus-visible:ring-1 focus-visible:ring-purple-500 dark:focus-visible:ring-[--purple]/30 placeholder:text-gray-500 dark:placeholder:text-[--text-secondary]"
                                 />
                                 {searchQuery && (
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 text-[--text-secondary] hover:text-[--text-color]"
+                                    <button
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 text-gray-500 dark:text-[--text-secondary] hover:text-gray-900 dark:hover:text-[--text-color] flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-white/10"
                                         onClick={() => {
                                             setSearchQuery("");
                                             setDisplayedQuery("");
@@ -193,13 +191,13 @@ export default function CoursesPage() {
                                         }}
                                     >
                                         <X className="h-4 w-4" />
-                                    </Button>
+                                    </button>
                                 )}
                             </div>
 
                             {/* Search Suggestions */}
                             {isFocused && searchSuggestions.length > 0 && (
-                                <div className="absolute w-full mt-1 rounded-md border border-[--card-bg] bg-[--card-bg] shadow-lg z-50">
+                                <div className="absolute w-full mt-1 rounded-md border border-gray-200 dark:border-[--card-bg] bg-white dark:bg-[--card-bg] shadow-lg z-50">
                                     <Command className="bg-transparent">
                                         <CommandList>
                                             <CommandGroup>
@@ -212,9 +210,9 @@ export default function CoursesPage() {
                                                                     suggestion
                                                                 );
                                                             }}
-                                                            className="py-2 text-[--text-secondary] hover:bg-[--card-hover] hover:text-[--text-color] cursor-pointer"
+                                                            className="py-2 text-gray-600 dark:text-[--text-secondary] hover:bg-gray-100 dark:hover:bg-[--card-hover] hover:text-gray-900 dark:hover:text-[--text-color] cursor-pointer"
                                                         >
-                                                            <Search className="w-4 h-4 mr-2 text-[--text-secondary]" />
+                                                            <Search className="w-4 h-4 mr-2 text-gray-400 dark:text-[--text-secondary]" />
                                                             {suggestion}
                                                         </CommandItem>
                                                     )
@@ -227,43 +225,36 @@ export default function CoursesPage() {
                         </div>
 
                         <div className="flex flex-row sm:items-center justify-between gap-4 order-1 lg:order-2">
-                            <h1 className="text-2xl lg:text-3xl font-bold text-[--text-color]">
+                            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-[--text-color]">
                                 Языки программирования
                             </h1>
-                            <Button
-                                variant="ghost"
-                                size="icon"
+                            <button
                                 onClick={() =>
                                     setViewMode(
                                         viewMode === "list" ? "grid" : "list"
                                     )
                                 }
-                                className="text-[--text-secondary] hover:text-[--text-color] hover:bg-[--card-bg]/50"
+                                className="p-2 rounded-md text-gray-500 dark:text-[--text-secondary] hover:text-gray-900 dark:hover:text-[--text-color] hover:bg-gray-100 dark:hover:bg-[--card-bg]/50"
                             >
                                 {viewMode === "list" ? (
                                     <LayoutGrid className="w-5 h-5" />
                                 ) : (
                                     <LayoutList className="w-5 h-5" />
                                 )}
-                            </Button>
+                            </button>
                         </div>
                     </div>
 
                     {/* Categories */}
                     <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-6 lg:-mx-8 px-6 lg:px-8">
                         {CATEGORIES.map((category) => (
-                            <Button
+                            <button
                                 key={category.id}
-                                variant={
-                                    selectedCategory === category.id
-                                        ? "default"
-                                        : "ghost"
-                                }
                                 className={cn(
-                                    "transition-all duration-300 flex items-center gap-2 shrink-0 text-sm lg:text-base",
+                                    "transition-all duration-300 flex items-center gap-2 shrink-0 text-sm lg:text-base px-4 py-2 rounded-lg font-medium",
                                     selectedCategory === category.id
                                         ? "bg-gradient-to-r from-[--purple] to-[--button-bg] text-white shadow-lg shadow-[--purple]/25"
-                                        : "text-[--text-secondary] hover:text-[--text-color] hover:bg-[--card-bg]/50"
+                                        : "text-gray-600 dark:text-[--text-secondary] hover:text-gray-900 dark:hover:text-[--text-color] bg-gray-100/50 hover:bg-gray-100 dark:bg-transparent dark:hover:bg-[--card-bg]/50"
                                 )}
                                 onClick={() => setSelectedCategory(category.id)}
                             >
@@ -272,7 +263,7 @@ export default function CoursesPage() {
                                 <span className="px-1.5 py-0.5 rounded-md bg-black/10 dark:bg-black/30 text-xs">
                                     {category.count}
                                 </span>
-                            </Button>
+                            </button>
                         ))}
                     </div>
                 </motion.div>
@@ -303,8 +294,8 @@ export default function CoursesPage() {
                                         href={`/courses/${lang.id}`}
                                         className="block"
                                     >
-                                        <Card className="group bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 transition-all duration-300 relative overflow-hidden cursor-pointer">
-                                            <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <Card className="group bg-white dark:bg-[--card-bg] hover:bg-gray-50/80 dark:hover:bg-[--card-hover] border border-gray-200/80 dark:border-transparent p-4 transition-all duration-300 relative overflow-hidden cursor-pointer">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-gray-50/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                             <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 relative">
                                                 {/* Icon */}
                                                 <div
@@ -323,20 +314,10 @@ export default function CoursesPage() {
                                                 <div className="flex-1 min-w-0 w-full">
                                                     <div className="flex items-start justify-between">
                                                         <div>
-                                                            {lang.status && (
-                                                                <div className="relative inline-block">
-                                                                    <div className="absolute inset-0 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg blur opacity-50" />
-                                                                    <span className="relative inline-block px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg text-[--bg-color] text-xs font-medium mb-2">
-                                                                        {
-                                                                            lang.status
-                                                                        }
-                                                                    </span>
-                                                                </div>
-                                                            )}
-                                                            <h3 className="text-xl font-semibold text-[--text-color] mb-1 group-hover:text-[--lime] transition-colors">
+                                                            <h3 className="text-xl font-semibold text-gray-900 dark:text-[--text-color] mb-1 group-hover:text-purple-600 dark:group-hover:text-[--lime] transition-colors">
                                                                 {lang.name}
                                                             </h3>
-                                                            <p className="text-sm text-[--text-secondary] mb-4 max-w-xl group-hover:text-[--text-color] transition-colors">
+                                                            <p className="text-sm text-gray-600 dark:text-[--text-secondary] mb-4 max-w-xl group-hover:text-gray-800 dark:group-hover:text-[--text-color] transition-colors">
                                                                 {lang.desc}
                                                             </p>
                                                         </div>
@@ -351,7 +332,7 @@ export default function CoursesPage() {
                                                                         key={
                                                                             tag
                                                                         }
-                                                                        className="px-3 py-1 bg-black/10 dark:bg-black/30 rounded-lg text-[--text-secondary] text-sm group-hover:bg-black/20 dark:group-hover:bg-black/40 transition-colors"
+                                                                        className="px-3 py-1 bg-gray-100 dark:bg-black/10 rounded-lg text-gray-600 dark:text-[--text-secondary] text-sm group-hover:bg-gray-200 dark:group-hover:bg-black/20 transition-colors"
                                                                     >
                                                                         {tag}
                                                                     </span>
@@ -359,7 +340,7 @@ export default function CoursesPage() {
                                                             )}
                                                         </div>
                                                         <Button
-                                                            className="w-full sm:w-auto bg-[--purple] hover:bg-[--button-bg] text-white"
+                                                            className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 dark:bg-[--purple] dark:hover:bg-[--button-bg] text-white"
                                                             aria-label={`Начать обучение ${lang.name}`}
                                                         >
                                                             <span className="mr-2">
@@ -378,8 +359,8 @@ export default function CoursesPage() {
                                         href={`/courses/${lang.id}`}
                                         className="block"
                                     >
-                                        <Card className="group bg-[--card-bg] hover:bg-[--card-hover] border-none p-4 lg:p-6 transition-all duration-300 relative overflow-hidden aspect-square flex flex-col cursor-pointer">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <Card className="group bg-white dark:bg-[--card-bg] hover:bg-gray-50/80 dark:hover:bg-[--card-hover] border border-gray-200/80 dark:border-transparent p-4 lg:p-6 transition-all duration-300 relative overflow-hidden aspect-square flex flex-col cursor-pointer">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-gray-50/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                                             {/* Header */}
                                             <div className="flex items-start justify-between mb-4 lg:mb-6">
@@ -393,40 +374,35 @@ export default function CoursesPage() {
                                                         {lang.icon}
                                                     </span>
                                                 </div>
-                                                {lang.status && (
-                                                    <span className="px-2 lg:px-3 py-1 bg-gradient-to-r from-[--lime] to-[--yellow] rounded-lg text-[--bg-color] text-xs font-medium">
-                                                        {lang.status}
-                                                    </span>
-                                                )}
                                             </div>
 
                                             {/* Content */}
                                             <div className="flex-1">
-                                                <h3 className="text-lg lg:text-xl font-semibold text-[--text-color] mb-2 group-hover:text-[--lime] transition-colors">
+                                                <h3 className="text-lg lg:text-xl font-semibold text-gray-900 dark:text-[--text-color] mb-2 group-hover:text-purple-600 dark:group-hover:text-[--lime] transition-colors">
                                                     {lang.name}
                                                 </h3>
-                                                <p className="text-xs lg:text-sm text-[--text-secondary] mb-4 line-clamp-2 group-hover:text-[--text-color] transition-colors">
+                                                <p className="text-xs lg:text-sm text-gray-600 dark:text-[--text-secondary] mb-4 line-clamp-2 group-hover:text-gray-800 dark:group-hover:text-[--text-color] transition-colors">
                                                     {lang.desc}
                                                 </p>
                                             </div>
 
                                             {/* Stats */}
                                             <div className="grid grid-cols-3 gap-2 lg:gap-4 mb-4 lg:mb-6">
-                                                <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
+                                                <div className="flex flex-col items-center p-2 rounded-lg bg-gray-100 dark:bg-black/10">
                                                     <Users className="w-3 h-3 lg:w-4 lg:h-4 text-[--yellow] mb-1" />
-                                                    <span className="text-[10px] lg:text-xs text-[--text-secondary]">
+                                                    <span className="text-[10px] lg:text-xs text-gray-600 dark:text-[--text-secondary]">
                                                         {lang.stats.students}
                                                     </span>
                                                 </div>
-                                                <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
+                                                <div className="flex flex-col items-center p-2 rounded-lg bg-gray-100 dark:bg-black/10">
                                                     <Timer className="w-3 h-3 lg:w-4 lg:h-4 text-[--lime] mb-1" />
-                                                    <span className="text-[10px] lg:text-xs text-[--text-secondary]">
+                                                    <span className="text-[10px] lg:text-xs text-gray-600 dark:text-[--text-secondary]">
                                                         {lang.stats.hours}ч
                                                     </span>
                                                 </div>
-                                                <div className="flex flex-col items-center p-2 rounded-lg bg-black/10 dark:bg-black/20">
+                                                <div className="flex flex-col items-center p-2 rounded-lg bg-gray-100 dark:bg-black/10">
                                                     <BookOpen className="w-3 h-3 lg:w-4 lg:h-4 text-[--purple] mb-1" />
-                                                    <span className="text-[10px] lg:text-xs text-[--text-secondary]">
+                                                    <span className="text-[10px] lg:text-xs text-gray-600 dark:text-[--text-secondary]">
                                                         {lang.stats.modules}
                                                     </span>
                                                 </div>
@@ -438,13 +414,13 @@ export default function CoursesPage() {
                                                     {lang.tags.map((tag) => (
                                                         <span
                                                             key={tag}
-                                                            className="px-2 py-1 bg-black/10 dark:bg-black/30 rounded-lg text-[--text-secondary] text-[10px] lg:text-xs"
+                                                            className="px-2 py-1 bg-gray-100 dark:bg-black/10 rounded-lg text-gray-600 dark:text-[--text-secondary] text-[10px] lg:text-xs"
                                                         >
                                                             {tag}
                                                         </span>
                                                     ))}
                                                 </div>
-                                                <Button className="w-full bg-[--purple] hover:bg-[--button-bg] text-white text-xs lg:text-sm">
+                                                <Button className="w-full bg-purple-600 hover:bg-purple-700 dark:bg-[--purple] dark:hover:bg-[--button-bg] text-white text-xs lg:text-sm">
                                                     Начать обучение
                                                     <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 ml-2" />
                                                 </Button>
