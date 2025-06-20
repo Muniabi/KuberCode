@@ -178,7 +178,7 @@ export default function CoursesPage() {
                                             200
                                         );
                                     }}
-                                    className="w-full bg-white dark:bg-[--card-bg]/50 hover:bg-gray-50 dark:hover:bg-[--card-bg] focus:bg-white dark:focus:bg-[--card-bg] text-gray-900 dark:text-[--text-color] pl-10 pr-10 py-2 border border-gray-200 dark:border-transparent rounded-lg transition-colors duration-200 focus-visible:ring-1 focus-visible:ring-purple-500 dark:focus-visible:ring-[--purple]/30 placeholder:text-gray-500 dark:placeholder:text-[--text-secondary]"
+                                    className="w-full bg-white dark:bg-zinc-700 hover:bg-gray-50 dark:hover:bg-[--card-bg] focus:bg-white dark:focus:bg-[--card-bg] text-gray-900 dark:text-[--text-color] pl-10 pr-10 py-2 border border-gray-200 dark:border-transparent rounded-lg transition-colors duration-200 focus-visible:ring-1 focus-visible:ring-purple-500 dark:focus-visible:ring-[--purple]/30 placeholder:text-gray-500 dark:placeholder:text-[--text-secondary]"
                                 />
                                 {searchQuery && (
                                     <button
@@ -314,16 +314,6 @@ export default function CoursesPage() {
                                                 <div className="flex-1 min-w-0 w-full">
                                                     <div className="flex items-start justify-between">
                                                         <div>
-                                                            {lang.status && (
-                                                                <div className="relative inline-block">
-                                                                    <div className="absolute inset-0 bg-gradient-to-r from-lime-400 to-yellow-400 dark:from-[--lime] dark:to-[--yellow] rounded-lg blur opacity-50" />
-                                                                    <span className="relative inline-block px-3 py-1 bg-gradient-to-r from-lime-400 to-yellow-400 dark:from-[--lime] dark:to-[--yellow] rounded-lg text-gray-900 dark:text-[--bg-color] text-xs font-medium mb-2">
-                                                                        {
-                                                                            lang.status
-                                                                        }
-                                                                    </span>
-                                                                </div>
-                                                            )}
                                                             <h3 className="text-xl font-semibold text-gray-900 dark:text-[--text-color] mb-1 group-hover:text-purple-600 dark:group-hover:text-[--lime] transition-colors">
                                                                 {lang.name}
                                                             </h3>
@@ -384,11 +374,6 @@ export default function CoursesPage() {
                                                         {lang.icon}
                                                     </span>
                                                 </div>
-                                                {lang.status && (
-                                                    <span className="px-2 lg:px-3 py-1 bg-gradient-to-r from-lime-400 to-yellow-400 dark:from-[--lime] dark:to-[--yellow] rounded-lg text-gray-900 dark:text-[--bg-color] text-xs font-medium">
-                                                        {lang.status}
-                                                    </span>
-                                                )}
                                             </div>
 
                                             {/* Content */}

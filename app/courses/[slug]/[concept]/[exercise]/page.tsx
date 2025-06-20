@@ -15,7 +15,7 @@ import {
     GraduationCap,
     CheckCircle2,
     Circle,
-    Lock,
+    Lock,ы
     PlayCircle,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
