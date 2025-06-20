@@ -14,18 +14,12 @@ interface SessionsListProps {
     sessions: Session[];
     onCancel?: (sessionId: string) => void;
     onReschedule?: (sessionId: string) => void;
-    onJoinSession?: (
-        sessionId: string,
-        communicationType: string,
-        communicationLink: string
-    ) => void;
 }
 
 export function SessionsList({
     sessions,
     onCancel,
     onReschedule,
-    onJoinSession,
 }: SessionsListProps) {
     if (sessions.length === 0) {
         return (
@@ -42,14 +36,6 @@ export function SessionsList({
                     {...session}
                     onCancel={() => onCancel?.(session.id)}
                     onReschedule={() => onReschedule?.(session.id)}
-                    onJoinClick={() =>
-                        session.communicationLink &&
-                        onJoinSession?.(
-                            session.id,
-                            session.communicationType,
-                            session.communicationLink
-                        )
-                    }
                 />
             ))}
         </div>

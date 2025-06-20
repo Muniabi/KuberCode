@@ -13,8 +13,10 @@ import { ru } from "date-fns/locale";
 import { useState } from "react";
 import { RescheduleDialog } from "./RescheduleDialog";
 import { CancelDialog } from "./CancelDialog";
+import { JoinSessionDialog } from "./JoinSessionDialog";
 
 interface SessionCardProps {
+    id: string;
     mentorName: string;
     mentorAvatar: string;
     date: Date;
@@ -27,10 +29,10 @@ interface SessionCardProps {
         newTime: string,
         newDuration: string
     ) => void;
-    onJoinClick?: () => void;
 }
 
 export function SessionCard({
+    id,
     mentorName,
     mentorAvatar,
     date,
@@ -39,10 +41,10 @@ export function SessionCard({
     communicationLink,
     onCancel,
     onReschedule,
-    onJoinClick,
 }: SessionCardProps) {
     const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
     const [isCancelOpen, setIsCancelOpen] = useState(false);
+    const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
 
     return (
         <>
@@ -98,7 +100,7 @@ export function SessionCard({
                         <Button
                             variant="outline"
                             className="w-full mt-3 bg-gradient-to-r from-purple-500/10 to-purple-500/5 dark:from-lime-400/10 dark:to-lime-400/5 border-purple-200 dark:border-lime-900/50 hover:border-purple-300 dark:hover:border-lime-800 text-purple-700 dark:text-lime-400 transition-all hover:bg-purple-100/50 dark:hover:bg-lime-900/20"
-                            onClick={onJoinClick}
+                            onClick={() => setIsJoinDialogOpen(true)}
                         >
                             Присоединиться
                         </Button>
@@ -141,6 +143,13 @@ export function SessionCard({
                     setIsCancelOpen(false);
                 }}
                 sessionDate={date}
+            />
+            <JoinSessionDialog
+                isOpen={isJoinDialogOpen}
+                onClose={() => setIsJoinDialogOpen(false)}
+                sessionId={id}
+                communicationType={communicationType}
+                communicationLink={communicationLink}
             />
         </>
     );
