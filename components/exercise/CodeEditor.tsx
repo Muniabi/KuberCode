@@ -7,7 +7,7 @@ import {
     forwardRef,
     useImperativeHandle,
 } from "react";
-import Editor, { loader } from "@monaco-editor/react";
+import Editor, { loader, type EditorProps } from "@monaco-editor/react";
 import {
     Play,
     RotateCcw,
