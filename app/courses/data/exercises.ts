@@ -31,6 +31,7 @@ export interface Exercise {
     initialCode: string;
     solution?: string;
     hints?: string[];
+    tests?: { input: any[]; expected: number }[];
 }
 
 export const AUTHORS: Record<string, Author> = {
@@ -97,51 +98,79 @@ int main() {
     {
         id: "basics-sum-numbers",
         conceptId: "basics",
-        languageId: "cpp",
-        title: "Сумма двух чисел",
+        languageId: "js",
+        title: "Умная сумма чисел",
         description:
-            "Напишите программу, которая считывает два числа и выводит их сумму",
+            "Реализуйте функцию, которая находит сумму чисел с учетом особых правил",
         type: "practice",
         theory: `
-            <h2>Ввод и вывод в C++</h2>
+            <h2>Работа с числами в JavaScript</h2>
             <p>
-                В C++ для ввода данных используется объект <code>std::cin</code>, а для вывода - <code>std::cout</code>.
-                Оператор <code>>></code> используется для ввода, а <code><<</code> для вывода.
-            </p>
-            <h2>Переменные в C++</h2>
-            <p>
-                Для хранения чисел в C++ используются различные типы данных:
+                В JavaScript числа могут быть как целыми, так и с плавающей точкой. При работе с числами важно учитывать:
                 <ul>
-                    <li><code>int</code> - для целых чисел</li>
-                    <li><code>float</code> - для чисел с плавающей точкой</li>
-                    <li><code>double</code> - для чисел с двойной точностью</li>
+                    <li>Преобразование строк в числа (parseInt, parseFloat)</li>
+                    <li>Обработку специальных значений (NaN, Infinity)</li>
+                    <li>Округление и работу с десятичными числами</li>
+                </ul>
+            </p>
+            <h3>Задача</h3>
+            <p>
+                Напишите функцию, которая принимает массив значений (числа и строки) и возвращает сумму всех чисел в массиве с учетом следующих правил:
+                <ul>
+                    <li>Строки, которые можно преобразовать в числа, должны быть преобразованы и учтены в сумме</li>
+                    <li>Отрицательные числа должны быть взяты по модулю</li>
+                    <li>Строки, которые нельзя преобразовать в числа, должны быть проигнорированы</li>
+                    <li>Результат должен быть округлен до 2 знаков после запятой</li>
                 </ul>
             </p>
         `,
-        initialCode: `#include <iostream>
-
-int main() {
-    // Объявите две переменные для хранения чисел
-    
-    // Считайте два числа
-    
-    // Вычислите и выведите их сумму
-    
-    return 0;
-}`,
-        solution: `#include <iostream>
-
-int main() {
-    int a, b;
-    std::cout << "Введите два числа: ";
-    std::cin >> a >> b;
-    std::cout << "Сумма: " << a + b << std::endl;
-    return 0;
-}`,
         hints: [
-            "Используйте тип int для хранения целых чисел",
-            "Для ввода используйте std::cin >> переменная",
-            "Для вывода используйте std::cout << значение",
+            "Используйте parseFloat() для преобразования строк в числа",
+            "Функция Math.abs() поможет получить модуль числа",
+            "Метод Number.isNaN() проверит, является ли значение NaN",
+            "Для округления до 2 знаков используйте toFixed(2)",
+        ],
+        solution: `function smartSum(arr) {
+    // Преобразуем и фильтруем значения
+    const numbers = arr
+        .map(item => {
+            // Если это число, берем его модуль
+            if (typeof item === 'number') {
+                return Math.abs(item);
+            }
+            // Если это строка, пробуем преобразовать в число
+            const num = parseFloat(item);
+            return Number.isNaN(num) ? 0 : Math.abs(num);
+        })
+        // Фильтруем все нечисловые значения
+        .filter(num => !Number.isNaN(num));
+    
+    // Суммируем все числа
+    const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+    
+    // Округляем до 2 знаков после запятой
+    return Number(sum.toFixed(2));
+}`,
+        initialCode: `function smartSum(arr) {
+    // Ваш код здесь
+}`,
+        tests: [
+            {
+                input: [[1, -2, "3.14", "abc", 5]],
+                expected: 11.14,
+            },
+            {
+                input: [["abc", "def"]],
+                expected: 0,
+            },
+            {
+                input: [["-1.5", 2.789, -3]],
+                expected: 7.29,
+            },
+            {
+                input: [[1.234, -5.678, "9.101", "test", 2]],
+                expected: 18.01,
+            },
         ],
     },
     {

@@ -109,3 +109,20 @@ export interface CourseResponse {
     courses: Course[];
     total: number;
 }
+
+export interface Exercise {
+    id: string;
+    conceptId: string;
+    languageId: string;
+    title: string;
+    description: string;
+    type: "practice" | "theory";
+    theory?: string;
+    solution?: string;
+    hints?: string[];
+    initialCode?: string;
+    tests?: {
+        input: any[];
+        expected: any;
+    }[];
+}
